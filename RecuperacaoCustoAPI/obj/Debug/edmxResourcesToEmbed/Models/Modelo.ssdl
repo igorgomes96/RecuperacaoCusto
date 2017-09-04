@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RecuperacaoCustoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Ciclo">
+    <Key>
+      <PropertyRef Name="Codigo" />
+    </Key>
+    <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Descricao" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="DataInicio" Type="date" Nullable="false" />
+    <Property Name="DataFim" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CR">
+    <Key>
+      <PropertyRef Name="Codigo" />
+    </Key>
+    <Property Name="Codigo" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Descricao" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="ResponsavelLogin" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MesCiclo">
+    <Key>
+      <PropertyRef Name="Codigo" />
+    </Key>
+    <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Mes" Type="date" Nullable="false" />
+    <Property Name="CodCiclo" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RecuperacaoCusto">
+    <Key>
+      <PropertyRef Name="Codigo" />
+    </Key>
+    <Property Name="CROrigem" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="CRDestino" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Custo" Type="real" Nullable="false" />
+    <Property Name="DataHora" Type="datetime" Nullable="false" />
+    <Property Name="Aprovado" Type="bit" />
+    <Property Name="Resposta" Type="nvarchar" MaxLength="4000" />
+    <Property Name="DataHoraAprovacao" Type="datetime" />
+    <Property Name="TipoRecuperacao" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Motivo" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CodMesCiclo" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sessao">
+    <Key>
+      <PropertyRef Name="Chave" />
+    </Key>
+    <Property Name="Chave" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="LoginUsuario" Type="varchar" MaxLength="20" />
+    <Property Name="Inicio" Type="datetime" />
+    <Property Name="Fim" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Usuario">
+    <Key>
+      <PropertyRef Name="Login" />
+    </Key>
+    <Property Name="Login" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Senha" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Nome" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <Association Name="cr_responsavel_fk">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+    <End Role="CR" Type="Self.CR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Login" />
+      </Principal>
+      <Dependent Role="CR">
+        <PropertyRef Name="ResponsavelLogin" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="mesciclo_ciclo_fk">
+    <End Role="Ciclo" Type="Self.Ciclo" Multiplicity="1" />
+    <End Role="MesCiclo" Type="Self.MesCiclo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ciclo">
+        <PropertyRef Name="Codigo" />
+      </Principal>
+      <Dependent Role="MesCiclo">
+        <PropertyRef Name="CodCiclo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="recuperacaocusto_destino_fk">
+    <End Role="CR" Type="Self.CR" Multiplicity="1" />
+    <End Role="RecuperacaoCusto" Type="Self.RecuperacaoCusto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CR">
+        <PropertyRef Name="Codigo" />
+      </Principal>
+      <Dependent Role="RecuperacaoCusto">
+        <PropertyRef Name="CRDestino" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="recuperacaocusto_mesciclo_fk">
+    <End Role="MesCiclo" Type="Self.MesCiclo" Multiplicity="1" />
+    <End Role="RecuperacaoCusto" Type="Self.RecuperacaoCusto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MesCiclo">
+        <PropertyRef Name="Codigo" />
+      </Principal>
+      <Dependent Role="RecuperacaoCusto">
+        <PropertyRef Name="CodMesCiclo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="recuperacaocusto_origem_fk">
+    <End Role="CR" Type="Self.CR" Multiplicity="1" />
+    <End Role="RecuperacaoCusto" Type="Self.RecuperacaoCusto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CR">
+        <PropertyRef Name="Codigo" />
+      </Principal>
+      <Dependent Role="RecuperacaoCusto">
+        <PropertyRef Name="CROrigem" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="sessao_usuario_fk">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Sessao" Type="Self.Sessao" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Login" />
+      </Principal>
+      <Dependent Role="Sessao">
+        <PropertyRef Name="LoginUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="RecuperacaoCustoModelStoreContainer">
+    <EntitySet Name="Ciclo" EntityType="Self.Ciclo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CR" EntityType="Self.CR" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MesCiclo" EntityType="Self.MesCiclo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RecuperacaoCusto" EntityType="Self.RecuperacaoCusto" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sessao" EntityType="Self.Sessao" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="cr_responsavel_fk" Association="Self.cr_responsavel_fk">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="CR" EntitySet="CR" />
+    </AssociationSet>
+    <AssociationSet Name="mesciclo_ciclo_fk" Association="Self.mesciclo_ciclo_fk">
+      <End Role="Ciclo" EntitySet="Ciclo" />
+      <End Role="MesCiclo" EntitySet="MesCiclo" />
+    </AssociationSet>
+    <AssociationSet Name="recuperacaocusto_destino_fk" Association="Self.recuperacaocusto_destino_fk">
+      <End Role="CR" EntitySet="CR" />
+      <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
+    </AssociationSet>
+    <AssociationSet Name="recuperacaocusto_mesciclo_fk" Association="Self.recuperacaocusto_mesciclo_fk">
+      <End Role="MesCiclo" EntitySet="MesCiclo" />
+      <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
+    </AssociationSet>
+    <AssociationSet Name="recuperacaocusto_origem_fk" Association="Self.recuperacaocusto_origem_fk">
+      <End Role="CR" EntitySet="CR" />
+      <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
+    </AssociationSet>
+    <AssociationSet Name="sessao_usuario_fk" Association="Self.sessao_usuario_fk">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Sessao" EntitySet="Sessao" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

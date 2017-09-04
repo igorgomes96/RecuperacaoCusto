@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecuperacaoCustoAPI", "RecuperacaoCustoAPI\RecuperacaoCustoAPI.csproj", "{2934F3D0-D5DB-4348-A0DC-05AC7CB7826C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecuperacaoCustoFront", "RecuperacaoCustoFront\RecuperacaoCustoFront.csproj", "{A43BC1BE-64DB-420F-8247-2B333C63B9DD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2934F3D0-D5DB-4348-A0DC-05AC7CB7826C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2934F3D0-D5DB-4348-A0DC-05AC7CB7826C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2934F3D0-D5DB-4348-A0DC-05AC7CB7826C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2934F3D0-D5DB-4348-A0DC-05AC7CB7826C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A43BC1BE-64DB-420F-8247-2B333C63B9DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A43BC1BE-64DB-420F-8247-2B333C63B9DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A43BC1BE-64DB-420F-8247-2B333C63B9DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A43BC1BE-64DB-420F-8247-2B333C63B9DD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="08d71c1306414702a10c3e6705e8b309" Name="Diagram1">
+        <EntityTypeShape EntityType="RecuperacaoCustoModel.CR" Width="2.25" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="RecuperacaoCustoModel.Usuario" Width="1.5" PointX="0.75" PointY="0.875" />
+        <AssociationConnector Association="RecuperacaoCustoModel.cr_responsavel_fk" />
+        <EntityTypeShape EntityType="RecuperacaoCustoModel.Sessao" Width="1.5" PointX="3" PointY="4" />
+        <AssociationConnector Association="RecuperacaoCustoModel.sessao_usuario_fk" />
+        <EntityTypeShape EntityType="RecuperacaoCustoModel.Ciclo" Width="1.5" PointX="0.875" PointY="6.125" />
+        <EntityTypeShape EntityType="RecuperacaoCustoModel.MesCiclo" Width="1.5" PointX="3.875" PointY="6.375" />
+        <AssociationConnector Association="RecuperacaoCustoModel.mesciclo_ciclo_fk" />
+        <EntityTypeShape EntityType="RecuperacaoCustoModel.RecuperacaoCusto" Width="1.5" PointX="5.875" PointY="1.875" />
+        <AssociationConnector Association="RecuperacaoCustoModel.recuperacaocusto_destino_fk" />
+        <AssociationConnector Association="RecuperacaoCustoModel.recuperacaocusto_origem_fk" />
+        <AssociationConnector Association="RecuperacaoCustoModel.recuperacaocusto_ciclo_fk" />
+        <EntityTypeShape EntityType="RecuperacaoCustoModel.RecuperacaoCustoMes" Width="1.5" PointX="8.125" PointY="4.125" />
+        <AssociationConnector Association="RecuperacaoCustoModel.recuperacaocustomes_mesciclo_fk" />
+        <AssociationConnector Association="RecuperacaoCustoModel.recuperacaocustomes_recuperacaocusto_fk" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
