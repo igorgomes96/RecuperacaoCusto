@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-md-2 col-xs-3">
+        <div class="form-group">
+            <label for="select-ciclo">Ciclo</label>
+            <select id="select-ciclo" class="form-control" ng-options="(c.Descricao + ' (' + c.DataInicio | data:'MMM/yy' + ' - ' + c.DataFim | data:'MMM/yy' + ')') for c in ct.ciclos" ng-model="ct.ciclo">
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 col-xs-6">
+        <div class="form-group">
+            <label for="select-cr">Centro de Custo de Origem</label>
+            <select id="select-cr" class="form-control" ng-options="cr.Codigo as (cr.Codigo + ' - ' + cr.Descricao) for cr in ct.crs" ng-model="ct.CROrigem">
+            </select>
+        </div>
+    </div>
+</div>
+
+
+<table class="table table-condensed table-striped">
+	<thead>
+		<tr>
+			<th>CR de Destino</th>
+			<th>Tipo de Recuperação</th>
+			<th>Motivo</th>
+			<th ng-repeat="m in ct.ciclo.Meses">
+				{{m.Mes}}
+			</th>
+		</tr>
+	</thead>
+</table>
