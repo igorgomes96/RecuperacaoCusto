@@ -13,6 +13,7 @@
           <Property Name="Descricao" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="DataInicio" Type="date" Nullable="false" />
           <Property Name="DataFim" Type="date" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="CR">
           <Key>
@@ -40,10 +41,10 @@
           <Property Name="Aprovado" Type="bit" />
           <Property Name="Resposta" Type="nvarchar" MaxLength="4000" />
           <Property Name="DataHoraAprovacao" Type="datetime" />
-          <Property Name="TipoRecuperacao" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="Motivo" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CodCiclo" Type="int" Nullable="false" />
+          <Property Name="TipoRecuperacaoCod" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="RecuperacaoCustoMes">
           <Key>
@@ -63,6 +64,14 @@
           <Property Name="Inicio" Type="datetime" />
           <Property Name="Fim" Type="datetime" />
         </EntityType>
+        <EntityType Name="TipoRecuperacao">
+          <Key>
+            <PropertyRef Name="Codigo" />
+          </Key>
+          <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tipo" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="Conta" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="Usuario">
           <Key>
             <PropertyRef Name="Login" />
@@ -71,6 +80,7 @@
           <Property Name="Senha" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Nome" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Perfil" Type="varchar" MaxLength="30" Nullable="false" />
         </EntityType>
         <Association Name="cr_responsavel_fk">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
@@ -132,6 +142,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="recuperacaocusto_tiporecuperacao_fk">
+          <End Role="TipoRecuperacao" Type="Self.TipoRecuperacao" Multiplicity="1" />
+          <End Role="RecuperacaoCusto" Type="Self.RecuperacaoCusto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoRecuperacao">
+              <PropertyRef Name="Codigo" />
+            </Principal>
+            <Dependent Role="RecuperacaoCusto">
+              <PropertyRef Name="TipoRecuperacaoCod" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="recuperacaocustomes_mesciclo_fk">
           <End Role="MesCiclo" Type="Self.MesCiclo" Multiplicity="1" />
           <End Role="RecuperacaoCustoMes" Type="Self.RecuperacaoCustoMes" Multiplicity="*" />
@@ -177,6 +199,7 @@
           <EntitySet Name="RecuperacaoCusto" EntityType="Self.RecuperacaoCusto" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RecuperacaoCustoMes" EntityType="Self.RecuperacaoCustoMes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sessao" EntityType="Self.Sessao" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoRecuperacao" EntityType="Self.TipoRecuperacao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="cr_responsavel_fk" Association="Self.cr_responsavel_fk">
             <End Role="Usuario" EntitySet="Usuario" />
@@ -196,6 +219,10 @@
           </AssociationSet>
           <AssociationSet Name="recuperacaocusto_origem_fk" Association="Self.recuperacaocusto_origem_fk">
             <End Role="CR" EntitySet="CR" />
+            <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
+          </AssociationSet>
+          <AssociationSet Name="recuperacaocusto_tiporecuperacao_fk" Association="Self.recuperacaocusto_tiporecuperacao_fk">
+            <End Role="TipoRecuperacao" EntitySet="TipoRecuperacao" />
             <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
           </AssociationSet>
           <AssociationSet Name="recuperacaocustomes_mesciclo_fk" Association="Self.recuperacaocustomes_mesciclo_fk">
@@ -266,6 +293,11 @@
             <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
             <End Role="RecuperacaoCustoMes" EntitySet="RecuperacaoCustoMes" />
           </AssociationSet>
+          <EntitySet Name="TipoRecuperacao" EntityType="RecuperacaoCustoModel.TipoRecuperacao" />
+          <AssociationSet Name="recuperacaocusto_tiporecuperacao_fk" Association="RecuperacaoCustoModel.recuperacaocusto_tiporecuperacao_fk">
+            <End Role="TipoRecuperacao" EntitySet="TipoRecuperacao" />
+            <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Usuario">
           <Key>
@@ -277,6 +309,7 @@
           <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CRs" Relationship="RecuperacaoCustoModel.cr_responsavel_fk" FromRole="Usuario" ToRole="CR" />
           <NavigationProperty Name="Sessoes" Relationship="RecuperacaoCustoModel.sessao_usuario_fk" FromRole="Usuario" ToRole="Sessao" />
+          <Property Name="Perfil" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="cr_responsavel_fk">
           <End Type="RecuperacaoCustoModel.Usuario" Role="Usuario" Multiplicity="1" />
@@ -324,6 +357,7 @@
           <Property Name="DataFim" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="MesesCiclos" Relationship="RecuperacaoCustoModel.mesciclo_ciclo_fk" FromRole="Ciclo" ToRole="MesCiclo" />
           <NavigationProperty Name="RecuperacaoCusto" Relationship="RecuperacaoCustoModel.recuperacaocusto_ciclo_fk" FromRole="Ciclo" ToRole="RecuperacaoCusto" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="MesCiclo">
           <Key>
@@ -357,7 +391,6 @@
           <Property Name="Aprovado" Type="Boolean" />
           <Property Name="Resposta" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="DataHoraAprovacao" Type="DateTime" Precision="3" />
-          <Property Name="TipoRecuperacao" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Motivo" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Codigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Destino" Relationship="RecuperacaoCustoModel.recuperacaocusto_destino_fk" FromRole="RecuperacaoCusto" ToRole="CR" />
@@ -365,6 +398,8 @@
           <Property Name="CodCiclo" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Ciclo" Relationship="RecuperacaoCustoModel.recuperacaocusto_ciclo_fk" FromRole="RecuperacaoCusto" ToRole="Ciclo" />
           <NavigationProperty Name="RecuperacoesMensais" Relationship="RecuperacaoCustoModel.recuperacaocustomes_recuperacaocusto_fk" FromRole="RecuperacaoCusto" ToRole="RecuperacaoCustoMes" />
+          <Property Name="TipoRecuperacaoCod" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TipoRecuperacao" Relationship="RecuperacaoCustoModel.recuperacaocusto_tiporecuperacao_fk" FromRole="RecuperacaoCusto" ToRole="TipoRecuperacao" />
         </EntityType>
         <Association Name="recuperacaocusto_destino_fk">
           <End Type="RecuperacaoCustoModel.CR" Role="CR" Multiplicity="1" />
@@ -437,6 +472,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="TipoRecuperacao">
+          <Key>
+            <PropertyRef Name="Codigo" />
+          </Key>
+          <Property Name="Codigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tipo" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="Conta" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RecuperacaoCusto" Relationship="RecuperacaoCustoModel.recuperacaocusto_tiporecuperacao_fk" FromRole="TipoRecuperacao" ToRole="RecuperacaoCusto" />
+        </EntityType>
+        <Association Name="recuperacaocusto_tiporecuperacao_fk">
+          <End Type="RecuperacaoCustoModel.TipoRecuperacao" Role="TipoRecuperacao" Multiplicity="1" />
+          <End Type="RecuperacaoCustoModel.RecuperacaoCusto" Role="RecuperacaoCusto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoRecuperacao">
+              <PropertyRef Name="Codigo" />
+            </Principal>
+            <Dependent Role="RecuperacaoCusto">
+              <PropertyRef Name="TipoRecuperacaoCod" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -455,6 +511,7 @@
           <EntitySetMapping Name="Usuario">
             <EntityTypeMapping TypeName="RecuperacaoCustoModel.Usuario">
               <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="Perfil" ColumnName="Perfil" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Nome" ColumnName="Nome" />
                 <ScalarProperty Name="Senha" ColumnName="Senha" />
@@ -475,6 +532,7 @@
           <EntitySetMapping Name="Ciclo">
             <EntityTypeMapping TypeName="RecuperacaoCustoModel.Ciclo">
               <MappingFragment StoreEntitySet="Ciclo">
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="DataFim" ColumnName="DataFim" />
                 <ScalarProperty Name="DataInicio" ColumnName="DataInicio" />
                 <ScalarProperty Name="Descricao" ColumnName="Descricao" />
@@ -494,10 +552,10 @@
           <EntitySetMapping Name="RecuperacaoCusto">
             <EntityTypeMapping TypeName="RecuperacaoCustoModel.RecuperacaoCusto">
               <MappingFragment StoreEntitySet="RecuperacaoCusto">
+                <ScalarProperty Name="TipoRecuperacaoCod" ColumnName="TipoRecuperacaoCod" />
                 <ScalarProperty Name="CodCiclo" ColumnName="CodCiclo" />
                 <ScalarProperty Name="Codigo" ColumnName="Codigo" />
                 <ScalarProperty Name="Motivo" ColumnName="Motivo" />
-                <ScalarProperty Name="TipoRecuperacao" ColumnName="TipoRecuperacao" />
                 <ScalarProperty Name="DataHoraAprovacao" ColumnName="DataHoraAprovacao" />
                 <ScalarProperty Name="Resposta" ColumnName="Resposta" />
                 <ScalarProperty Name="Aprovado" ColumnName="Aprovado" />
@@ -513,6 +571,15 @@
                 <ScalarProperty Name="Valor" ColumnName="Valor" />
                 <ScalarProperty Name="CodMesCiclo" ColumnName="CodMesCiclo" />
                 <ScalarProperty Name="CodRecuperacao" ColumnName="CodRecuperacao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoRecuperacao">
+            <EntityTypeMapping TypeName="RecuperacaoCustoModel.TipoRecuperacao">
+              <MappingFragment StoreEntitySet="TipoRecuperacao">
+                <ScalarProperty Name="Conta" ColumnName="Conta" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

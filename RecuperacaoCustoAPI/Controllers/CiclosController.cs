@@ -18,10 +18,11 @@ namespace RecuperacaoCustoAPI.Controllers
         private Contexto db = new Contexto();
 
         // GET: api/Ciclos
-        public IEnumerable<CicloDTO> GetCiclo()
+        public IEnumerable<CicloMesesDTO> GetCiclos(int? ano = null, string status = null)
         {
             return db.Ciclo.ToList()
-                .Select(x => new CicloDTO(x));
+                .Where(x => (ano == null || x.DataInicio.Year == ano || x.DataFim.Year == ano) && (status == null || x.Status == status))
+                .Select(x => new CicloMesesDTO(x));
         }
 
         // GET: api/Ciclos/5
@@ -55,8 +56,14 @@ namespace RecuperacaoCustoAPI.Controllers
 
             if (c == null) return NotFound();
 
-            if (c.DataFim != ciclo.DataFim || c.DataInicio != ciclo.DataInicio)
-                return BadRequest("Data início e data fim não podem ser alterados!");
+            //Data início e data fim não podem ser alterados
+            ciclo.DataInicio = c.DataInicio;
+            ciclo.DataFim = c.DataFim;
+
+            db.Entry(c).State = EntityState.Detached;
+
+            //if (c.DataFim != ciclo.DataFim || c.DataInicio != ciclo.DataInicio)
+            //    return BadRequest("Data início e data fim não podem ser alterados!");
 
             db.Entry(ciclo).State = EntityState.Modified;
 

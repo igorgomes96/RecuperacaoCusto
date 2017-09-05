@@ -13,6 +13,7 @@
     <EntitySetMapping Name="Usuario">
       <EntityTypeMapping TypeName="RecuperacaoCustoModel.Usuario">
         <MappingFragment StoreEntitySet="Usuario">
+          <ScalarProperty Name="Perfil" ColumnName="Perfil" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Nome" ColumnName="Nome" />
           <ScalarProperty Name="Senha" ColumnName="Senha" />
@@ -33,6 +34,7 @@
     <EntitySetMapping Name="Ciclo">
       <EntityTypeMapping TypeName="RecuperacaoCustoModel.Ciclo">
         <MappingFragment StoreEntitySet="Ciclo">
+          <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="DataFim" ColumnName="DataFim" />
           <ScalarProperty Name="DataInicio" ColumnName="DataInicio" />
           <ScalarProperty Name="Descricao" ColumnName="Descricao" />
@@ -52,17 +54,34 @@
     <EntitySetMapping Name="RecuperacaoCusto">
       <EntityTypeMapping TypeName="RecuperacaoCustoModel.RecuperacaoCusto">
         <MappingFragment StoreEntitySet="RecuperacaoCusto">
-          <ScalarProperty Name="CodMesCiclo" ColumnName="CodMesCiclo" />
+          <ScalarProperty Name="TipoRecuperacaoCod" ColumnName="TipoRecuperacaoCod" />
+          <ScalarProperty Name="CodCiclo" ColumnName="CodCiclo" />
           <ScalarProperty Name="Codigo" ColumnName="Codigo" />
           <ScalarProperty Name="Motivo" ColumnName="Motivo" />
-          <ScalarProperty Name="TipoRecuperacao" ColumnName="TipoRecuperacao" />
           <ScalarProperty Name="DataHoraAprovacao" ColumnName="DataHoraAprovacao" />
           <ScalarProperty Name="Resposta" ColumnName="Resposta" />
           <ScalarProperty Name="Aprovado" ColumnName="Aprovado" />
           <ScalarProperty Name="DataHora" ColumnName="DataHora" />
-          <ScalarProperty Name="Custo" ColumnName="Custo" />
           <ScalarProperty Name="CRDestino" ColumnName="CRDestino" />
           <ScalarProperty Name="CROrigem" ColumnName="CROrigem" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RecuperacaoCustoMes">
+      <EntityTypeMapping TypeName="RecuperacaoCustoModel.RecuperacaoCustoMes">
+        <MappingFragment StoreEntitySet="RecuperacaoCustoMes">
+          <ScalarProperty Name="Valor" ColumnName="Valor" />
+          <ScalarProperty Name="CodMesCiclo" ColumnName="CodMesCiclo" />
+          <ScalarProperty Name="CodRecuperacao" ColumnName="CodRecuperacao" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TipoRecuperacao">
+      <EntityTypeMapping TypeName="RecuperacaoCustoModel.TipoRecuperacao">
+        <MappingFragment StoreEntitySet="TipoRecuperacao">
+          <ScalarProperty Name="Conta" ColumnName="Conta" />
+          <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+          <ScalarProperty Name="Codigo" ColumnName="Codigo" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

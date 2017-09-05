@@ -8,8 +8,8 @@
     <Property Name="Descricao" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="ResponsavelLogin" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="Responsavel" Relationship="RecuperacaoCustoModel.cr_responsavel_fk" FromRole="CR" ToRole="Usuario" />
-    <NavigationProperty Name="RecuperacoesCustosDestino" Relationship="RecuperacaoCustoModel.recuperacaocusto_destino_fk" FromRole="CR" ToRole="RecuperacaoCusto" />
-    <NavigationProperty Name="RecuperacoesCustoOrigem" Relationship="RecuperacaoCustoModel.recuperacaocusto_origem_fk" FromRole="CR" ToRole="RecuperacaoCusto" />
+    <NavigationProperty Name="RecuperacoesDestino" Relationship="RecuperacaoCustoModel.recuperacaocusto_destino_fk" FromRole="CR" ToRole="RecuperacaoCusto" />
+    <NavigationProperty Name="RecuperacoesOrigem" Relationship="RecuperacaoCustoModel.recuperacaocusto_origem_fk" FromRole="CR" ToRole="RecuperacaoCusto" />
   </EntityType>
   <EntityContainer Name="Contexto" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="CR" EntityType="Self.CR" />
@@ -25,11 +25,11 @@
     </AssociationSet>
     <EntitySet Name="Ciclo" EntityType="RecuperacaoCustoModel.Ciclo" />
     <EntitySet Name="MesCiclo" EntityType="RecuperacaoCustoModel.MesCiclo" />
-    <EntitySet Name="RecuperacaoCusto" EntityType="RecuperacaoCustoModel.RecuperacaoCusto" />
     <AssociationSet Name="mesciclo_ciclo_fk" Association="RecuperacaoCustoModel.mesciclo_ciclo_fk">
       <End Role="Ciclo" EntitySet="Ciclo" />
       <End Role="MesCiclo" EntitySet="MesCiclo" />
     </AssociationSet>
+    <EntitySet Name="RecuperacaoCusto" EntityType="RecuperacaoCustoModel.RecuperacaoCusto" />
     <AssociationSet Name="recuperacaocusto_destino_fk" Association="RecuperacaoCustoModel.recuperacaocusto_destino_fk">
       <End Role="CR" EntitySet="CR" />
       <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
@@ -38,8 +38,22 @@
       <End Role="CR" EntitySet="CR" />
       <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
     </AssociationSet>
-    <AssociationSet Name="recuperacaocusto_mesciclo_fk" Association="RecuperacaoCustoModel.recuperacaocusto_mesciclo_fk">
+    <AssociationSet Name="recuperacaocusto_ciclo_fk" Association="RecuperacaoCustoModel.recuperacaocusto_ciclo_fk">
+      <End Role="Ciclo" EntitySet="Ciclo" />
+      <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
+    </AssociationSet>
+    <EntitySet Name="RecuperacaoCustoMes" EntityType="RecuperacaoCustoModel.RecuperacaoCustoMes" />
+    <AssociationSet Name="recuperacaocustomes_mesciclo_fk" Association="RecuperacaoCustoModel.recuperacaocustomes_mesciclo_fk">
       <End Role="MesCiclo" EntitySet="MesCiclo" />
+      <End Role="RecuperacaoCustoMes" EntitySet="RecuperacaoCustoMes" />
+    </AssociationSet>
+    <AssociationSet Name="recuperacaocustomes_recuperacaocusto_fk" Association="RecuperacaoCustoModel.recuperacaocustomes_recuperacaocusto_fk">
+      <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
+      <End Role="RecuperacaoCustoMes" EntitySet="RecuperacaoCustoMes" />
+    </AssociationSet>
+    <EntitySet Name="TipoRecuperacao" EntityType="RecuperacaoCustoModel.TipoRecuperacao" />
+    <AssociationSet Name="recuperacaocusto_tiporecuperacao_fk" Association="RecuperacaoCustoModel.recuperacaocusto_tiporecuperacao_fk">
+      <End Role="TipoRecuperacao" EntitySet="TipoRecuperacao" />
       <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
     </AssociationSet>
   </EntityContainer>
@@ -53,6 +67,7 @@
     <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="CRs" Relationship="RecuperacaoCustoModel.cr_responsavel_fk" FromRole="Usuario" ToRole="CR" />
     <NavigationProperty Name="Sessoes" Relationship="RecuperacaoCustoModel.sessao_usuario_fk" FromRole="Usuario" ToRole="Sessao" />
+    <Property Name="Perfil" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="cr_responsavel_fk">
     <End Type="RecuperacaoCustoModel.Usuario" Role="Usuario" Multiplicity="1" />
@@ -99,6 +114,8 @@
     <Property Name="DataInicio" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="DataFim" Type="DateTime" Nullable="false" Precision="0" />
     <NavigationProperty Name="MesesCiclos" Relationship="RecuperacaoCustoModel.mesciclo_ciclo_fk" FromRole="Ciclo" ToRole="MesCiclo" />
+    <NavigationProperty Name="RecuperacaoCusto" Relationship="RecuperacaoCustoModel.recuperacaocusto_ciclo_fk" FromRole="Ciclo" ToRole="RecuperacaoCusto" />
+    <Property Name="Status" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="MesCiclo">
     <Key>
@@ -108,26 +125,7 @@
     <Property Name="Mes" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="CodCiclo" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Ciclo" Relationship="RecuperacaoCustoModel.mesciclo_ciclo_fk" FromRole="MesCiclo" ToRole="Ciclo" />
-    <NavigationProperty Name="RecuperacoesCustos" Relationship="RecuperacaoCustoModel.recuperacaocusto_mesciclo_fk" FromRole="MesCiclo" ToRole="RecuperacaoCusto" />
-  </EntityType>
-  <EntityType Name="RecuperacaoCusto">
-    <Key>
-      <PropertyRef Name="Codigo" />
-    </Key>
-    <Property Name="CROrigem" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="CRDestino" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Custo" Type="Single" Nullable="false" />
-    <Property Name="DataHora" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="Aprovado" Type="Boolean" />
-    <Property Name="Resposta" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-    <Property Name="DataHoraAprovacao" Type="DateTime" Precision="3" />
-    <Property Name="TipoRecuperacao" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-    <Property Name="Motivo" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-    <Property Name="Codigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="CodMesCiclo" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="DestinoObj" Relationship="RecuperacaoCustoModel.recuperacaocusto_destino_fk" FromRole="RecuperacaoCusto" ToRole="CR" />
-    <NavigationProperty Name="CROrigemObj" Relationship="RecuperacaoCustoModel.recuperacaocusto_origem_fk" FromRole="RecuperacaoCusto" ToRole="CR" />
-    <NavigationProperty Name="MesCiclo" Relationship="RecuperacaoCustoModel.recuperacaocusto_mesciclo_fk" FromRole="RecuperacaoCusto" ToRole="MesCiclo" />
+    <NavigationProperty Name="Recuperacoes" Relationship="RecuperacaoCustoModel.recuperacaocustomes_mesciclo_fk" FromRole="MesCiclo" ToRole="RecuperacaoCustoMes" />
   </EntityType>
   <Association Name="mesciclo_ciclo_fk">
     <End Type="RecuperacaoCustoModel.Ciclo" Role="Ciclo" Multiplicity="1" />
@@ -141,6 +139,26 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="RecuperacaoCusto">
+    <Key>
+      <PropertyRef Name="Codigo" />
+    </Key>
+    <Property Name="CROrigem" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CRDestino" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="DataHora" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Aprovado" Type="Boolean" />
+    <Property Name="Resposta" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="DataHoraAprovacao" Type="DateTime" Precision="3" />
+    <Property Name="Motivo" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Codigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="Destino" Relationship="RecuperacaoCustoModel.recuperacaocusto_destino_fk" FromRole="RecuperacaoCusto" ToRole="CR" />
+    <NavigationProperty Name="Origem" Relationship="RecuperacaoCustoModel.recuperacaocusto_origem_fk" FromRole="RecuperacaoCusto" ToRole="CR" />
+    <Property Name="CodCiclo" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Ciclo" Relationship="RecuperacaoCustoModel.recuperacaocusto_ciclo_fk" FromRole="RecuperacaoCusto" ToRole="Ciclo" />
+    <NavigationProperty Name="RecuperacoesMensais" Relationship="RecuperacaoCustoModel.recuperacaocustomes_recuperacaocusto_fk" FromRole="RecuperacaoCusto" ToRole="RecuperacaoCustoMes" />
+    <Property Name="TipoRecuperacaoCod" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="TipoRecuperacao" Relationship="RecuperacaoCustoModel.recuperacaocusto_tiporecuperacao_fk" FromRole="RecuperacaoCusto" ToRole="TipoRecuperacao" />
+  </EntityType>
   <Association Name="recuperacaocusto_destino_fk">
     <End Type="RecuperacaoCustoModel.CR" Role="CR" Multiplicity="1" />
     <End Type="RecuperacaoCustoModel.RecuperacaoCusto" Role="RecuperacaoCusto" Multiplicity="*" />
@@ -165,15 +183,71 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="recuperacaocusto_mesciclo_fk">
-    <End Type="RecuperacaoCustoModel.MesCiclo" Role="MesCiclo" Multiplicity="1" />
+  <Association Name="recuperacaocusto_ciclo_fk">
+    <End Type="RecuperacaoCustoModel.Ciclo" Role="Ciclo" Multiplicity="1" />
     <End Type="RecuperacaoCustoModel.RecuperacaoCusto" Role="RecuperacaoCusto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ciclo">
+        <PropertyRef Name="Codigo" />
+      </Principal>
+      <Dependent Role="RecuperacaoCusto">
+        <PropertyRef Name="CodCiclo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="RecuperacaoCustoMes">
+    <Key>
+      <PropertyRef Name="CodRecuperacao" />
+      <PropertyRef Name="CodMesCiclo" />
+    </Key>
+    <Property Name="CodRecuperacao" Type="Int32" Nullable="false" />
+    <Property Name="CodMesCiclo" Type="Int32" Nullable="false" />
+    <Property Name="Valor" Type="Single" Nullable="false" />
+    <NavigationProperty Name="MesCiclo" Relationship="RecuperacaoCustoModel.recuperacaocustomes_mesciclo_fk" FromRole="RecuperacaoCustoMes" ToRole="MesCiclo" />
+    <NavigationProperty Name="RecuperacaoCusto" Relationship="RecuperacaoCustoModel.recuperacaocustomes_recuperacaocusto_fk" FromRole="RecuperacaoCustoMes" ToRole="RecuperacaoCusto" />
+  </EntityType>
+  <Association Name="recuperacaocustomes_mesciclo_fk">
+    <End Type="RecuperacaoCustoModel.MesCiclo" Role="MesCiclo" Multiplicity="1" />
+    <End Type="RecuperacaoCustoModel.RecuperacaoCustoMes" Role="RecuperacaoCustoMes" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="MesCiclo">
         <PropertyRef Name="Codigo" />
       </Principal>
-      <Dependent Role="RecuperacaoCusto">
+      <Dependent Role="RecuperacaoCustoMes">
         <PropertyRef Name="CodMesCiclo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="recuperacaocustomes_recuperacaocusto_fk">
+    <End Type="RecuperacaoCustoModel.RecuperacaoCusto" Role="RecuperacaoCusto" Multiplicity="1" />
+    <End Type="RecuperacaoCustoModel.RecuperacaoCustoMes" Role="RecuperacaoCustoMes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RecuperacaoCusto">
+        <PropertyRef Name="Codigo" />
+      </Principal>
+      <Dependent Role="RecuperacaoCustoMes">
+        <PropertyRef Name="CodRecuperacao" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="TipoRecuperacao">
+    <Key>
+      <PropertyRef Name="Codigo" />
+    </Key>
+    <Property Name="Codigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Tipo" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+    <Property Name="Conta" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="RecuperacaoCusto" Relationship="RecuperacaoCustoModel.recuperacaocusto_tiporecuperacao_fk" FromRole="TipoRecuperacao" ToRole="RecuperacaoCusto" />
+  </EntityType>
+  <Association Name="recuperacaocusto_tiporecuperacao_fk">
+    <End Type="RecuperacaoCustoModel.TipoRecuperacao" Role="TipoRecuperacao" Multiplicity="1" />
+    <End Type="RecuperacaoCustoModel.RecuperacaoCusto" Role="RecuperacaoCusto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TipoRecuperacao">
+        <PropertyRef Name="Codigo" />
+      </Principal>
+      <Dependent Role="RecuperacaoCusto">
+        <PropertyRef Name="TipoRecuperacaoCod" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

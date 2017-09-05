@@ -19,6 +19,7 @@ namespace RecuperacaoCustoAPI.DTO
             Descricao = c.Descricao;
             DataInicio = c.DataInicio;
             DataFim = c.DataFim;
+            Status = c.Status;
             if (c.MesesCiclos != null)
             {
                 Meses = new HashSet<MesCicloDTO>();
@@ -29,6 +30,7 @@ namespace RecuperacaoCustoAPI.DTO
         public string Descricao { get; set; }
         public System.DateTime DataInicio { get; set; }
         public System.DateTime DataFim { get; set; }
+        public string Status { get; set; }
         public IEnumerable<MesCicloDTO> Meses { get; set; }
     }
 }

@@ -45,7 +45,8 @@ namespace RecuperacaoCustoAPI.Controllers
             var retorno = new {
                 Token = token,
                 Usuario = user.Nome,
-                Login = user.Login
+                Login = user.Login,
+                Perfil = user.Perfil
             };
 
             db.Dispose();

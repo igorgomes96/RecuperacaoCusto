@@ -53,27 +53,36 @@ namespace RecuperacaoCustoAPI.Controllers
         [HttpPost]
         [Route("api/RecuperacoesCustos/PorCiclo")]
         [ResponseType(typeof(IEnumerable<RecuperacoesCicloDTO>))]
-        public IHttpActionResult PostRecuperacoesCustoPorCiclo (IEnumerable<RecuperacoesCicloDTO> recuperacoes)
+        public IHttpActionResult PostRecuperacoesCustoPorCiclo (RecuperacoesCicloDTO rec)
         {
+            rec.DataHora = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            foreach (RecuperacoesCicloDTO rec in recuperacoes)
-            {
-                db.RecuperacaoCusto.AddOrUpdate(rec.GetRecuperacaoCusto());
+            RecuperacaoCusto r = rec.GetRecuperacaoCusto();
+            db.RecuperacaoCusto.AddOrUpdate(r);
 
-                foreach (RecuperacaoCustoMes rm in rec.GetRecuperacoesMensais())
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                return InternalServerError(e);
+            }
+
+            foreach (RecuperacaoCustoMes rm in rec.GetRecuperacoesMensais())
+            {
+                rm.CodRecuperacao = r.Codigo;
+                if (rm.Valor == 0)
                 {
-                    if (rm.Valor == 0)
-                    {
-                        if (RecupercaoCustoMesExists(rm.CodRecuperacao, rm.CodMesCiclo))
-                            db.Entry(rm).State = EntityState.Deleted;
-                    }
-                    else
-                        db.RecuperacaoCustoMes.AddOrUpdate(rm);
+                    if (RecupercaoCustoMesExists(rm.CodRecuperacao, rm.CodMesCiclo))
+                        db.Entry(rm).State = EntityState.Deleted;
                 }
+                else
+                    db.RecuperacaoCustoMes.AddOrUpdate(rm);
             }
 
             try

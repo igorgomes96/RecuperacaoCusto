@@ -18,10 +18,12 @@ namespace RecuperacaoCustoAPI.DTO
             Descricao = c.Descricao;
             DataInicio = c.DataInicio;
             DataFim = c.DataFim;
+            Status = c.Status;
         }
         public int Codigo { get; set; }
         public string Descricao { get; set; }
         public System.DateTime DataInicio { get; set; }
         public System.DateTime DataFim { get; set; }
+        public string Status { get; set; }
     }
 }

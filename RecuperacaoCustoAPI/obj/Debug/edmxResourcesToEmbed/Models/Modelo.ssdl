@@ -8,6 +8,7 @@
     <Property Name="Descricao" Type="varchar" MaxLength="255" Nullable="false" />
     <Property Name="DataInicio" Type="date" Nullable="false" />
     <Property Name="DataFim" Type="date" Nullable="false" />
+    <Property Name="Status" Type="varchar" MaxLength="30" Nullable="false" />
   </EntityType>
   <EntityType Name="CR">
     <Key>
@@ -31,15 +32,23 @@
     </Key>
     <Property Name="CROrigem" Type="varchar" MaxLength="20" Nullable="false" />
     <Property Name="CRDestino" Type="varchar" MaxLength="20" Nullable="false" />
-    <Property Name="Custo" Type="real" Nullable="false" />
     <Property Name="DataHora" Type="datetime" Nullable="false" />
     <Property Name="Aprovado" Type="bit" />
     <Property Name="Resposta" Type="nvarchar" MaxLength="4000" />
     <Property Name="DataHoraAprovacao" Type="datetime" />
-    <Property Name="TipoRecuperacao" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="Motivo" Type="varchar" MaxLength="255" Nullable="false" />
     <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CodCiclo" Type="int" Nullable="false" />
+    <Property Name="TipoRecuperacaoCod" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RecuperacaoCustoMes">
+    <Key>
+      <PropertyRef Name="CodRecuperacao" />
+      <PropertyRef Name="CodMesCiclo" />
+    </Key>
+    <Property Name="CodRecuperacao" Type="int" Nullable="false" />
     <Property Name="CodMesCiclo" Type="int" Nullable="false" />
+    <Property Name="Valor" Type="real" Nullable="false" />
   </EntityType>
   <EntityType Name="Sessao">
     <Key>
@@ -50,6 +59,14 @@
     <Property Name="Inicio" Type="datetime" />
     <Property Name="Fim" Type="datetime" />
   </EntityType>
+  <EntityType Name="TipoRecuperacao">
+    <Key>
+      <PropertyRef Name="Codigo" />
+    </Key>
+    <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Tipo" Type="varchar" MaxLength="80" Nullable="false" />
+    <Property Name="Conta" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
   <EntityType Name="Usuario">
     <Key>
       <PropertyRef Name="Login" />
@@ -58,6 +75,7 @@
     <Property Name="Senha" Type="varchar" MaxLength="20" Nullable="false" />
     <Property Name="Nome" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Perfil" Type="varchar" MaxLength="30" Nullable="false" />
   </EntityType>
   <Association Name="cr_responsavel_fk">
     <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
@@ -83,6 +101,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="recuperacaocusto_ciclo_fk">
+    <End Role="Ciclo" Type="Self.Ciclo" Multiplicity="1" />
+    <End Role="RecuperacaoCusto" Type="Self.RecuperacaoCusto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ciclo">
+        <PropertyRef Name="Codigo" />
+      </Principal>
+      <Dependent Role="RecuperacaoCusto">
+        <PropertyRef Name="CodCiclo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="recuperacaocusto_destino_fk">
     <End Role="CR" Type="Self.CR" Multiplicity="1" />
     <End Role="RecuperacaoCusto" Type="Self.RecuperacaoCusto" Multiplicity="*" />
@@ -95,18 +125,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="recuperacaocusto_mesciclo_fk">
-    <End Role="MesCiclo" Type="Self.MesCiclo" Multiplicity="1" />
-    <End Role="RecuperacaoCusto" Type="Self.RecuperacaoCusto" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="MesCiclo">
-        <PropertyRef Name="Codigo" />
-      </Principal>
-      <Dependent Role="RecuperacaoCusto">
-        <PropertyRef Name="CodMesCiclo" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="recuperacaocusto_origem_fk">
     <End Role="CR" Type="Self.CR" Multiplicity="1" />
     <End Role="RecuperacaoCusto" Type="Self.RecuperacaoCusto" Multiplicity="*" />
@@ -116,6 +134,42 @@
       </Principal>
       <Dependent Role="RecuperacaoCusto">
         <PropertyRef Name="CROrigem" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="recuperacaocusto_tiporecuperacao_fk">
+    <End Role="TipoRecuperacao" Type="Self.TipoRecuperacao" Multiplicity="1" />
+    <End Role="RecuperacaoCusto" Type="Self.RecuperacaoCusto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TipoRecuperacao">
+        <PropertyRef Name="Codigo" />
+      </Principal>
+      <Dependent Role="RecuperacaoCusto">
+        <PropertyRef Name="TipoRecuperacaoCod" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="recuperacaocustomes_mesciclo_fk">
+    <End Role="MesCiclo" Type="Self.MesCiclo" Multiplicity="1" />
+    <End Role="RecuperacaoCustoMes" Type="Self.RecuperacaoCustoMes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MesCiclo">
+        <PropertyRef Name="Codigo" />
+      </Principal>
+      <Dependent Role="RecuperacaoCustoMes">
+        <PropertyRef Name="CodMesCiclo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="recuperacaocustomes_recuperacaocusto_fk">
+    <End Role="RecuperacaoCusto" Type="Self.RecuperacaoCusto" Multiplicity="1" />
+    <End Role="RecuperacaoCustoMes" Type="Self.RecuperacaoCustoMes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RecuperacaoCusto">
+        <PropertyRef Name="Codigo" />
+      </Principal>
+      <Dependent Role="RecuperacaoCustoMes">
+        <PropertyRef Name="CodRecuperacao" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -138,7 +192,9 @@
     <EntitySet Name="CR" EntityType="Self.CR" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MesCiclo" EntityType="Self.MesCiclo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RecuperacaoCusto" EntityType="Self.RecuperacaoCusto" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RecuperacaoCustoMes" EntityType="Self.RecuperacaoCustoMes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Sessao" EntityType="Self.Sessao" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TipoRecuperacao" EntityType="Self.TipoRecuperacao" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="cr_responsavel_fk" Association="Self.cr_responsavel_fk">
       <End Role="Usuario" EntitySet="Usuario" />
@@ -148,17 +204,29 @@
       <End Role="Ciclo" EntitySet="Ciclo" />
       <End Role="MesCiclo" EntitySet="MesCiclo" />
     </AssociationSet>
-    <AssociationSet Name="recuperacaocusto_destino_fk" Association="Self.recuperacaocusto_destino_fk">
-      <End Role="CR" EntitySet="CR" />
+    <AssociationSet Name="recuperacaocusto_ciclo_fk" Association="Self.recuperacaocusto_ciclo_fk">
+      <End Role="Ciclo" EntitySet="Ciclo" />
       <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
     </AssociationSet>
-    <AssociationSet Name="recuperacaocusto_mesciclo_fk" Association="Self.recuperacaocusto_mesciclo_fk">
-      <End Role="MesCiclo" EntitySet="MesCiclo" />
+    <AssociationSet Name="recuperacaocusto_destino_fk" Association="Self.recuperacaocusto_destino_fk">
+      <End Role="CR" EntitySet="CR" />
       <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
     </AssociationSet>
     <AssociationSet Name="recuperacaocusto_origem_fk" Association="Self.recuperacaocusto_origem_fk">
       <End Role="CR" EntitySet="CR" />
       <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
+    </AssociationSet>
+    <AssociationSet Name="recuperacaocusto_tiporecuperacao_fk" Association="Self.recuperacaocusto_tiporecuperacao_fk">
+      <End Role="TipoRecuperacao" EntitySet="TipoRecuperacao" />
+      <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
+    </AssociationSet>
+    <AssociationSet Name="recuperacaocustomes_mesciclo_fk" Association="Self.recuperacaocustomes_mesciclo_fk">
+      <End Role="MesCiclo" EntitySet="MesCiclo" />
+      <End Role="RecuperacaoCustoMes" EntitySet="RecuperacaoCustoMes" />
+    </AssociationSet>
+    <AssociationSet Name="recuperacaocustomes_recuperacaocusto_fk" Association="Self.recuperacaocustomes_recuperacaocusto_fk">
+      <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
+      <End Role="RecuperacaoCustoMes" EntitySet="RecuperacaoCustoMes" />
     </AssociationSet>
     <AssociationSet Name="sessao_usuario_fk" Association="Self.sessao_usuario_fk">
       <End Role="Usuario" EntitySet="Usuario" />

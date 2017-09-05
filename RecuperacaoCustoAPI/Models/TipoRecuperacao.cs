@@ -12,24 +12,19 @@ namespace RecuperacaoCustoAPI.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Usuario
+    public partial class TipoRecuperacao
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Usuario()
+        public TipoRecuperacao()
         {
-            this.CRs = new HashSet<CR>();
-            this.Sessoes = new HashSet<Sessao>();
+            this.RecuperacaoCusto = new HashSet<RecuperacaoCusto>();
         }
     
-        public string Login { get; set; }
-        public string Senha { get; set; }
-        public string Nome { get; set; }
-        public string Email { get; set; }
-        public string Perfil { get; set; }
+        public int Codigo { get; set; }
+        public string Tipo { get; set; }
+        public string Conta { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CR> CRs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Sessao> Sessoes { get; set; }
+        public virtual ICollection<RecuperacaoCusto> RecuperacaoCusto { get; set; }
     }
 }

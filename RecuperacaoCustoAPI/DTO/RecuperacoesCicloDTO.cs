@@ -37,8 +37,9 @@ namespace RecuperacaoCustoAPI.DTO
             rec.Aprovado = Aprovado;
             rec.Resposta = Resposta;
             rec.DataHoraAprovacao = DataHoraAprovacao;
-            rec.TipoRecuperacao = TipoRecuperacao;
+            rec.TipoRecuperacaoCod = TipoRecuperacaoCod;
             rec.Motivo = Motivo;
+            rec.CodCiclo = CodCiclo;
             return rec;
         }
 
@@ -57,7 +58,13 @@ namespace RecuperacaoCustoAPI.DTO
             Aprovado = rec.Aprovado;
             Resposta = rec.Resposta;
             DataHoraAprovacao = rec.DataHoraAprovacao;
-            TipoRecuperacao = rec.TipoRecuperacao;
+            TipoRecuperacaoCod = rec.TipoRecuperacaoCod;
+            CodCiclo = rec.CodCiclo;
+            if (rec.TipoRecuperacao != null)
+            {
+                Tipo = rec.TipoRecuperacao.Tipo;
+                Conta = rec.TipoRecuperacao.Conta;
+            }
             Motivo = rec.Motivo;
 
             Recuperacoes = new Dictionary<int, float>();
@@ -86,9 +93,12 @@ namespace RecuperacaoCustoAPI.DTO
         public Nullable<bool> Aprovado { get; set; }
         public string Resposta { get; set; }
         public Nullable<System.DateTime> DataHoraAprovacao { get; set; }
-        public string TipoRecuperacao { get; set; }
+        public int TipoRecuperacaoCod { get; set; }
+        public string Tipo { get; set; }
+        public string Conta { get; set; }
         public string Motivo { get; set; }
-        public IDictionary<int, float> Recuperacoes { get; set; }
+        public int CodCiclo { get; set; }
+        public IDictionary<int, float> Recuperacoes { get; set; }  //CodMes, Valor Recuperado
         
     }
 }

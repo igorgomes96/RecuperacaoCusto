@@ -1,0 +1,36 @@
+<form novalidate role="form" name="formCiclos">
+	<div class="row">
+	    <div class="col-md-3 col-xs-6">
+	        <div class="form-group">
+	            <label for="inputCodigo">Código</label>
+	            <input type="text" id="inputCodigo" class="form-control" ng-model="cicloAtual.Codigo" disabled>
+	        </div>
+	    </div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-8 col-xs-12">
+	        <div class="form-group" ng-class="{'has-error': formCiclos.inputDescricao.$invalid}">
+	            <label for="inputDescricao">Descrição</label>
+	            <input type="text" id="inputDescricao" class="form-control" ng-model="cicloAtual.Descricao" required ng-disabled="cicloAtual.Codigo">
+	        </div>
+	    </div>
+
+	    <div class="col-md-2 col-xs-6">
+	        <div class="form-group" ng-class="{'has-error': formCiclos.inputDataInicio.$invalid}">
+	            <label for="inputDataInicio">Data Início</label>
+	            <input type="date" id="inputDataInicio" class="form-control" ng-model="cicloAtual.DataInicio" required ng-disabled="cicloAtual.Codigo">
+	        </div>
+	    </div>
+
+	    <div class="col-md-2 col-xs-6">
+	        <div class="form-group" ng-class="{'has-error': formCiclos.inputDataFim.$invalid}">
+	            <label for="inputDataFim">Data Fim</label>
+	            <input type="date" id="inputDataFim" class="form-control" ng-model="cicloAtual.DataFim" required ng-disabled="cicloAtual.Codigo">
+	        </div>
+	    </div>
+	</div>
+
+	<button class="btn btn-success" ng-click="ct.abrirCiclo(cicloAtual)" ng-disabled="formCiclos.$invalid" ng-if="!cicloAtual.Codigo"><i class="fa fa-unlock"></i> Abrir o ciclo</button>
+	<button class="btn btn-danger" ng-if="cicloAtual.Codigo" ng-click="ct.fecharCiclo(cicloAtual)"><i class="fa fa-lock"></i> Fechar o ciclo</button>
+</form>

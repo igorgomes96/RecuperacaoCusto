@@ -138,13 +138,16 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AutenticacaoController.cs" />
     <Compile Include="Controllers\CiclosController.cs" />
+    <Compile Include="Controllers\CRsController.cs" />
     <Compile Include="Controllers\RecuperacoesCustosController.cs" />
+    <Compile Include="Controllers\TiposRecuperacoesController.cs" />
     <Compile Include="DTO\CicloDTO.cs" />
     <Compile Include="DTO\CicloMesesDTO.cs" />
     <Compile Include="DTO\CRDTO.cs" />
     <Compile Include="DTO\MesCicloDTO.cs" />
     <Compile Include="DTO\RecuperacaoCustoDTO.cs" />
     <Compile Include="DTO\RecuperacoesCicloDTO.cs" />
+    <Compile Include="DTO\TipoRecuperacaoDTO.cs" />
     <Compile Include="DTO\UsuarioDTO.cs" />
     <Compile Include="Exceptions\AuthenticationFailureResult.cs" />
     <Compile Include="Filters\AuthenticationFilter.cs" />
@@ -183,6 +186,9 @@
       <DependentUpon>Modelo.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Sessao.cs">
+      <DependentUpon>Modelo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TipoRecuperacao.cs">
       <DependentUpon>Modelo.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Usuario.cs">

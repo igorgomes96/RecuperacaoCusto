@@ -25,6 +25,7 @@ namespace RecuperacaoCustoAPI.Models
         public string Descricao { get; set; }
         public System.DateTime DataInicio { get; set; }
         public System.DateTime DataFim { get; set; }
+        public string Status { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MesCiclo> MesesCiclos { get; set; }

@@ -21,6 +21,12 @@ angular.module('recCustoApp').config(['$stateProvider', '$urlRouterProvider', '$
     	templateUrl: 'components/home/home.html'
     })
 
+    .state('container.ciclos', {
+        url: '/ciclos',
+        templateUrl: 'components/ciclos/ciclos.html',
+        controller: 'ciclosCtrl as ct'
+    })
+
     .state('container.envios', {
     	url: '/envios',
     	templateUrl: 'components/envios/envios.html',

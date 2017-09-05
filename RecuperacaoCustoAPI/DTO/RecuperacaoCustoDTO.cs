@@ -18,9 +18,14 @@ namespace RecuperacaoCustoAPI.DTO
             Aprovado = rec.Aprovado;
             Resposta = rec.Resposta;
             DataHoraAprovacao = rec.DataHoraAprovacao;
-            TipoRecuperacao = rec.TipoRecuperacao;
+            TipoRecuperacaoCod = rec.TipoRecuperacaoCod;
             Motivo = rec.Motivo;
             CodCiclo = rec.CodCiclo;
+            if (rec.TipoRecuperacao != null)
+            {
+                Tipo = rec.TipoRecuperacao.Tipo;
+                Conta = rec.TipoRecuperacao.Conta;
+            }
         }
 
         public string CROrigem { get; set; }
@@ -29,7 +34,9 @@ namespace RecuperacaoCustoAPI.DTO
         public Nullable<bool> Aprovado { get; set; }
         public string Resposta { get; set; }
         public Nullable<System.DateTime> DataHoraAprovacao { get; set; }
-        public string TipoRecuperacao { get; set; }
+        public int TipoRecuperacaoCod { get; set; }
+        public string Tipo { get; set; }
+        public string Conta { get; set; }
         public string Motivo { get; set; }
         public int Codigo { get; set; }
         public int CodCiclo { get; set; }

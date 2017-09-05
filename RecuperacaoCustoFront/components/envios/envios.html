@@ -1,33 +1,116 @@
 <div class="row">
-    <div class="col-md-2 col-xs-3">
+    <div class="col-md-4 col-xs-6">
         <div class="form-group">
             <label for="select-ciclo">Ciclo</label>
-            <select id="select-ciclo" class="form-control" ng-options="(c.Descricao + ' (' + c.DataInicio | data:'MMM/yy' + ' - ' + c.DataFim | data:'MMM/yy' + ')') for c in ct.ciclos" ng-model="ct.ciclo">
+            <select id="select-ciclo" class="form-control" ng-options="(c.Descricao + ' (' + (c.DataInicio | date:'MMM/yy') + ' - ' + (c.DataFim | date:'MMM/yy') + ')') for c in (ct.ciclos | orderBy:'-DataInicio' | limitTo:20)" ng-model="cicloAtual" ng-disabled="ct.usuario.Perfil!='Administrador'">
             </select>
         </div>
     </div>
 </div>
+
+
+<hr>
+
 
 <div class="row">
     <div class="col-md-4 col-xs-6">
         <div class="form-group">
-            <label for="select-cr">Centro de Custo de Origem</label>
-            <select id="select-cr" class="form-control" ng-options="cr.Codigo as (cr.Codigo + ' - ' + cr.Descricao) for cr in ct.crs" ng-model="ct.CROrigem">
+            <label for="selectOrigem">Centro de Custo de Origem</label>
+            <select id="selectOrigem" class="form-control" ng-options="cr.Codigo as (cr.Codigo + ' - ' + cr.Descricao) for cr in ct.crsOrigem" ng-model="ct.novaRec.CROrigem" required ng-change="ct.alteraCROrigem(ct.novaRec.CROrigem)">
             </select>
         </div>
     </div>
 </div>
 
 
+<form role="form" novalidate name="formRecuperacoes">
+
+    <div class="row">
+        <div class="col-xs-12">
+            <table class="table">
+                <thead>
+                    <th width="12%">CR Destino</th>
+                    <th width="16%">Tipo de Recuperação</th>
+                    <th class="text-center" ng-repeat="m in cicloAtual.Meses">
+                        {{m.Mes | date:'MMM/yy'}}
+                    </th>
+                </thead>
+                <tbody>
+                    <td>
+                        <input type="text" class="form-control" name="inputDestino" ng-model="ct.novaRec.CRDestino" required>
+                    </td>
+                    <td>
+                        <select id="selectTipo" class="form-control" ng-options="t.Codigo as t.Tipo for t in ct.tipos" ng-model="ct.novaRec.TipoRecuperacaoCod" required></select>
+                    </td>
+                    <td ng-repeat="m in cicloAtual.Meses">
+                        <input type="text" class="form-control" id="inputValor{{$index}}" ng-model="ct.novaRec.Recuperacoes[m.Codigo]">
+                    </td>
+                </tbody>
+            </table>
+        </div>
+
+<!--         <div class="col-md-3 col-xs-6">
+            <div class="form-group">
+                <label for="inputDestino">Centro de Custo de Destino</label>
+                <input type="text" class="form-control" name="inputDestino" ng-model="ct.novaRec.CRDestino" required>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-xs-6">
+            <div class="form-group">
+                <label for="selectTipo">Tipo de Recuperação</label>
+                <select id="selectTipo" class="form-control" ng-options="t.Codigo as t.Tipo for t in ct.tipos" ng-model="ct.novaRec.TipoRecuperacaoCod" required></select>
+            </div>
+        </div> -->
+
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label for="inputMotivo">Motivo</label>
+                <textarea id="inputMotivo" required class="form-control" ng-model="ct.novaRec.Motivo"></textarea>
+            </div>
+        </div>
+    </div>
+
+<!--     <div class="row">
+        <div class="col-md-1 col-xs-2" ng-repeat="m in cicloAtual.Meses">
+            <div class="form-group">
+                <label for="inputValor{{$index}}">{{m.Mes | date:'MMM/yy'}}</label>
+                <input type="text" class="form-control" id="inputValor{{$index}}" ng-model="ct.novaRec.Recuperacoes[m.Codigo]">
+            </div>
+        </div>
+    </div> -->
+
+    <button class="btn btn-primary" ng-disabled="formRecuperacoes.$invalid" ng-click="ct.enviarRecuperacoes(ct.novaRec)">Enviar</button>
+
+
+</form>
+
+<hr>
+
 <table class="table table-condensed table-striped">
 	<thead>
 		<tr>
-			<th>CR de Destino</th>
-			<th>Tipo de Recuperação</th>
-			<th>Motivo</th>
-			<th ng-repeat="m in ct.ciclo.Meses">
-				{{m.Mes}}
+			<th width="11%">CR Origem</th>
+			<th width="11%">CR Destino</th>
+			<th width="16%">Motivo</th>
+			<th ng-repeat="m in cicloAtual.Meses">
+				{{m.Mes | date:'MMM/yy'}}
 			</th>
+            <th width="2%"></th>
 		</tr>
 	</thead>
+
+    <tbody>
+        <tr ng-repeat="r in ct.recuperacoes">
+            <td>{{r.CROrigem}}</td>
+            <td>{{t.CRDestino}}</td>
+            <td>{{r.Motivo | ellipsis:20}}</td>
+            <td ng-repeat="m in cicloAtual.Meses">
+                {{r.Recuperacoes[m.Codigo]}}
+            </td>
+        </tr>
+    </tbody>
 </table>

@@ -32,5 +32,6 @@ namespace RecuperacaoCustoAPI.Models
         public virtual DbSet<MesCiclo> MesCiclo { get; set; }
         public virtual DbSet<RecuperacaoCusto> RecuperacaoCusto { get; set; }
         public virtual DbSet<RecuperacaoCustoMes> RecuperacaoCustoMes { get; set; }
+        public virtual DbSet<TipoRecuperacao> TipoRecuperacao { get; set; }
     }
 }

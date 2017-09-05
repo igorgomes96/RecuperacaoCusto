@@ -1,26 +1,24 @@
-angular.module('recCustoApp').controller('autenticacaoCtrl', ['sharedDataService', 'localStorageService', 'autenticacaoAPI', '$state', function (sharedDataService, localStorageService, autenticacaoAPI, $state) {
+angular.module('recCustoApp', ['ui.router']);
+
+angular.module('recCustoApp').controller('autenticacaoCtrl', ['sessionStorageService', 'autenticacaoAPI', function (sessionStorageService, autenticacaoAPI) {
 	var self = this;
 
 
-	self.erro = null;
-
 	self.autentica = function(user) {
+		
 		autenticacaoAPI.postLogin(user)
 		.then(function(dado) {
-			//$state.go("menuContainer.dashboard");
-			$state.go("containerHome.home");
-			localStorageService.saveUser(dado.data);
-			sharedDataService.setUsuario(dado.data);
+
+			
+			sessionStorageService.saveUser(dado.data);
+			window.location.href = "../../index.html";
+			
 		}, function(error) {
 
 			console.log(error);
 			
 		});
 
-	}
-
-	self.fechaErro = function() {
-		self.erro = null;
 	}
 
 	self.limpar = function(user) {

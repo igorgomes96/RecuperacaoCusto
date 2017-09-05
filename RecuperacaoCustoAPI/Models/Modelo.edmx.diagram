@@ -20,6 +20,8 @@
         <EntityTypeShape EntityType="RecuperacaoCustoModel.RecuperacaoCustoMes" Width="1.5" PointX="8.125" PointY="4.125" />
         <AssociationConnector Association="RecuperacaoCustoModel.recuperacaocustomes_mesciclo_fk" />
         <AssociationConnector Association="RecuperacaoCustoModel.recuperacaocustomes_recuperacaocusto_fk" />
+        <EntityTypeShape EntityType="RecuperacaoCustoModel.TipoRecuperacao" Width="1.5" PointX="6.375" PointY="7.875" />
+        <AssociationConnector Association="RecuperacaoCustoModel.recuperacaocusto_tiporecuperacao_fk" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

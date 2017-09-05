@@ -89,7 +89,7 @@ namespace RecuperacaoCustoAPI.Filters
 
             s.Fim = DateTime.Now.AddHours(4.0);    //Atualiza prazo para expirar
             IIdentity identity = new CustomIdentity(s.Usuario, "Basic");
-            IPrincipal p = new GenericPrincipal(identity, new[] { "Adm" });
+            IPrincipal p = new GenericPrincipal(identity, new[] { s.Usuario.Perfil });
 
             db.SaveChanges();
             return p;

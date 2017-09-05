@@ -26,15 +26,16 @@ namespace RecuperacaoCustoAPI.Models
         public Nullable<bool> Aprovado { get; set; }
         public string Resposta { get; set; }
         public Nullable<System.DateTime> DataHoraAprovacao { get; set; }
-        public string TipoRecuperacao { get; set; }
         public string Motivo { get; set; }
         public int Codigo { get; set; }
         public int CodCiclo { get; set; }
+        public int TipoRecuperacaoCod { get; set; }
     
         public virtual CR Destino { get; set; }
         public virtual CR Origem { get; set; }
         public virtual Ciclo Ciclo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RecuperacaoCustoMes> RecuperacoesMensais { get; set; }
+        public virtual TipoRecuperacao TipoRecuperacao { get; set; }
     }
 }
