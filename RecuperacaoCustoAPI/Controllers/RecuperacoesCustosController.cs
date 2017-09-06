@@ -11,9 +11,11 @@ using System.Web.Http.Description;
 using RecuperacaoCustoAPI.Models;
 using RecuperacaoCustoAPI.DTO;
 using System.Data.Entity.Migrations;
+using RecuperacaoCustoAPI.Filters;
 
 namespace RecuperacaoCustoAPI.Controllers
 {
+    [AuthenticationFilter]
     public class RecuperacoesCustosController : ApiController
     {
         private Contexto db = new Contexto();
@@ -29,9 +31,56 @@ namespace RecuperacaoCustoAPI.Controllers
         }
 
         [HttpGet]
-        [Route("api/RecuperacoesCustos/PorCiclo/{crOrigem}/{codCiclo}")]
+        [Route("api/RecuperacoesCustos/PorCiclo/Enviadas/{codCiclo}")]
         [ResponseType(typeof(IEnumerable<RecuperacoesCicloDTO>))]
-        public IHttpActionResult GetRecuperacoesCustosPorCiclo (string crOrigem, int codCiclo)
+        public IHttpActionResult GetRecuperacoesCustosEnviadasPorCiclo(int codCiclo, bool? respondido = null, bool? aprovado = null)
+        {
+
+            Ciclo ciclo = db.Ciclo.Find(codCiclo);
+            if (ciclo == null) return NotFound();
+
+            IEnumerable<RecuperacoesCicloDTO> retorno = new List<RecuperacoesCicloDTO>();
+
+            IEnumerable<RecuperacaoCusto> lista = db.RecuperacaoCusto.Where(x => (aprovado == null || x.Aprovado == aprovado) && (!respondido.HasValue || respondido.Value ? x.Aprovado != null : x.Aprovado == null) && (x.CodCiclo == codCiclo));
+            lista = lista.Where(x => ((CustomIdentity)(User.Identity)).Usuario.CRs.Count(y => y.Codigo == x.CROrigem) > 0);
+
+            foreach (RecuperacaoCusto rec in lista)
+            {
+                ((List<RecuperacoesCicloDTO>)retorno).Add(new RecuperacoesCicloDTO(rec, ciclo));
+            }
+
+            return Ok(retorno);
+
+        }
+
+        [HttpGet]
+        [Route("api/RecuperacoesCustos/PorCiclo/Recebidas/{codCiclo}")]
+        [ResponseType(typeof(IEnumerable<RecuperacoesCicloDTO>))]
+        public IHttpActionResult GetRecuperacoesCustosRecebidasPorCiclo(int codCiclo, bool? respondido = null, bool? aprovado = null)
+        {
+
+            Ciclo ciclo = db.Ciclo.Find(codCiclo);
+            if (ciclo == null) return NotFound();
+
+            IEnumerable<RecuperacoesCicloDTO> retorno = new List<RecuperacoesCicloDTO>();
+
+            IEnumerable<RecuperacaoCusto> lista = db.RecuperacaoCusto.Where(x => (aprovado == null || x.Aprovado == aprovado) && (!respondido.HasValue || respondido.Value ? x.Aprovado != null : x.Aprovado == null) && (x.CodCiclo == codCiclo));
+            lista = lista.Where(x => ((CustomIdentity)(User.Identity)).Usuario.CRs.Count(y => y.Codigo == x.CRDestino) > 0);
+
+
+            foreach (RecuperacaoCusto rec in lista)
+            {
+                ((List<RecuperacoesCicloDTO>)retorno).Add(new RecuperacoesCicloDTO(rec, ciclo));
+            }
+
+            return Ok(retorno);
+
+        }
+
+        [HttpGet]
+        [Route("api/RecuperacoesCustos/PorCiclo/PorCREnvio/{crOrigem}/{codCiclo}")]
+        [ResponseType(typeof(IEnumerable<RecuperacoesCicloDTO>))]
+        public IHttpActionResult GetRecuperacoesCustosPorCicloPorCREnvio (string crOrigem, int codCiclo)
         {
             CR cr = db.CR.Find(crOrigem);
             if (cr == null) return NotFound();
@@ -50,6 +99,28 @@ namespace RecuperacaoCustoAPI.Controllers
 
         }
 
+        [HttpGet]
+        [Route("api/RecuperacoesCustos/PorCiclo/PorCRDestino/{crDestino}/{codCiclo}")]
+        [ResponseType(typeof(IEnumerable<RecuperacoesCicloDTO>))]
+        public IHttpActionResult GetRecuperacoesCustosPorCicloPorCRDestino(string crDestino, int codCiclo)
+        {
+            CR cr = db.CR.Find(crDestino);
+            if (cr == null) return NotFound();
+
+            Ciclo ciclo = db.Ciclo.Find(codCiclo);
+            if (ciclo == null) return NotFound();
+
+            IEnumerable<RecuperacoesCicloDTO> retorno = new List<RecuperacoesCicloDTO>();
+
+            foreach (RecuperacaoCusto rec in db.RecuperacaoCusto.Where(x => x.CRDestino == crDestino && x.CodCiclo == codCiclo))
+            {
+                ((List<RecuperacoesCicloDTO>)retorno).Add(new RecuperacoesCicloDTO(rec, ciclo));
+            }
+
+            return Ok(retorno);
+
+        }
+
         [HttpPost]
         [Route("api/RecuperacoesCustos/PorCiclo")]
         [ResponseType(typeof(IEnumerable<RecuperacoesCicloDTO>))]
@@ -60,6 +131,8 @@ namespace RecuperacaoCustoAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            if (db.CR.Find(rec.CRDestino) == null) return NotFound();
 
             RecuperacaoCusto r = rec.GetRecuperacaoCusto();
             db.RecuperacaoCusto.AddOrUpdate(r);

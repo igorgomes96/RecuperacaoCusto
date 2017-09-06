@@ -2,6 +2,33 @@ body {
 	/*background-color: rgb(250, 250, 250)*/
 }
 
+#table-rec {
+    margin-bottom: 6px;
+}
+
+#table-rec>thead>tr>th {
+    padding-bottom: 0;
+    border-bottom: 0;
+    padding-left: 2px;
+} 
+
+#table-rec>tbody>tr:first-child>td {
+    padding-top: 5px;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-top: 0; 
+}
+
+#table-rec>tbody>tr:first-child>td>input[type="text"] {
+    padding-left: 3px;
+    padding-right: 3px; 
+}
+
+#table-rec>tbody>tr:first-child>td>select {
+    padding-left: 3px;
+    padding-right: 3px; 
+}
+
 #panel-login {
 	width: 380px;
 	margin: auto; 

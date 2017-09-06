@@ -70,8 +70,7 @@ namespace RecuperacaoCustoAPI.DTO
             Recuperacoes = new Dictionary<int, float>();
             foreach (MesCiclo m in ciclo.MesesCiclos)
             {
-                RecuperacaoCustoMes r = db.RecuperacaoCustoMes
-                    .Where(x => x.CodMesCiclo == m.CodCiclo && x.CodRecuperacao == rec.Codigo).FirstOrDefault();
+                RecuperacaoCustoMes r = db.RecuperacaoCustoMes.Find(rec.Codigo, m.Codigo);
 
                 if (r == null)
                 {

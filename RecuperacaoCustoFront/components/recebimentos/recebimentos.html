@@ -21,9 +21,7 @@
 			<th ng-repeat="m in cicloAtual.Meses">
 				{{m.Mes | date:'MMM/yy'}}
 			</th>
-            <th width="1%"></th>
-            <th width="1%"></th>
-            <th width="1%"></th>
+            <th width="2%"></th>
 		</tr>
 	</thead>
 
@@ -37,13 +35,7 @@
                 {{r.Recuperacoes[m.Codigo]}}
             </td>
             <td>
-                <button class="btn btn-success btn-xs"><i class="fa fa-thumbs-up"></i></button>
-            </td>
-            <td>
-                <button class="btn btn-danger btn-xs"><i class="fa fa-thumbs-down"></i></button>
-            </td>
-            <td>
-                <button class="btn btn-default btn-xs"><i class="fa fa-info"></i></button>
+            	<button class="btn btn-default btn-xs"><i class="fa fa-info"></i></button>
             </td>
         </tr>
     </tbody>

@@ -1,4 +1,4 @@
-angular.module('recCustoApp').controller('aprovacoesCtrl', ['sharedDataService', 'messagesService', 'ciclosAPI', '$scope', 'crsAPI', 'recuperacoesCustosAPI', function(sharedDataService, messagesService, ciclosAPI, $scope, crsAPI, recuperacoesCustosAPI) {
+angular.module('recCustoApp').controller('recebimentosCtrl', ['sharedDataService', 'messagesService', 'ciclosAPI', '$scope', 'crsAPI', 'recuperacoesCustosAPI', function(sharedDataService, messagesService, ciclosAPI, $scope, crsAPI, recuperacoesCustosAPI) {
 
 	var self = this;
 
@@ -27,7 +27,7 @@ angular.module('recCustoApp').controller('aprovacoesCtrl', ['sharedDataService',
 	}
 
 	var loadRecuperacoes = function(codCiclo) {
-		recuperacoesCustosAPI.getRecuperacoesCustosRecebidasPorCiclo(codCiclo, false)
+		recuperacoesCustosAPI.getRecuperacoesCustosRecebidasPorCiclo(codCiclo, true, true)
 		.then(function(dado) {
 			self.recuperacoes = dado.data;
 		});
@@ -41,5 +41,6 @@ angular.module('recCustoApp').controller('aprovacoesCtrl', ['sharedDataService',
 	});
 
 	loadCiclos(sucessoLoadCiclos, errorLoadCiclos, null, 'Aberto');
+
 
 }]);

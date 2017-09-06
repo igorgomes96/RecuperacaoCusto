@@ -7,8 +7,20 @@ angular.module('recCustoApp').service('recuperacoesCustosAPI', ['$http', 'config
         return $http.get(config.baseUrl + resource, {params:{crOrigem:crOrigem, crDestino:crDestino, respondido:respondido, aprovado:aprovado}});
     }
 
-    self.getRecuperacoesCustosPorCiclo = function(crOrigem, codCiclo) {
-        return $http.get(config.baseUrl + resource + '/PorCiclo/' + crOrigem + '/' + codCiclo);
+    self.getRecuperacoesCustosEnviadasPorCiclo = function(codCiclo, respondido, aprovado) {
+        return $http.get(config.baseUrl + resource + '/PorCiclo/Enviadas/' + codCiclo, {params:{respondido:respondido, aprovado:aprovado}});
+    }
+
+    self.getRecuperacoesCustosRecebidasPorCiclo = function(codCiclo, respondido, aprovado) {
+        return $http.get(config.baseUrl + resource + '/PorCiclo/Recebidas/' + codCiclo, {params:{respondido:respondido, aprovado:aprovado}});
+    }
+
+    self.getRecuperacoesCustosPorCicloPorCREnvio = function(crOrigem, codCiclo) {
+        return $http.get(config.baseUrl + resource + '/PorCiclo/PorCREnvio/' + crOrigem + '/' + codCiclo);
+    }
+
+    self.getRecuperacoesCustosPorCicloPorCRDestino = function(crDestino, codCiclo) {
+        return $http.get(config.baseUrl + resource + '/PorCiclo/PorCRDestino/' + crDestino + '/' + codCiclo);
     }
 
     self.getRecuperacaoCusto = function(id) {

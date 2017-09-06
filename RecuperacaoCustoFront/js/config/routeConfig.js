@@ -5,12 +5,6 @@ angular.module('recCustoApp').config(['$stateProvider', '$urlRouterProvider', '$
     
     $stateProvider
 
-    // .state('autenticacao', {
-    //     url: '/autenticacao',
-    //     templateUrl: 'components/autenticacao/autenticacao.html',
-    //     controller: 'autenticacaoCtrl as ct'
-    // })
-
     .state('container', {
         templateUrl: 'components/container/container.html',
         controller: 'containerCtrl as ctMain'
@@ -37,6 +31,12 @@ angular.module('recCustoApp').config(['$stateProvider', '$urlRouterProvider', '$
     	url: '/aprovacoes',
     	templateUrl: 'components/aprovacoes/aprovacoes.html',
     	controller: 'aprovacoesCtrl as ct'
+    })
+
+    .state('container.recebimentos', {
+        url: '/recebimentos',
+        templateUrl: 'components/recebimentos/recebimentos.html',
+        controller: 'recebimentosCtrl as ct'
     });
     
 }]);

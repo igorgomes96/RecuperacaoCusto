@@ -6,7 +6,6 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 	self.tipos = [];
 	self.recuperacoes = [];
 	$scope.cicloAtual = sharedDataService.getCicloAtual();
-	self.tamTextbox = null;
 
 
 	var loadCiclos = function(success, error, ano, status) {
@@ -29,10 +28,18 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 	}
 
 	var loadRecuperacoes = function(crOrigem, codCiclo) {
-		recuperacoesCustosAPI.getRecuperacoesCustosPorCiclo(crOrigem, codCiclo)
+		recuperacoesCustosAPI.getRecuperacoesCustosPorCicloPorCREnvio(crOrigem, codCiclo)
 		.then(function(dado) {
 			self.recuperacoes = dado.data;
 		});
+	}
+
+	self.alteraCROrigem = function(crOrigem) {
+		if (!crOrigem || !$scope.cicloAtual){
+			self.recuperacoes = [];
+		} else {
+			loadRecuperacoes(crOrigem, $scope.cicloAtual.Codigo);
+		}
 	}
 
 	self.enviarRecuperacoes = function(rec) {
@@ -40,8 +47,15 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 		recuperacoesCustosAPI.postRecuperacoesCustosPorCiclo(rec)
 		.then(function() {
 			messagesService.exibeMensagemSucesso('Solicitação de recuperações de custos enviadas com sucesso!');
+			loadRecuperacoes(self.novaRec.CROrigem, $scope.cicloAtual.Codigo);
+			$scope.formRecuperacoes.$setPristine();
+			self.novaRec = null;
 		}, function(error) {
-			messagesService.exibeMensagemErro(error.status, 'Falha ao enviar solicitação.');
+			if (error && error.status && error.status == 404) {
+				messagesService.exibeMensagemErro(error.status, 'CR de destino não encontrado!');
+			} else {
+				messagesService.exibeMensagemErro(error.status, 'Falha ao enviar solicitação.');
+			}
 		});
 	}
 
@@ -51,9 +65,8 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 			x.DataFim = new Date(x.DataFim);
 		});	
 		self.ciclos = dado.data;
-		if (self.ciclos.length > 0)
+		if (self.ciclos.length > 0 && !$scope.cicloAtual)
 			$scope.cicloAtual = self.ciclos[0];
-		self.tamTextbox = (100 / $scope.cicloAtual.Meses.length) + '%';
 	}
 
 	var errorLoadCiclos = function(error) {
@@ -62,6 +75,8 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 
 	var sucessoLoadCRs = function(dado) {
 		self.crsOrigem = dado.data;
+		//if (self.crsOrigem && self.crsOrigem.length > 0)
+			//self.novaRec.CROrigem = self.crsOrigem[0].Codigo;
 	}
 
 	var errorLoadCRs = function(error) {
@@ -75,6 +90,11 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 
 	$scope.$watch('cicloAtual', function() {
 		sharedDataService.setCicloAtual($scope.cicloAtual);
+		if ($scope.cicloAtual && self.crOrigem) {
+			loadRecuperacoes(self.novaRec.CROrigem, $scope.cicloAtual)
+		} else {
+			self.recuperacoes = [];
+		}
 		//$rootScope.$broadcast('cicloAlteradoEvento', $scope.cicloAtual);
 	});
 
