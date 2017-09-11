@@ -40,8 +40,8 @@
           <Property Name="DataHora" Type="datetime" Nullable="false" />
           <Property Name="Aprovado" Type="bit" />
           <Property Name="Resposta" Type="nvarchar" MaxLength="4000" />
-          <Property Name="DataHoraAprovacao" Type="datetime" />
-          <Property Name="Motivo" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DataHoraResposta" Type="datetime" />
+          <Property Name="Motivo" Type="nvarchar" MaxLength="4000" Nullable="false" />
           <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CodCiclo" Type="int" Nullable="false" />
           <Property Name="TipoRecuperacaoCod" Type="int" Nullable="false" />
@@ -390,8 +390,7 @@
           <Property Name="DataHora" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Aprovado" Type="Boolean" />
           <Property Name="Resposta" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="DataHoraAprovacao" Type="DateTime" Precision="3" />
-          <Property Name="Motivo" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Motivo" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="Codigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Destino" Relationship="RecuperacaoCustoModel.recuperacaocusto_destino_fk" FromRole="RecuperacaoCusto" ToRole="CR" />
           <NavigationProperty Name="Origem" Relationship="RecuperacaoCustoModel.recuperacaocusto_origem_fk" FromRole="RecuperacaoCusto" ToRole="CR" />
@@ -400,6 +399,7 @@
           <NavigationProperty Name="RecuperacoesMensais" Relationship="RecuperacaoCustoModel.recuperacaocustomes_recuperacaocusto_fk" FromRole="RecuperacaoCusto" ToRole="RecuperacaoCustoMes" />
           <Property Name="TipoRecuperacaoCod" Type="Int32" Nullable="false" />
           <NavigationProperty Name="TipoRecuperacao" Relationship="RecuperacaoCustoModel.recuperacaocusto_tiporecuperacao_fk" FromRole="RecuperacaoCusto" ToRole="TipoRecuperacao" />
+          <Property Name="DataHoraResposta" Type="DateTime" Precision="3" />
         </EntityType>
         <Association Name="recuperacaocusto_destino_fk">
           <End Type="RecuperacaoCustoModel.CR" Role="CR" Multiplicity="1" />
@@ -552,11 +552,11 @@
           <EntitySetMapping Name="RecuperacaoCusto">
             <EntityTypeMapping TypeName="RecuperacaoCustoModel.RecuperacaoCusto">
               <MappingFragment StoreEntitySet="RecuperacaoCusto">
+                <ScalarProperty Name="DataHoraResposta" ColumnName="DataHoraResposta" />
                 <ScalarProperty Name="TipoRecuperacaoCod" ColumnName="TipoRecuperacaoCod" />
                 <ScalarProperty Name="CodCiclo" ColumnName="CodCiclo" />
                 <ScalarProperty Name="Codigo" ColumnName="Codigo" />
                 <ScalarProperty Name="Motivo" ColumnName="Motivo" />
-                <ScalarProperty Name="DataHoraAprovacao" ColumnName="DataHoraAprovacao" />
                 <ScalarProperty Name="Resposta" ColumnName="Resposta" />
                 <ScalarProperty Name="Aprovado" ColumnName="Aprovado" />
                 <ScalarProperty Name="DataHora" ColumnName="DataHora" />

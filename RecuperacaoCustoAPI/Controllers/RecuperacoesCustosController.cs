@@ -12,22 +12,52 @@ using RecuperacaoCustoAPI.Models;
 using RecuperacaoCustoAPI.DTO;
 using System.Data.Entity.Migrations;
 using RecuperacaoCustoAPI.Filters;
+using RecuperacaoCustoAPI.Service;
 
 namespace RecuperacaoCustoAPI.Controllers
 {
-    [AuthenticationFilter]
+    //[AuthenticationFilter]
     public class RecuperacoesCustosController : ApiController
     {
         private Contexto db = new Contexto();
 
         // GET: api/RecuperacoesCustos
-        public IEnumerable<RecuperacaoCustoDTO> GetRecuperacaoCusto(string crOrigem = null, string crDestino = null, bool? respondido = null, bool? aprovado = null)
+        //public IEnumerable<RecuperacaoCustoDTO> GetRecuperacaoCusto(string crOrigem = null, string crDestino = null, bool? respondido = null, bool? aprovado = null)
+        //{
+        //    return db.RecuperacaoCusto.ToList()
+        //        .Where(x => (crOrigem == null || x.CROrigem == crOrigem) && (crDestino == null || x.CRDestino == crDestino)
+        //        && (respondido == null || ((respondido == true && x.Aprovado != null) || (respondido == false && x.Aprovado == null))) 
+        //        && (aprovado == null || x.Aprovado == aprovado))
+        //        .Select(x => new RecuperacaoCustoDTO(x));
+        //}
+
+        [HttpPost]
+        [Route("api/RecuperacoesCusto/Email")]
+        public IHttpActionResult TesteEmail (EmailDTO email)
         {
-            return db.RecuperacaoCusto.ToList()
-                .Where(x => (crOrigem == null || x.CROrigem == crOrigem) && (crDestino == null || x.CRDestino == crDestino)
-                && (respondido == null || ((respondido == true && x.Aprovado != null) || (respondido == false && x.Aprovado == null))) 
+            try { 
+                SendEmail.Send(email);
+                return Ok();
+            } catch (Exception e)
+            {
+                return InternalServerError(e);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/RecuperacoesCustos/PorCiclo/{codCiclo}")]
+        [ResponseType(typeof(IEnumerable<RecuperacoesCicloDTO>))]
+        public IHttpActionResult GetRecuperacoesPorCiclo (int codCiclo, string crOrigem = null, string crDestino = null, int? codTipo = null, bool? respondido = null, bool? aprovado = null)
+        {
+            Ciclo c = db.Ciclo.Find(codCiclo);
+            if (c == null) return NotFound();
+
+            return Ok(db.RecuperacaoCusto.ToList()
+                .Where(x => (crOrigem == null || x.CROrigem == crOrigem) && (crDestino == null || x.CRDestino == crDestino) && (!codTipo.HasValue || x.TipoRecuperacaoCod == codTipo)
+                && (respondido == null || ((respondido == true && x.Aprovado != null) || (respondido == false && x.Aprovado == null)))
                 && (aprovado == null || x.Aprovado == aprovado))
-                .Select(x => new RecuperacaoCustoDTO(x));
+                .Select(x => new RecuperacoesCicloDTO(x, c))
+                .OrderBy(x => x.DataHora).OrderBy(x => x.CRDestino).OrderBy(x => x.CROrigem));
         }
 
         [HttpGet]
@@ -42,7 +72,8 @@ namespace RecuperacaoCustoAPI.Controllers
             IEnumerable<RecuperacoesCicloDTO> retorno = new List<RecuperacoesCicloDTO>();
 
             IEnumerable<RecuperacaoCusto> lista = db.RecuperacaoCusto.Where(x => (aprovado == null || x.Aprovado == aprovado) && (!respondido.HasValue || respondido.Value ? x.Aprovado != null : x.Aprovado == null) && (x.CodCiclo == codCiclo));
-            lista = lista.Where(x => ((CustomIdentity)(User.Identity)).Usuario.CRs.Count(y => y.Codigo == x.CROrigem) > 0);
+            if (!User.IsInRole("Administrador"))
+                lista = lista.Where(x => ((CustomIdentity)(User.Identity)).Usuario.CRs.Count(y => y.Codigo == x.CROrigem) > 0);
 
             foreach (RecuperacaoCusto rec in lista)
             {
@@ -65,7 +96,8 @@ namespace RecuperacaoCustoAPI.Controllers
             IEnumerable<RecuperacoesCicloDTO> retorno = new List<RecuperacoesCicloDTO>();
 
             IEnumerable<RecuperacaoCusto> lista = db.RecuperacaoCusto.Where(x => (aprovado == null || x.Aprovado == aprovado) && (!respondido.HasValue || respondido.Value ? x.Aprovado != null : x.Aprovado == null) && (x.CodCiclo == codCiclo));
-            lista = lista.Where(x => ((CustomIdentity)(User.Identity)).Usuario.CRs.Count(y => y.Codigo == x.CRDestino) > 0);
+            if (!User.IsInRole("Administrador"))
+                lista = lista.Where(x => ((CustomIdentity)(User.Identity)).Usuario.CRs.Count(y => y.Codigo == x.CRDestino) > 0);
 
 
             foreach (RecuperacaoCusto rec in lista)
@@ -121,12 +153,59 @@ namespace RecuperacaoCustoAPI.Controllers
 
         }
 
+        [HttpPut]
+        [Route("api/RecuperacoesCustos/Reprovar/{codRec}")]
+        [ResponseType(typeof(void))]
+        public IHttpActionResult ReprovarRecuperacao(int codRec, RecuperacaoCusto rec)
+        {
+            RecuperacaoCusto r = db.RecuperacaoCusto.Find(codRec);
+            if (r == null)
+                return NotFound();
+
+            r.Aprovado = false;
+            r.DataHoraResposta = DateTime.Now;
+            r.Resposta = rec.Resposta;
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                return InternalServerError(e);
+            }
+
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("api/RecuperacoesCustos/Aprovar/{codRec}")]
+        [ResponseType(typeof(void))]
+        public IHttpActionResult AprovarRecuperacao(int codRec)
+        {
+            RecuperacaoCusto r = db.RecuperacaoCusto.Find(codRec);
+            if (r == null)
+                return NotFound();
+
+            r.Aprovado = true;
+            r.DataHoraResposta = DateTime.Now; 
+
+            try
+            {
+                db.SaveChanges();
+            } catch (Exception e)
+            {
+                return InternalServerError(e);
+            }
+
+            return Ok();
+        }
+
         [HttpPost]
         [Route("api/RecuperacoesCustos/PorCiclo")]
         [ResponseType(typeof(IEnumerable<RecuperacoesCicloDTO>))]
         public IHttpActionResult PostRecuperacoesCustoPorCiclo (RecuperacoesCicloDTO rec)
         {
-            rec.DataHora = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

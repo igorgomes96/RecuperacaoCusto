@@ -4,7 +4,7 @@ angular.module("recCustoApp").factory("errorInterceptor", ['$q', '$location', 'm
 		responseError: function(rejection) {
 			if (rejection.status === 401) {
 				$location.path("/unauthenticated");
-			} else {
+			} /*else {
 				if (sharedDataWithoutInjectionService.mensagensAutomaticas) {
 					var mensagem = rejection.statusText + '. ';
 					if (rejection.data && rejection.data.Message)
@@ -13,7 +13,7 @@ angular.module("recCustoApp").factory("errorInterceptor", ['$q', '$location', 'm
 					messagesService.exibeMensagemErro(rejection.status, mensagem);
 				}
 
-			}
+			}*/
 			return $q.reject(rejection);
 		}
 	}

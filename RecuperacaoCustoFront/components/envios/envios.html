@@ -1,3 +1,29 @@
+<div class="row" ng-if="cicloAtual">
+    <div class="col-md-8 col-xs-6">
+        <form class="form-group" ng-submit="ct.sendFile()">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="custom-file-upload">
+                        <input type="file" name="file">
+                        <i class="fa fa-upload"></i> Escolher Arquivo para Importação
+                    </label>
+                </div>
+            </div>
+            
+
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-6">
+                    <input type="text" name="input-files-label" class="form-control" id="input-files-label" disabled style="display: none;">
+                </div>
+                <input type="submit" class="btn btn-success" value="Importar" id="button-upload-file" style="display: none;"/>
+            </div>
+
+        <!--</div> -->
+        </form>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-4 col-xs-6">
         <div class="form-group">
@@ -78,18 +104,85 @@
 				{{m.Mes | date:'MMM/yy'}}
 			</th>
             <th width="2%"></th>
+            <th width="2%"></th>
 		</tr>
 	</thead>
 
     <tbody>
-        <tr ng-repeat="r in ct.recuperacoes">
+        <tr ng-repeat="r in ct.recuperacoes | orderBy:'-DataHora'">
             <!-- <td>{{r.CROrigem}}</td> -->
             <td>{{r.CRDestino}}</td>
             <td>{{r.Tipo | ellipsis:3:10}}</td>
             <td>{{r.Motivo | ellipsis:13:8}}</td>
-            <td ng-repeat="m in cicloAtual.Meses" class="text-right">
+            <td ng-repeat="m in cicloAtual.Meses">
                 {{r.Recuperacoes[m.Codigo]}}
+            </td>
+            <td>
+                <button class="btn btn-xs btn-default" data-toggle="modal" data-target="#modalInfoEnvio" ng-click="ct.recInfo = r;"><i class="fa fa-info"></i></button>
+            </td>
+            <td>
+                <i ng-show="r.Aprovado == null" class="fa fa-hourglass-start"></i>
+                <i ng-show="r.Aprovado" style="color: green;" class="fa fa-thumbs-up"></i>
+                <i ng-show="r.Aprovado == false" style="color: red;" class="fa fa-thumbs-down"></i>
             </td>
         </tr>
     </tbody>
 </table>
+
+
+<div class="modal fade" id="modalInfoEnvio" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Informações da Solicitação</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <dl class="dl-horizontal">
+                            <dt>CR Origem</dt>
+                            <dd>{{ct.recInfo.CROrigem}}</dd>
+                            <dt>Descrição CR Origem</dt>
+                            <dd>{{ct.recInfo.DescricaoCROrigem}}</dd>
+                            <dt>Tipo de Recuperação</dt>
+                            <dd>{{ct.recInfo.Tipo}}</dd>
+                            <dt>Motivo da Recuperação</dt>
+                            <dd>{{ct.recInfo.Motivo}}</dd>
+                            <dt>Data de Envio</dt>
+                            <dd>{{ct.recInfo.DataHora | date:'dd/MMM/yy hh:mm'}}</dd>
+                        </dl>
+
+                        <dl class="dl-horizontal">
+                            <dt>CR Destino</dt>
+                            <dd>{{ct.recInfo.CRDestino}}</dd>
+                            <dt>Descrição CR Destino</dt>
+                            <dd>{{ct.recInfo.DescricaoCRDestino}}</dd>
+                            <dt>Responsável pelo CR</dt>
+                            <dd>{{ct.recInfo.ResponsavelDestino}}</dd>
+                            <dt>E-mail do Responsavel</dt>
+                            <dd>{{ct.recInfo.EmailDestino}}</dd>
+                        </dl>
+
+                        <dl class="dl-horizontal" ng-hide="ct.recInfo.Aprovado != null">
+                            <dt>Status</dt>
+                            <dd>Aguardando aprovação</dd>
+                        </dl>
+
+                        <dl class="dl-horizontal" ng-if="ct.recInfo.Aprovado != null">
+                            <dt>Aprovado?</dt>
+                            <dd><span ng-show="ct.recInfo.Aprovado">Sim</span><span ng-show="!ct.recInfo.Aprovado">Não</span></dd>
+                            <dt ng-hide="ct.recInfo.Aprovado">Resposta</dt>
+                            <dd ng-hide="ct.recInfo.Aprovado">{{ct.recInfo.Resposta}}</dd>
+                            <dt>Data da Resposta</dt>
+                            <dd>{{ct.recInfo.DataHoraResposta | date:'dd/MMM/yy hh:mm'}}</dd>
+                        </dl>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

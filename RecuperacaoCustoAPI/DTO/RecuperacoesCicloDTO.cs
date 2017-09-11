@@ -29,17 +29,19 @@ namespace RecuperacaoCustoAPI.DTO
 
         public RecuperacaoCusto GetRecuperacaoCusto()
         {
-            RecuperacaoCusto rec = new RecuperacaoCusto();
-            rec.Codigo = Codigo;
-            rec.CROrigem = CROrigem;
-            rec.CRDestino = CRDestino;
-            rec.DataHora = DataHora;
-            rec.Aprovado = Aprovado;
-            rec.Resposta = Resposta;
-            rec.DataHoraAprovacao = DataHoraAprovacao;
-            rec.TipoRecuperacaoCod = TipoRecuperacaoCod;
-            rec.Motivo = Motivo;
-            rec.CodCiclo = CodCiclo;
+            RecuperacaoCusto rec = new RecuperacaoCusto
+            {
+                Codigo = Codigo,
+                CROrigem = CROrigem,
+                CRDestino = CRDestino,
+                DataHora = DataHora,
+                Aprovado = Aprovado,
+                Resposta = Resposta,
+                DataHoraResposta = DataHoraResposta,
+                TipoRecuperacaoCod = TipoRecuperacaoCod,
+                Motivo = Motivo,
+                CodCiclo = CodCiclo
+            };
             return rec;
         }
 
@@ -52,13 +54,18 @@ namespace RecuperacaoCustoAPI.DTO
             Codigo = rec.Codigo;
             CROrigem = rec.CROrigem;
             DescricaoCROrigem = rec.Origem.Descricao;
+            EmailOrigem = rec.Origem.Responsavel.Email;
+            ResponsavelOrigem = rec.Origem.Responsavel.Nome;
             CRDestino = rec.CRDestino;
             DescricaoCRDestino = rec.Destino.Descricao;
+            ResponsavelDestino = rec.Destino.Responsavel.Nome;
+            EmailDestino = rec.Destino.Responsavel.Email;
             DataHora = rec.DataHora;
             Aprovado = rec.Aprovado;
             Resposta = rec.Resposta;
-            DataHoraAprovacao = rec.DataHoraAprovacao;
+            DataHoraResposta = rec.DataHoraResposta;
             TipoRecuperacaoCod = rec.TipoRecuperacaoCod;
+            Tipo = rec.TipoRecuperacao.Tipo;
             CodCiclo = rec.CodCiclo;
             if (rec.TipoRecuperacao != null)
             {
@@ -86,12 +93,16 @@ namespace RecuperacaoCustoAPI.DTO
         public int Codigo { get; set; }
         public string CROrigem { get; set; }
         public string DescricaoCROrigem { get; set; }
+        public string EmailOrigem { get; set; }
+        public string ResponsavelOrigem { get; set; }
         public string CRDestino { get; set; }
         public string DescricaoCRDestino { get; set; }
+        public string ResponsavelDestino { get; set; }
+        public string EmailDestino { get; set; }
         public System.DateTime DataHora { get; set; }
         public Nullable<bool> Aprovado { get; set; }
         public string Resposta { get; set; }
-        public Nullable<System.DateTime> DataHoraAprovacao { get; set; }
+        public Nullable<System.DateTime> DataHoraResposta { get; set; }
         public int TipoRecuperacaoCod { get; set; }
         public string Tipo { get; set; }
         public string Conta { get; set; }

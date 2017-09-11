@@ -35,8 +35,8 @@
     <Property Name="DataHora" Type="datetime" Nullable="false" />
     <Property Name="Aprovado" Type="bit" />
     <Property Name="Resposta" Type="nvarchar" MaxLength="4000" />
-    <Property Name="DataHoraAprovacao" Type="datetime" />
-    <Property Name="Motivo" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="DataHoraResposta" Type="datetime" />
+    <Property Name="Motivo" Type="nvarchar" MaxLength="4000" Nullable="false" />
     <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CodCiclo" Type="int" Nullable="false" />
     <Property Name="TipoRecuperacaoCod" Type="int" Nullable="false" />

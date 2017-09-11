@@ -25,11 +25,11 @@ namespace RecuperacaoCustoAPI.Models
         public System.DateTime DataHora { get; set; }
         public Nullable<bool> Aprovado { get; set; }
         public string Resposta { get; set; }
-        public Nullable<System.DateTime> DataHoraAprovacao { get; set; }
         public string Motivo { get; set; }
         public int Codigo { get; set; }
         public int CodCiclo { get; set; }
         public int TipoRecuperacaoCod { get; set; }
+        public Nullable<System.DateTime> DataHoraResposta { get; set; }
     
         public virtual CR Destino { get; set; }
         public virtual CR Origem { get; set; }

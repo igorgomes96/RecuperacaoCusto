@@ -1,0 +1,135 @@
+
+<div class="row">
+    <div class="col-md-4 col-xs-6">
+        <div class="form-group">
+            <label for="select-ciclo">Ciclo</label>
+            <select id="select-ciclo" class="form-control" ng-options="(c.Descricao + ' (' + (c.DataInicio | date:'MMM/yy') + ' - ' + (c.DataFim | date:'MMM/yy') + ')') for c in (ct.ciclos | orderBy:'-DataInicio' | limitTo:20) track by c.Codigo" ng-model="cicloAtual">
+            </select>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h4>Filtro</h4>
+
+<div class="row">
+    <div class="col-md-2 col-xs-3">
+        <div class="form-group">
+            <label for="inputOrigem">CR de Origem</label>
+            <input type="text" class="form-control" id="inputOrigem" placeholder="(Todos)" name="inputOrigem" ng-model="ct.filtro.crOrigem">
+        </div>
+    </div>
+
+    <div class="col-md-2 col-xs-3">
+        <div class="form-group">
+            <label for="inputDestino">CR de Destino</label>
+            <input type="text" class="form-control" placeholder="(Todos)" id="inputDestino" name="inputDestino" ng-model="ct.filtro.crDestino">
+        </div>
+    </div>
+
+    <div class="col-md-3 col-xs-4">
+        <div class="form-group">
+            <label for="selectTipo">Tipo de Recuperação</label>
+            <select class="form-control" id="selectTipo" name="selectTipo" ng-model="ct.filtro.codTipo" ng-options="t.Codigo as t.Tipo for t in ct.tipos">
+                <option value="">(Todos)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-md-2 col-xs-3">
+        <div class="form-group">
+            <label for="selectStatus">Status</label>
+            <select class="form-control" id="selectStatus" name="selectStatus" ng-model="ct.filtro.respondido" ng-options="s.valor as s.texto for s in [{valor: true, texto:'Respondidos'}, {valor: false, texto:'Pendentes'}]">
+                <option value="">(Todos)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-md-2 col-xs-3">
+        <div class="form-group">
+            <label for="selectResposta">Resposta</label>
+            <select class="form-control" id="selectResposta" name="selectResposta" ng-model="ct.filtro.aprovado" ng-options="s.valor as s.texto for s in [{valor: true, texto:'Aprovados'}, {valor: false, texto:'Reprovados'}]">
+                <option value="">(Todos)</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<button class="btn btn-primary" ng-click="ct.loadRecuperacoes(cicloAtual.Codigo)">Filtrar</button>
+
+<hr>
+
+<table class="table table-condensed table-striped">
+	<thead>
+		<tr>
+			<th width="9%">CR Origem</th>
+			<th width="9%">CR Destino</th>
+            <th width="13%">Tipo</th>
+			<!-- <th width="12%">Motivo</th> -->
+			<th ng-repeat="m in cicloAtual.Meses">
+				{{m.Mes | date:'MMM/yy'}}
+			</th>
+            <th width="2%"></th>
+		</tr>
+	</thead>
+
+    <tbody>
+        <tr ng-repeat="r in ct.recuperacoes">
+            <td>{{r.CROrigem}}</td>
+            <td>{{r.CRDestino}}</td>
+            <td>{{r.Tipo | ellipsis:3:8}}</td>
+           <!--  <td>{{r.Motivo | ellipsis:11:7}}</td> -->
+            <td ng-repeat="m in cicloAtual.Meses">
+                {{r.Recuperacoes[m.Codigo]}}
+            </td>
+            <td>
+            	<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalInfoRecuperacoes" ng-click="ct.recInfo = r;"><i class="fa fa-info"></i></button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="modal fade" id="modalInfoRecuperacoes" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Informações Adicionais</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <dl class="dl-horizontal">
+                            <dt>CR Origem</dt>
+                            <dd>{{ct.recInfo.CROrigem}}</dd>
+                            <dt>Descrição CR Origem</dt>
+                            <dd>{{ct.recInfo.DescricaoCROrigem}}</dd>
+                            <dt>Tipo de Recuperação</dt>
+                            <dd>{{ct.recInfo.Tipo}}</dd>
+                            <dt>Motivo da Recuperação</dt>
+                            <dd>{{ct.recInfo.Motivo}}</dd>
+                            <dt>Data de Envio</dt>
+                            <dd>{{ct.recInfo.DataHora | date:'dd/MMM/yy hh:mm'}}</dd>
+                        </dl>
+
+                        <dl class="dl-horizontal">
+                            <dt>CR Destino</dt>
+                            <dd>{{ct.recInfo.CRDestino}}</dd>
+                            <dt>Descrição CR Destino</dt>
+                            <dd>{{ct.recInfo.DescricaoCRDestino}}</dd>
+                        </dl>
+
+                        <dl class="dl-horizontal">
+                            <dt>Data da Aprovação</dt>
+                            <dd>{{ct.recInfo.DataHoraResposta | date:'dd/MMM/yy hh:mm'}}</dd>
+                        </dl>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

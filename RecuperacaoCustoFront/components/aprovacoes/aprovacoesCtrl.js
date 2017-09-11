@@ -5,6 +5,7 @@ angular.module('recCustoApp').controller('aprovacoesCtrl', ['sharedDataService',
 	self.usuario = sharedDataService.getUsuario();
 	self.recuperacoes = [];
 	$scope.cicloAtual = sharedDataService.getCicloAtual();
+	self.recReprova = null;
 
 	var loadCiclos = function(success, error, ano, status) {
 		ciclosAPI.getCiclos(ano, status)
@@ -32,6 +33,27 @@ angular.module('recCustoApp').controller('aprovacoesCtrl', ['sharedDataService',
 			self.recuperacoes = dado.data;
 		});
 	}
+
+	self.aprovarRecuperacao = function(codRec) {
+		recuperacoesCustosAPI.putAprovarRecuperacao(codRec)
+		.then(function() {
+			messagesService.exibeMensagemSucesso('Recuperações aprovadas com sucesso!');
+			loadRecuperacoes($scope.cicloAtual.Codigo);
+		}, function(error) {
+			messagesService.exibeMensagemErro(error.status, 'Erro ao aprovar recuperações de custos. Contate o administrador do sistema.');
+		});
+	}
+
+	self.reprovarRecuperacao = function(codRec, rec) {
+		recuperacoesCustosAPI.putReprovarRecuperacao(codRec, rec)
+		.then(function() {
+			messagesService.exibeMensagemSucesso('Recuperações reprovadas com sucesso!');
+			loadRecuperacoes($scope.cicloAtual.Codigo);
+		}, function(error) {
+			messagesService.exibeMensagemErro(error.status, 'Erro ao reprovar recuperações de custos. Contate o administrador do sistema.');
+		});
+	}
+
 
 	$scope.$watch('cicloAtual', function() {
 		if ($scope.cicloAtual)

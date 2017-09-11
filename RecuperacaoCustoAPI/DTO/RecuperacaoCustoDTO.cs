@@ -17,7 +17,7 @@ namespace RecuperacaoCustoAPI.DTO
             DataHora = rec.DataHora;
             Aprovado = rec.Aprovado;
             Resposta = rec.Resposta;
-            DataHoraAprovacao = rec.DataHoraAprovacao;
+            DataHoraResposta = rec.DataHoraResposta;
             TipoRecuperacaoCod = rec.TipoRecuperacaoCod;
             Motivo = rec.Motivo;
             CodCiclo = rec.CodCiclo;
@@ -33,7 +33,7 @@ namespace RecuperacaoCustoAPI.DTO
         public System.DateTime DataHora { get; set; }
         public Nullable<bool> Aprovado { get; set; }
         public string Resposta { get; set; }
-        public Nullable<System.DateTime> DataHoraAprovacao { get; set; }
+        public Nullable<System.DateTime> DataHoraResposta { get; set; }
         public int TipoRecuperacaoCod { get; set; }
         public string Tipo { get; set; }
         public string Conta { get; set; }

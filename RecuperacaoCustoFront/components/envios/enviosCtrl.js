@@ -1,11 +1,41 @@
-angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'messagesService', 'ciclosAPI', '$scope', 'crsAPI', 'tiposRecuperacoesAPI', 'recuperacoesCustosAPI', function(sharedDataService, messagesService, ciclosAPI, $scope, crsAPI, tiposRecuperacoesAPI, recuperacoesCustosAPI) {
+angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'messagesService', 'ciclosAPI', '$scope', 'crsAPI', 'tiposRecuperacoesAPI', 'recuperacoesCustosAPI', 'uploadFileService', function(sharedDataService, messagesService, ciclosAPI, $scope, crsAPI, tiposRecuperacoesAPI, recuperacoesCustosAPI, uploadFileService) {
 
 	var self = this;
 	self.crsOrigem = [];
 	self.usuario = sharedDataService.getUsuario();
 	self.tipos = [];
 	self.recuperacoes = [];
+	self.novaRec = { CROrigem: sharedDataService.getUltimoCR() }
 	$scope.cicloAtual = sharedDataService.getCicloAtual();
+
+
+	self.sendFile = function() {
+		exibeLoader();
+		uploadFileService.sendFile()
+		.done(function (response) {
+			$('input[type="file"]').val("");
+			//$rootScope.$broadcast('newBaseEvent');
+		  	messagesService.exibeMensagemSucesso("Dados importados com sucesso!");
+		  	$("#input-files-label").hide();
+        	$("#button-upload-file").hide();
+        	if (self.novaRec && self.novaRec.CROrigem && $scope.cicloAtual)
+        		loadRecuperacoes(self.novaRec.CROrigem, $scope.cicloAtual.Codigo);
+        	ocultaLoader();
+		}).fail(function(jqXHR, textStatus, errorThrown) {
+			if (jqXHR && jqXHR.status && jqXHR.responseText) {
+				var e = JSON.parse(jqXHR.responseText);
+				if (e.Message) {
+					messagesService.exibeMensagemErro(jqXHR.status, e.Message);
+				} else {
+					messagesService.exibeMensagemErro(jqXHR.status, jqXHR.responseText);
+				}
+			} else {
+				messagesService.exibeMensagemErro(500, 'Ocorreu um error insperado!');
+			}
+			ocultaLoader();
+		});	
+	}
+
 
 
 	var loadCiclos = function(success, error, ano, status) {
@@ -35,6 +65,7 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 	}
 
 	self.alteraCROrigem = function(crOrigem) {
+		sharedDataService.setUltimoCR(crOrigem);
 		if (!crOrigem || !$scope.cicloAtual){
 			self.recuperacoes = [];
 		} else {
@@ -44,12 +75,13 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 
 	self.enviarRecuperacoes = function(rec) {
 		rec.CodCiclo = $scope.cicloAtual.Codigo;
+		rec.DataHora = new Date();
 		recuperacoesCustosAPI.postRecuperacoesCustosPorCiclo(rec)
 		.then(function() {
 			messagesService.exibeMensagemSucesso('Solicitação de recuperações de custos enviadas com sucesso!');
 			loadRecuperacoes(self.novaRec.CROrigem, $scope.cicloAtual.Codigo);
 			$scope.formRecuperacoes.$setPristine();
-			self.novaRec = null;
+			self.novaRec = { CROrigem: sharedDataService.getUltimoCR() }
 		}, function(error) {
 			if (error && error.status && error.status == 404) {
 				messagesService.exibeMensagemErro(error.status, 'CR de destino não encontrado!');
@@ -91,12 +123,15 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 	$scope.$watch('cicloAtual', function() {
 		sharedDataService.setCicloAtual($scope.cicloAtual);
 		if ($scope.cicloAtual && self.crOrigem) {
-			loadRecuperacoes(self.novaRec.CROrigem, $scope.cicloAtual)
+			loadRecuperacoes(self.novaRec.CROrigem, $scope.cicloAtual.Codigo)
 		} else {
 			self.recuperacoes = [];
 		}
 		//$rootScope.$broadcast('cicloAlteradoEvento', $scope.cicloAtual);
 	});
+
+	if (self.novaRec.CROrigem && $scope.cicloAtual)
+		loadRecuperacoes(self.novaRec.CROrigem, $scope.cicloAtual.Codigo);
 
 
 }]); 

@@ -10,54 +10,30 @@
       </button>
       <a class="navbar-brand" href>Recuperação de Custos</a>
     </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <!--<div class="collapse navbar-collapse" id="navbar-collapse">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
-          </ul>
-        </li>
-      </ul>
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <a href class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
+            <li><a href><i class="fa fa-key"></i> Alterar Senha</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
+            <li><a href ng-click="ctMain.logout()"><i class="fa fa-sign-out"></i> Logout</a></li>
           </ul>
         </li>
       </ul>
-    </div>-->
+    </div>
   </div>
 </nav>
 
-
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" ng-if="ctMain.usuario.Perfil != 'Administrador'">
   <li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'container.home'}"><a ui-sref="container.home">Home</a></li>
-  <li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'container.ciclos'}"><a ui-sref="container.ciclos">Ciclos</a></li>
   <li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'container.envios'}"><a ui-sref="container.envios">Envios</a></li>
   <li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'container.aprovacoes'}"><a ui-sref="container.aprovacoes">Aprovações</a></li>
   <li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'container.recebimentos'}"><a ui-sref="container.recebimentos">Recebimentos</a></li>
+</ul>
+
+<ul class="nav nav-tabs" ng-if="ctMain.usuario.Perfil == 'Administrador'">
+  <li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'container.home'}"><a ui-sref="container.home">Home</a></li>
+  <li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'container.ciclos'}"><a ui-sref="container.ciclos">Ciclos</a></li>
+  <li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'container.recuperacoes'}"><a ui-sref="container.recuperacoes">Recuperações de Custos</a></li>
 </ul>
 <div class="container-fluid" ui-view style="margin-top: 15px;"></div>

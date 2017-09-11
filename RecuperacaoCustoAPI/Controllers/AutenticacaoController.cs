@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Web.Http;
 
@@ -52,6 +53,26 @@ namespace RecuperacaoCustoAPI.Controllers
             db.Dispose();
 
             return Ok(retorno);
+        }
+
+        [HttpPost]
+        [Route("api/Logout")]
+        [AllowAnonymous]
+        public IHttpActionResult Logout()
+        {
+            Contexto db = new Contexto();
+            AuthenticationHeaderValue authorization = Request.Headers.Authorization;
+            if (authorization != null)
+            {
+                if (authorization.Scheme == "Basic")
+                {
+                    Sessao s = db.Sessao.Find(authorization.Parameter);
+                    if (s != null)
+                        db.Sessao.Remove(s);
+                    db.SaveChanges();
+                }
+            }
+            return Ok();
         }
     }
 }

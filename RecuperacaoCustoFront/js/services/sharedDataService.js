@@ -4,6 +4,7 @@ angular.module('recCustoApp').service('sharedDataService', ['sessionStorageServi
 
     var usuario = null;
     var cicloAtual = null;
+    var ultimoCR = null;
 
     self.setUsuario = function(user) {
         usuario = user;
@@ -23,6 +24,14 @@ angular.module('recCustoApp').service('sharedDataService', ['sessionStorageServi
 
     self.getCicloAtual = function() {
         return cicloAtual;
+    }
+
+    self.setUltimoCR = function(cr) {
+        ultimoCR = cr;
+    }
+
+    self.getUltimoCR = function() {
+        return ultimoCR;
     }
 
 

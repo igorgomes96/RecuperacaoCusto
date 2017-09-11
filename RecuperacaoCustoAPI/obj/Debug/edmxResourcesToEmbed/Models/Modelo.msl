@@ -54,11 +54,11 @@
     <EntitySetMapping Name="RecuperacaoCusto">
       <EntityTypeMapping TypeName="RecuperacaoCustoModel.RecuperacaoCusto">
         <MappingFragment StoreEntitySet="RecuperacaoCusto">
+          <ScalarProperty Name="DataHoraResposta" ColumnName="DataHoraResposta" />
           <ScalarProperty Name="TipoRecuperacaoCod" ColumnName="TipoRecuperacaoCod" />
           <ScalarProperty Name="CodCiclo" ColumnName="CodCiclo" />
           <ScalarProperty Name="Codigo" ColumnName="Codigo" />
           <ScalarProperty Name="Motivo" ColumnName="Motivo" />
-          <ScalarProperty Name="DataHoraAprovacao" ColumnName="DataHoraAprovacao" />
           <ScalarProperty Name="Resposta" ColumnName="Resposta" />
           <ScalarProperty Name="Aprovado" ColumnName="Aprovado" />
           <ScalarProperty Name="DataHora" ColumnName="DataHora" />

@@ -1,4 +1,4 @@
-angular.module('recCustoApp').service('uploadFileService', ['messagesService', 'importacoesAPI', function(messagesService, importacoesAPI) {
+angular.module('recCustoApp').service('uploadFileService', ['messagesService', 'importacoesAPI', 'sharedDataService', function(messagesService, importacoesAPI, sharedDataService) {
 
 	var self = this;
 
@@ -6,7 +6,7 @@ angular.module('recCustoApp').service('uploadFileService', ['messagesService', '
 
 		var form = new FormData();
 		form.append("arquivo", $('input[type=file]')[0].files[0]);
-		//form.append("mes", self.mesAtual);
+		form.append("ciclo", sharedDataService.getCicloAtual().Codigo);
 
 		return importacoesAPI.uploadFile(form);
 

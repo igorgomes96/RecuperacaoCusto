@@ -26,7 +26,7 @@
 	</thead>
 
     <tbody>
-        <tr ng-repeat="r in ct.recuperacoes">
+        <tr ng-repeat="r in ct.recuperacoes | orderBy:'-DataHoraResposta'">
             <td>{{r.CROrigem}}</td>
             <td>{{r.CRDestino}}</td>
             <td>{{r.Tipo | ellipsis:3:8}}</td>
@@ -35,8 +35,52 @@
                 {{r.Recuperacoes[m.Codigo]}}
             </td>
             <td>
-            	<button class="btn btn-default btn-xs"><i class="fa fa-info"></i></button>
+            	<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalInfoRecebimento" ng-click="ct.recInfo = r;"><i class="fa fa-info"></i></button>
             </td>
         </tr>
     </tbody>
 </table>
+
+<div class="modal fade" id="modalInfoRecebimento" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Informações Adicionais</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <dl class="dl-horizontal">
+                            <dt>CR Origem</dt>
+                            <dd>{{ct.recInfo.CROrigem}}</dd>
+                            <dt>Descrição CR Origem</dt>
+                            <dd>{{ct.recInfo.DescricaoCROrigem}}</dd>
+                            <dt>Tipo de Recuperação</dt>
+                            <dd>{{ct.recInfo.Tipo}}</dd>
+                            <dt>Motivo da Recuperação</dt>
+                            <dd>{{ct.recInfo.Motivo}}</dd>
+                            <dt>Data de Envio</dt>
+                            <dd>{{ct.recInfo.DataHora | date:'dd/MMM/yy hh:mm'}}</dd>
+                        </dl>
+
+                        <dl class="dl-horizontal">
+                            <dt>CR Destino</dt>
+                            <dd>{{ct.recInfo.CRDestino}}</dd>
+                            <dt>Descrição CR Destino</dt>
+                            <dd>{{ct.recInfo.DescricaoCRDestino}}</dd>
+                        </dl>
+
+                        <dl class="dl-horizontal">
+                            <dt>Data da Aprovação</dt>
+                            <dd>{{ct.recInfo.DataHoraResposta | date:'dd/MMM/yy hh:mm'}}</dd>
+                        </dl>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

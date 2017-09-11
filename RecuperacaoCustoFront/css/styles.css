@@ -65,3 +65,31 @@ body {
     box-shadow: 2px 2px 11px 0px rgba(0,0,0,0.5);
     display: none;
 }
+
+.loader {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.6);
+    top: 0;
+    z-index: 1000;
+}
+
+.ball-scale-multiple {
+    left: 50%;
+    top: 50%;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    vertical-align: middle;
+    border-radius: 4px;
+    margin-bottom: 0;
+}

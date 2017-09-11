@@ -4,8 +4,8 @@ angular.module('recCustoApp').service('autenticacaoAPI', ['$http', 'config', fun
 		return $http.post(config.baseUrl + "Autentica", user);
 	}
 
-	this.putLogout = function(token) {
-		return $http.put(config.baseUrl + "Logout", token);
+	this.postLogout = function() {
+		return $http.post(config.baseUrl + "Logout");
 	}
 
 }]);

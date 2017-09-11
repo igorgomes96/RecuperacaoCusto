@@ -5,6 +5,11 @@ angular.module('recCustoApp').config(['$stateProvider', '$urlRouterProvider', '$
     
     $stateProvider
 
+    .state('unauthenticated', {
+        url: '/unauthenticated',
+        templateUrl: 'components/autenticacao/unauthenticated.html'
+    })
+
     .state('container', {
         templateUrl: 'components/container/container.html',
         controller: 'containerCtrl as ctMain'
@@ -37,6 +42,12 @@ angular.module('recCustoApp').config(['$stateProvider', '$urlRouterProvider', '$
         url: '/recebimentos',
         templateUrl: 'components/recebimentos/recebimentos.html',
         controller: 'recebimentosCtrl as ct'
+    })
+
+    .state('container.recuperacoes', {
+        url: '/recuperacoes',
+        templateUrl: 'components/recuperacoes/recuperacoes.html',
+        controller: 'recuperacoesCtrl as ct'
     });
     
 }]);

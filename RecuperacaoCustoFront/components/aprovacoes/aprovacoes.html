@@ -28,7 +28,7 @@
 	</thead>
 
     <tbody>
-        <tr ng-repeat="r in ct.recuperacoes">
+        <tr ng-repeat="r in ct.recuperacoes | orderBy:'-DataHora'">
             <td>{{r.CROrigem}}</td>
             <td>{{r.CRDestino}}</td>
             <td>{{r.Tipo | ellipsis:3:8}}</td>
@@ -37,14 +37,163 @@
                 {{r.Recuperacoes[m.Codigo]}}
             </td>
             <td>
-                <button class="btn btn-success btn-xs"><i class="fa fa-thumbs-up"></i></button>
+                <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#modalAprovacao" ng-click="ct.recAprova = r;"><i class="fa fa-thumbs-up"></i></button>
             </td>
             <td>
-                <button class="btn btn-danger btn-xs"><i class="fa fa-thumbs-down"></i></button>
+                <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalReprovacao" ng-click="ct.recReprova = r;"><i class="fa fa-thumbs-down"></i></button>
             </td>
             <td>
-                <button class="btn btn-default btn-xs"><i class="fa fa-info"></i></button>
+                <button class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalInfoAprovacao" ng-click="ct.recInfo = r;"><i class="fa fa-info"></i></button>
             </td>
         </tr>
     </tbody>
 </table>
+
+<div class="modal fade" id="modalAprovacao" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+                <h4 class="modal-title">Aprovação de Recuperações de Custos</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <dl class="dl-horizontal">
+                            <dt>CR Origem</dt>
+                            <dd>{{ct.recAprova.CROrigem}}</dd>
+                            <dt>Descrição CR Origem</dt>
+                            <dd>{{ct.recAprova.DescricaoCROrigem}}</dd>
+                            <dt>Tipo de Recuperação</dt>
+                            <dd>{{ct.recAprova.Tipo}}</dd>
+                            <dt>Motivo da Recuperação</dt>
+                            <dd>{{ct.recAprova.Motivo}}</dd>
+                            <dt>Responsável pelo CR</dt>
+                            <dd>{{ct.recAprova.ResponsavelOrigem}}</dd>
+                            <dt>E-mail do Responsavel</dt>
+                            <dd>{{ct.recAprova.EmailOrigem}}</dd>
+                            <dt>Data de Envio</dt>
+                            <dd>{{ct.recAprova.DataHora | date:'dd/MMM/yy hh:mm'}}</dd>
+                        </dl>
+
+                        <dl class="dl-horizontal">
+                            <dt>CR Destino</dt>
+                            <dd>{{ct.recAprova.CRDestino}}</dd>
+                            <dt>Descrição CR Destino</dt>
+                            <dd>{{ct.recAprova.DescricaoCRDestino}}</dd>
+                        </dl>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="ct.aprovarRecuperacao(ct.recAprova.Codigo)">Aprovar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalReprovacao" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+                <h4 class="modal-title">Reprovação de Recuperações de Custos</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <dl class="dl-horizontal">
+                            <dt>CR Origem</dt>
+                            <dd>{{ct.recReprova.CROrigem}}</dd>
+                            <dt>Descrição CR Origem</dt>
+                            <dd>{{ct.recReprova.DescricaoCROrigem}}</dd>
+                            <dt>Tipo de Recuperação</dt>
+                            <dd>{{ct.recReprova.Tipo}}</dd>
+                            <dt>Motivo da Recuperação</dt>
+                            <dd>{{ct.recReprova.Motivo}}</dd>
+                            <dt>Responsável pelo CR</dt>
+                            <dd>{{ct.recReprova.ResponsavelOrigem}}</dd>
+                            <dt>E-mail do Responsavel</dt>
+                            <dd>{{ct.recReprova.EmailOrigem}}</dd>
+                            <dt>Data de Envio</dt>
+                            <dd>{{ct.recReprova.DataHora | date:'dd/MMM/yy hh:mm'}}</dd>
+                        </dl>
+
+                        <dl class="dl-horizontal">
+                            <dt>CR Destino</dt>
+                            <dd>{{ct.recReprova.CRDestino}}</dd>
+                            <dt>Descrição CR Destino</dt>
+                            <dd>{{ct.recReprova.DescricaoCRDestino}}</dd>
+                        </dl>
+
+                    </div>
+                </div>
+
+                <form name="formReprova" novalidate class="row">
+                    <div class="col-md-12">
+                        <div class="form-group" ng-class="{'has-error':formReprova.inputRespostaReprovacao.$invalid}">
+                            <label for="inputRespostaReprovacao">Motivo da Reprovação</label>
+                            <textarea id="inputRespostaReprovacao" name="inputRespostaReprovacao" class="form-control" ng-model="ct.recReprova.Resposta" ng-maxlength="4000" required></textarea>
+                            <small ng-show="formReprova.inputRespostaReprovacao.$error.maxlength" class="form-text text-muted">4000 caracteres ao máximo</small>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" ng-disabled="formReprova.inputRespostaReprovacao.$invalid" data-dismiss="modal" ng-click="ct.reprovarRecuperacao(ct.recReprova.Codigo, ct.recReprova)">Reprovar Solicitação</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalInfoAprovacao" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Informações da Solicitação</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <dl class="dl-horizontal">
+                            <dt>CR Origem</dt>
+                            <dd>{{ct.recInfo.CROrigem}}</dd>
+                            <dt>Descrição CR Origem</dt>
+                            <dd>{{ct.recInfo.DescricaoCROrigem}}</dd>
+                            <dt>Tipo de Recuperação</dt>
+                            <dd>{{ct.recInfo.Tipo}}</dd>
+                            <dt>Motivo da Recuperação</dt>
+                            <dd>{{ct.recInfo.Motivo}}</dd>
+                            <dt>Responsável pelo CR</dt>
+                            <dd>{{ct.recInfo.ResponsavelOrigem}}</dd>
+                            <dt>E-mail do Responsavel</dt>
+                            <dd>{{ct.recInfo.EmailOrigem}}</dd>
+                            <dt>Data de Envio</dt>
+                            <dd>{{ct.recInfo.DataHora | date:'dd/MMM/yy hh:mm'}}</dd>
+                        </dl>
+
+                        <dl class="dl-horizontal">
+                            <dt>CR Destino</dt>
+                            <dd>{{ct.recInfo.CRDestino}}</dd>
+                            <dt>Descrição CR Destino</dt>
+                            <dd>{{ct.recInfo.DescricaoCRDestino}}</dd>
+                        </dl>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
