@@ -1,45 +1,50 @@
-
-<div class="row">
-    <div class="col-md-4 col-xs-6">
-        <div class="form-group">
-            <label for="select-ciclo">Ciclo</label>
-            <select id="select-ciclo" class="form-control" ng-options="(c.Descricao + ' (' + (c.DataInicio | date:'MMM/yy') + ' - ' + (c.DataFim | date:'MMM/yy') + ')') for c in (ct.ciclos | orderBy:'-DataInicio' | limitTo:20) track by c.Codigo" ng-model="cicloAtual" ng-disabled="ct.usuario.Perfil!='Administrador'">
-            </select>
+<div ng-if="cicloAtual">
+    <div class="row">
+        <div class="col-md-4 col-xs-6">
+            <div class="form-group">
+                <label for="select-ciclo">Ciclo</label>
+                <select id="select-ciclo" class="form-control" ng-options="(c.Descricao + ' (' + (c.DataInicio | date:'MMM/yy') + ' - ' + (c.DataFim | date:'MMM/yy') + ')') for c in (ct.ciclos | orderBy:'-DataInicio' | limitTo:20) track by c.Codigo" ng-model="cicloAtual" ng-disabled="ct.usuario.Perfil!='Administrador'">
+                </select>
+            </div>
         </div>
     </div>
+
+    <hr>
+
+    <table class="table table-condensed table-striped">
+    	<thead>
+    		<tr>
+    			<th width="9%">CR Origem</th>
+    			<th width="9%">CR Destino</th>
+                <th width="13%">Tipo</th>
+    			<!-- <th width="12%">Motivo</th> -->
+    			<th ng-repeat="m in cicloAtual.Meses">
+    				{{m.Mes | date:'MMM/yy'}}
+    			</th>
+                <th width="2%"></th>
+    		</tr>
+    	</thead>
+
+        <tbody>
+            <tr ng-repeat="r in ct.recuperacoes | orderBy:'-DataHoraResposta'">
+                <td>{{r.CROrigem}}</td>
+                <td>{{r.CRDestino}}</td>
+                <td>{{r.Tipo | ellipsis:3:8}}</td>
+               <!--  <td>{{r.Motivo | ellipsis:11:7}}</td> -->
+                <td ng-repeat="m in cicloAtual.Meses">
+                    {{r.Recuperacoes[m.Codigo]}}
+                </td>
+                <td>
+                	<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalInfoRecebimento" ng-click="ct.recInfo = r;"><i class="fa fa-info"></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
-<hr>
-
-<table class="table table-condensed table-striped">
-	<thead>
-		<tr>
-			<th width="9%">CR Origem</th>
-			<th width="9%">CR Destino</th>
-            <th width="13%">Tipo</th>
-			<!-- <th width="12%">Motivo</th> -->
-			<th ng-repeat="m in cicloAtual.Meses">
-				{{m.Mes | date:'MMM/yy'}}
-			</th>
-            <th width="2%"></th>
-		</tr>
-	</thead>
-
-    <tbody>
-        <tr ng-repeat="r in ct.recuperacoes | orderBy:'-DataHoraResposta'">
-            <td>{{r.CROrigem}}</td>
-            <td>{{r.CRDestino}}</td>
-            <td>{{r.Tipo | ellipsis:3:8}}</td>
-           <!--  <td>{{r.Motivo | ellipsis:11:7}}</td> -->
-            <td ng-repeat="m in cicloAtual.Meses">
-                {{r.Recuperacoes[m.Codigo]}}
-            </td>
-            <td>
-            	<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalInfoRecebimento" ng-click="ct.recInfo = r;"><i class="fa fa-info"></i></button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div ng-if="!cicloAtual">
+    <h4>Não existem ciclos abertos!</h4>
+</div>
 
 <div class="modal fade" id="modalInfoRecebimento" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">

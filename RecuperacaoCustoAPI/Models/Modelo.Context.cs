@@ -26,12 +26,12 @@ namespace RecuperacaoCustoAPI.Models
         }
     
         public virtual DbSet<CR> CR { get; set; }
-        public virtual DbSet<Usuario> Usuario { get; set; }
         public virtual DbSet<Sessao> Sessao { get; set; }
         public virtual DbSet<Ciclo> Ciclo { get; set; }
         public virtual DbSet<MesCiclo> MesCiclo { get; set; }
         public virtual DbSet<RecuperacaoCusto> RecuperacaoCusto { get; set; }
         public virtual DbSet<RecuperacaoCustoMes> RecuperacaoCustoMes { get; set; }
         public virtual DbSet<TipoRecuperacao> TipoRecuperacao { get; set; }
+        public virtual DbSet<Usuario> Usuario { get; set; }
     }
 }

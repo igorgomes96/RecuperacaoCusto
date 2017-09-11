@@ -143,6 +143,8 @@
     <Compile Include="Controllers\ImportacoesController.cs" />
     <Compile Include="Controllers\RecuperacoesCustosController.cs" />
     <Compile Include="Controllers\TiposRecuperacoesController.cs" />
+    <Compile Include="Controllers\UsuariosController.cs" />
+    <Compile Include="DTO\AlteraSenhaDTO.cs" />
     <Compile Include="DTO\CicloDTO.cs" />
     <Compile Include="DTO\CicloMesesDTO.cs" />
     <Compile Include="DTO\CRDTO.cs" />
@@ -220,6 +222,7 @@
     <Content Include="Models\Modelo.edmx.diagram">
       <DependentUpon>Modelo.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\RecuperacaoCustoAPI.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

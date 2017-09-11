@@ -10,6 +10,12 @@ angular.module('recCustoApp').config(['$stateProvider', '$urlRouterProvider', '$
         templateUrl: 'components/autenticacao/unauthenticated.html'
     })
 
+    .state('usuario', {
+        url: '/usuario',
+        templateUrl: 'components/usuario/usuario.html',
+        controller: 'usuarioCtrl as ct'
+    })
+
     .state('container', {
         templateUrl: 'components/container/container.html',
         controller: 'containerCtrl as ctMain'

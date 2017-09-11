@@ -21,7 +21,8 @@
           </Key>
           <Property Name="Codigo" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Descricao" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="ResponsavelLogin" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ResponsavelLogin" Type="varchar" MaxLength="20" />
+          <Property Name="Categoria" Type="varchar" MaxLength="5" Nullable="false" />
         </EntityType>
         <EntityType Name="MesCiclo">
           <Key>
@@ -77,13 +78,14 @@
             <PropertyRef Name="Login" />
           </Key>
           <Property Name="Login" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Senha" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Senha" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Nome" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" />
           <Property Name="Perfil" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="SenhaEnviada" Type="bit" />
         </EntityType>
         <Association Name="cr_responsavel_fk">
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
           <End Role="CR" Type="Self.CR" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Usuario">
@@ -248,23 +250,15 @@
           </Key>
           <Property Name="Codigo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Descricao" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ResponsavelLogin" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Responsavel" Relationship="RecuperacaoCustoModel.cr_responsavel_fk" FromRole="CR" ToRole="Usuario" />
+          <Property Name="ResponsavelLogin" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="RecuperacoesDestino" Relationship="RecuperacaoCustoModel.recuperacaocusto_destino_fk" FromRole="CR" ToRole="RecuperacaoCusto" />
           <NavigationProperty Name="RecuperacoesOrigem" Relationship="RecuperacaoCustoModel.recuperacaocusto_origem_fk" FromRole="CR" ToRole="RecuperacaoCusto" />
+          <Property Name="Categoria" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Responsavel" Relationship="RecuperacaoCustoModel.cr_responsavel_fk" FromRole="CR" ToRole="Usuario" />
         </EntityType>
         <EntityContainer Name="Contexto" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="CR" EntityType="Self.CR" />
-          <EntitySet Name="Usuario" EntityType="RecuperacaoCustoModel.Usuario" />
-          <AssociationSet Name="cr_responsavel_fk" Association="RecuperacaoCustoModel.cr_responsavel_fk">
-            <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="CR" EntitySet="CR" />
-          </AssociationSet>
           <EntitySet Name="Sessao" EntityType="RecuperacaoCustoModel.Sessao" />
-          <AssociationSet Name="sessao_usuario_fk" Association="RecuperacaoCustoModel.sessao_usuario_fk">
-            <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="Sessao" EntitySet="Sessao" />
-          </AssociationSet>
           <EntitySet Name="Ciclo" EntityType="RecuperacaoCustoModel.Ciclo" />
           <EntitySet Name="MesCiclo" EntityType="RecuperacaoCustoModel.MesCiclo" />
           <AssociationSet Name="mesciclo_ciclo_fk" Association="RecuperacaoCustoModel.mesciclo_ciclo_fk">
@@ -298,31 +292,16 @@
             <End Role="TipoRecuperacao" EntitySet="TipoRecuperacao" />
             <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
           </AssociationSet>
+          <EntitySet Name="Usuario" EntityType="RecuperacaoCustoModel.Usuario" />
+          <AssociationSet Name="cr_responsavel_fk" Association="RecuperacaoCustoModel.cr_responsavel_fk">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="CR" EntitySet="CR" />
+          </AssociationSet>
+          <AssociationSet Name="sessao_usuario_fk" Association="RecuperacaoCustoModel.sessao_usuario_fk">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Sessao" EntitySet="Sessao" />
+          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Usuario">
-          <Key>
-            <PropertyRef Name="Login" />
-          </Key>
-          <Property Name="Login" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Senha" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Nome" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="CRs" Relationship="RecuperacaoCustoModel.cr_responsavel_fk" FromRole="Usuario" ToRole="CR" />
-          <NavigationProperty Name="Sessoes" Relationship="RecuperacaoCustoModel.sessao_usuario_fk" FromRole="Usuario" ToRole="Sessao" />
-          <Property Name="Perfil" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <Association Name="cr_responsavel_fk">
-          <End Type="RecuperacaoCustoModel.Usuario" Role="Usuario" Multiplicity="1" />
-          <End Type="RecuperacaoCustoModel.CR" Role="CR" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Usuario">
-              <PropertyRef Name="Login" />
-            </Principal>
-            <Dependent Role="CR">
-              <PropertyRef Name="ResponsavelLogin" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Sessao">
           <Key>
             <PropertyRef Name="Chave" />
@@ -333,20 +312,6 @@
           <Property Name="Fim" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Usuario" Relationship="RecuperacaoCustoModel.sessao_usuario_fk" FromRole="Sessao" ToRole="Usuario" />
         </EntityType>
-        <Association Name="sessao_usuario_fk">
-          <End Type="RecuperacaoCustoModel.Usuario" Role="Usuario" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="RecuperacaoCustoModel.Sessao" Role="Sessao" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Usuario">
-              <PropertyRef Name="Login" />
-            </Principal>
-            <Dependent Role="Sessao">
-              <PropertyRef Name="LoginUsuario" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Ciclo">
           <Key>
             <PropertyRef Name="Codigo" />
@@ -493,6 +458,45 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Login" />
+          </Key>
+          <Property Name="Login" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Senha" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Nome" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Perfil" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CRs" Relationship="RecuperacaoCustoModel.cr_responsavel_fk" FromRole="Usuario" ToRole="CR" />
+          <NavigationProperty Name="Sessao" Relationship="RecuperacaoCustoModel.sessao_usuario_fk" FromRole="Usuario" ToRole="Sessao" />
+          <Property Name="SenhaEnviada" Type="Boolean" />
+        </EntityType>
+        <Association Name="cr_responsavel_fk">
+          <End Type="RecuperacaoCustoModel.Usuario" Role="Usuario" Multiplicity="0..1" />
+          <End Type="RecuperacaoCustoModel.CR" Role="CR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="CR">
+              <PropertyRef Name="ResponsavelLogin" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sessao_usuario_fk">
+          <End Type="RecuperacaoCustoModel.Usuario" Role="Usuario" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="RecuperacaoCustoModel.Sessao" Role="Sessao" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="Sessao">
+              <PropertyRef Name="LoginUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -502,20 +506,10 @@
           <EntitySetMapping Name="CR">
             <EntityTypeMapping TypeName="RecuperacaoCustoModel.CR">
               <MappingFragment StoreEntitySet="CR">
+                <ScalarProperty Name="Categoria" ColumnName="Categoria" />
                 <ScalarProperty Name="Codigo" ColumnName="Codigo" />
                 <ScalarProperty Name="Descricao" ColumnName="Descricao" />
                 <ScalarProperty Name="ResponsavelLogin" ColumnName="ResponsavelLogin" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Usuario">
-            <EntityTypeMapping TypeName="RecuperacaoCustoModel.Usuario">
-              <MappingFragment StoreEntitySet="Usuario">
-                <ScalarProperty Name="Perfil" ColumnName="Perfil" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Nome" ColumnName="Nome" />
-                <ScalarProperty Name="Senha" ColumnName="Senha" />
-                <ScalarProperty Name="Login" ColumnName="Login" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -580,6 +574,18 @@
                 <ScalarProperty Name="Conta" ColumnName="Conta" />
                 <ScalarProperty Name="Tipo" ColumnName="Tipo" />
                 <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="RecuperacaoCustoModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="SenhaEnviada" ColumnName="SenhaEnviada" />
+                <ScalarProperty Name="Perfil" ColumnName="Perfil" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Senha" ColumnName="Senha" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

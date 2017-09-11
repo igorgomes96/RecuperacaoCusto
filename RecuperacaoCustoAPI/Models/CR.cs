@@ -24,11 +24,12 @@ namespace RecuperacaoCustoAPI.Models
         public string Codigo { get; set; }
         public string Descricao { get; set; }
         public string ResponsavelLogin { get; set; }
+        public string Categoria { get; set; }
     
-        public virtual Usuario Responsavel { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RecuperacaoCusto> RecuperacoesDestino { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RecuperacaoCusto> RecuperacoesOrigem { get; set; }
+        public virtual Usuario Responsavel { get; set; }
     }
 }

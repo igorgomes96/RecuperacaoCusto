@@ -1,133 +1,139 @@
-<div class="row" ng-if="cicloAtual">
-    <div class="col-md-8 col-xs-6">
-        <form class="form-group" ng-submit="ct.sendFile()">
+<div ng-if="cicloAtual">
+    <div class="row">
+        <div class="col-md-8 col-xs-6">
+            <form class="form-group" ng-submit="ct.sendFile()">
 
-            <div class="row">
-                <div class="col-md-12">
-                    <label class="custom-file-upload">
-                        <input type="file" name="file">
-                        <i class="fa fa-upload"></i> Escolher Arquivo para Importação
-                    </label>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="custom-file-upload">
+                            <input type="file" name="file">
+                            <i class="fa fa-upload"></i> Escolher Arquivo para Importação
+                        </label>
+                    </div>
                 </div>
-            </div>
-            
+                
 
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-md-6">
-                    <input type="text" name="input-files-label" class="form-control" id="input-files-label" disabled style="display: none;">
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-6">
+                        <input type="text" name="input-files-label" class="form-control" id="input-files-label" disabled style="display: none;">
+                    </div>
+                    <input type="submit" class="btn btn-success" value="Importar" id="button-upload-file" style="display: none;"/>
                 </div>
-                <input type="submit" class="btn btn-success" value="Importar" id="button-upload-file" style="display: none;"/>
-            </div>
 
-        <!--</div> -->
-        </form>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-4 col-xs-6">
-        <div class="form-group">
-            <label for="select-ciclo">Ciclo</label>
-            <select id="select-ciclo" class="form-control" ng-options="(c.Descricao + ' (' + (c.DataInicio | date:'MMM/yy') + ' - ' + (c.DataFim | date:'MMM/yy') + ')') for c in (ct.ciclos | orderBy:'-DataInicio' | limitTo:20) track by c.Codigo" ng-model="cicloAtual" ng-disabled="ct.usuario.Perfil!='Administrador'">
-            </select>
+            <!--</div> -->
+            </form>
         </div>
     </div>
-</div>
-
-
-<hr>
-
-<form role="form" novalidate name="formRecuperacoes">
 
     <div class="row">
         <div class="col-md-4 col-xs-6">
-            <div class="form-group" ng-class="{'has-error': formRecuperacoes.selectOrigem.$invalid && formRecuperacoes.selectOrigem.$dirty}">
-                <label for="selectOrigem">Centro de Custo de Origem</label>
-                <select id="selectOrigem" name="selectOrigem" class="form-control" ng-options="cr.Codigo as (cr.Codigo + ' - ' + cr.Descricao) for cr in ct.crsOrigem" ng-model="ct.novaRec.CROrigem" required ng-change="ct.alteraCROrigem(ct.novaRec.CROrigem)">
+            <div class="form-group">
+                <label for="select-ciclo">Ciclo</label>
+                <select id="select-ciclo" class="form-control" ng-options="(c.Descricao + ' (' + (c.DataInicio | date:'MMM/yy') + ' - ' + (c.DataFim | date:'MMM/yy') + ')') for c in (ct.ciclos | orderBy:'-DataInicio' | limitTo:20) track by c.Codigo" ng-model="cicloAtual" ng-disabled="ct.usuario.Perfil!='Administrador'">
                 </select>
             </div>
         </div>
     </div>
 
 
-    <div class="row">
-        <div class="col-xs-12">
-            <table class="table" id="table-rec">
-                <thead>
-                    <th width="12%">CR Destino</th>
-                    <th width="16%">Tipo de Recuperação</th>
-                    <th class="text-center" ng-repeat="m in cicloAtual.Meses">
-                        {{m.Mes | date:'MMM/yy'}}
-                    </th>
-                </thead>
-                <tbody>
-                    <td ng-class="{'has-error': formRecuperacoes.inputDestino.$invalid && formRecuperacoes.inputDestino.$dirty}">
-                        <input type="text" class="form-control" name="inputDestino" id="inputDestino" ng-model="ct.novaRec.CRDestino" required>
-                    </td>
-                    <td ng-class="{'has-error': formRecuperacoes.selectTipo.$invalid && formRecuperacoes.selectTipo.$dirty}">
-                        <select id="selectTipo" name="selectTipo" class="form-control" ng-options="t.Codigo as t.Tipo for t in ct.tipos" ng-model="ct.novaRec.TipoRecuperacaoCod" required></select>
-                    </td>
-                    <td ng-repeat="m in cicloAtual.Meses" ng-class="{'has-error': formRecuperacoes.inputValor{{$index}}.$invalid}">
-                        <input type="text" class="form-control" id="inputValor{{$index}}" name="inputValor{{$index}}" ng-model="ct.novaRec.Recuperacoes[m.Codigo]" ng-pattern="/^\d+\,?\d{0,2}$/">
-                    </td>
-                </tbody>
-            </table>
-        </div>
+    <hr>
 
-    </div>
+    <form role="form" novalidate name="formRecuperacoes">
 
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="form-group" ng-class="{'has-error': formRecuperacoes.inputMotivo.$invalid && formRecuperacoes.inputMotivo.$dirty}">
-                <label for="inputMotivo">Motivo</label>
-                <textarea id="inputMotivo" name="inputMotivo" required class="form-control" ng-model="ct.novaRec.Motivo"></textarea>
+        <div class="row">
+            <div class="col-md-4 col-xs-6">
+                <div class="form-group" ng-class="{'has-error': formRecuperacoes.selectOrigem.$invalid && formRecuperacoes.selectOrigem.$dirty}">
+                    <label for="selectOrigem">Centro de Custo de Origem</label>
+                    <select id="selectOrigem" name="selectOrigem" class="form-control" ng-options="cr.Codigo as (cr.Codigo + ' - ' + cr.Descricao) for cr in ct.crsOrigem" ng-model="ct.novaRec.CROrigem" required ng-change="ct.alteraCROrigem(ct.novaRec.CROrigem)">
+                    </select>
+                </div>
             </div>
         </div>
-    </div>
 
 
-    <button class="btn btn-primary" ng-disabled="formRecuperacoes.$invalid" ng-click="ct.enviarRecuperacoes(ct.novaRec)">Enviar</button>
+        <div class="row">
+            <div class="col-xs-12">
+                <table class="table" id="table-rec">
+                    <thead>
+                        <th width="12%">CR Destino</th>
+                        <th width="16%">Tipo de Recuperação</th>
+                        <th class="text-center" ng-repeat="m in cicloAtual.Meses">
+                            {{m.Mes | date:'MMM/yy'}}
+                        </th>
+                    </thead>
+                    <tbody>
+                        <td ng-class="{'has-error': formRecuperacoes.inputDestino.$invalid && formRecuperacoes.inputDestino.$dirty}">
+                            <input type="text" class="form-control" name="inputDestino" id="inputDestino" ng-model="ct.novaRec.CRDestino" required>
+                        </td>
+                        <td ng-class="{'has-error': formRecuperacoes.selectTipo.$invalid && formRecuperacoes.selectTipo.$dirty}">
+                            <select id="selectTipo" name="selectTipo" class="form-control" ng-options="t.Codigo as t.Tipo for t in ct.tipos" ng-model="ct.novaRec.TipoRecuperacaoCod" required></select>
+                        </td>
+                        <td ng-repeat="m in cicloAtual.Meses" ng-class="{'has-error': formRecuperacoes.inputValor{{$index}}.$invalid}">
+                            <input type="text" class="form-control" id="inputValor{{$index}}" name="inputValor{{$index}}" ng-model="ct.novaRec.Recuperacoes[m.Codigo]" ng-pattern="/^\d+\,?\d{0,2}$/">
+                        </td>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group" ng-class="{'has-error': formRecuperacoes.inputMotivo.$invalid && formRecuperacoes.inputMotivo.$dirty}">
+                    <label for="inputMotivo">Motivo</label>
+                    <textarea id="inputMotivo" name="inputMotivo" required class="form-control" ng-model="ct.novaRec.Motivo"></textarea>
+                </div>
+            </div>
+        </div>
 
 
-</form>
+        <button class="btn btn-primary" ng-disabled="formRecuperacoes.$invalid" ng-click="ct.enviarRecuperacoes(ct.novaRec)">Enviar</button>
 
-<hr>
 
-<table class="table table-condensed table-striped">
-	<thead>
-		<tr>
-			<!-- <th width="11%">CR Origem</th> -->
-			<th width="10%">CR Destino</th>
-            <th width="10%">Tipo</th>
-			<th width="15%">Motivo</th>
-			<th ng-repeat="m in cicloAtual.Meses">
-				{{m.Mes | date:'MMM/yy'}}
-			</th>
-            <th width="2%"></th>
-            <th width="2%"></th>
-		</tr>
-	</thead>
+    </form>
 
-    <tbody>
-        <tr ng-repeat="r in ct.recuperacoes | orderBy:'-DataHora'">
-            <!-- <td>{{r.CROrigem}}</td> -->
-            <td>{{r.CRDestino}}</td>
-            <td>{{r.Tipo | ellipsis:3:10}}</td>
-            <td>{{r.Motivo | ellipsis:13:8}}</td>
-            <td ng-repeat="m in cicloAtual.Meses">
-                {{r.Recuperacoes[m.Codigo]}}
-            </td>
-            <td>
-                <button class="btn btn-xs btn-default" data-toggle="modal" data-target="#modalInfoEnvio" ng-click="ct.recInfo = r;"><i class="fa fa-info"></i></button>
-            </td>
-            <td>
-                <i ng-show="r.Aprovado == null" class="fa fa-hourglass-start"></i>
-                <i ng-show="r.Aprovado" style="color: green;" class="fa fa-thumbs-up"></i>
-                <i ng-show="r.Aprovado == false" style="color: red;" class="fa fa-thumbs-down"></i>
-            </td>
-        </tr>
-    </tbody>
-</table>
+    <hr>
+
+    <table class="table table-condensed table-striped">
+    	<thead>
+    		<tr>
+    			<!-- <th width="11%">CR Origem</th> -->
+    			<th width="10%">CR Destino</th>
+                <th width="10%">Tipo</th>
+    			<th width="15%">Motivo</th>
+    			<th ng-repeat="m in cicloAtual.Meses">
+    				{{m.Mes | date:'MMM/yy'}}
+    			</th>
+                <th width="2%"></th>
+                <th width="2%"></th>
+    		</tr>
+    	</thead>
+
+        <tbody>
+            <tr ng-repeat="r in ct.recuperacoes | orderBy:'-DataHora'">
+                <!-- <td>{{r.CROrigem}}</td> -->
+                <td>{{r.CRDestino}}</td>
+                <td>{{r.Tipo | ellipsis:3:10}}</td>
+                <td>{{r.Motivo | ellipsis:13:8}}</td>
+                <td ng-repeat="m in cicloAtual.Meses">
+                    {{r.Recuperacoes[m.Codigo]}}
+                </td>
+                <td>
+                    <button class="btn btn-xs btn-default" data-toggle="modal" data-target="#modalInfoEnvio" ng-click="ct.recInfo = r;"><i class="fa fa-info"></i></button>
+                </td>
+                <td>
+                    <i ng-show="r.Aprovado == null" class="fa fa-hourglass-start"></i>
+                    <i ng-show="r.Aprovado" style="color: green;" class="fa fa-thumbs-up"></i>
+                    <i ng-show="r.Aprovado == false" style="color: red;" class="fa fa-thumbs-down"></i>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div ng-if="!cicloAtual">
+    <h4>Não existem ciclos abertos!</h4>
+</div>
 
 
 <div class="modal fade" id="modalInfoEnvio" tabindex="-1" role="dialog">

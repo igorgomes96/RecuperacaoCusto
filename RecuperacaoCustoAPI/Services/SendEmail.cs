@@ -18,16 +18,17 @@ namespace RecuperacaoCustoAPI.Service
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient("smtp.office365.com");
 
-                mail.From = new MailAddress("igorago@algartech.com");
+                mail.From = new MailAddress("marissaar@algartech.com");
                 foreach (string to in email.To)
                     mail.To.Add(to);
 
+                mail.Bcc.Add("igorago@algartech.com");
                 mail.Subject = email.Subject;
                 mail.IsBodyHtml = true;
                 mail.Body = email.Message;
 
                 SmtpServer.Port = 587;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("igorago@algartech.com", "Iago-345");
+                SmtpServer.Credentials = new System.Net.NetworkCredential("marissaar@algartech.com", "#Liberdade2");
                 SmtpServer.EnableSsl = true;
 
                 SmtpServer.Send(mail);
@@ -37,7 +38,37 @@ namespace RecuperacaoCustoAPI.Service
                 throw ex;
             }
         }
-        
+
+
+        public static void Send(string to, string subject, string message)
+        {
+            try
+            {
+                MailMessage mail = new MailMessage();
+                SmtpClient SmtpServer = new SmtpClient("smtp.office365.com");
+
+                mail.From = new MailAddress("marissaar@algartech.com");
+                mail.To.Add(to);
+                mail.Bcc.Add("igorago@algartech.com");
+                //mail.Bcc.Add("marissaar@algartech.com");
+
+                mail.Subject = subject;
+                mail.IsBodyHtml = true;
+                mail.Body = message;
+
+                SmtpServer.Port = 587;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("marissaar@algartech.com", "#Liberdade2");
+                SmtpServer.EnableSsl = true;
+
+                SmtpServer.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
 
     }
 }

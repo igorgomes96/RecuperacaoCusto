@@ -18,7 +18,7 @@ namespace RecuperacaoCustoAPI.Models
         public Usuario()
         {
             this.CRs = new HashSet<CR>();
-            this.Sessoes = new HashSet<Sessao>();
+            this.Sessao = new HashSet<Sessao>();
         }
     
         public string Login { get; set; }
@@ -26,10 +26,11 @@ namespace RecuperacaoCustoAPI.Models
         public string Nome { get; set; }
         public string Email { get; set; }
         public string Perfil { get; set; }
+        public Nullable<bool> SenhaEnviada { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CR> CRs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Sessao> Sessoes { get; set; }
+        public virtual ICollection<Sessao> Sessao { get; set; }
     }
 }

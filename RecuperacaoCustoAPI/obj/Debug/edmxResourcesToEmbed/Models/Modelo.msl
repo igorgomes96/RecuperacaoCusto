@@ -4,20 +4,10 @@
     <EntitySetMapping Name="CR">
       <EntityTypeMapping TypeName="RecuperacaoCustoModel.CR">
         <MappingFragment StoreEntitySet="CR">
+          <ScalarProperty Name="Categoria" ColumnName="Categoria" />
           <ScalarProperty Name="Codigo" ColumnName="Codigo" />
           <ScalarProperty Name="Descricao" ColumnName="Descricao" />
           <ScalarProperty Name="ResponsavelLogin" ColumnName="ResponsavelLogin" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Usuario">
-      <EntityTypeMapping TypeName="RecuperacaoCustoModel.Usuario">
-        <MappingFragment StoreEntitySet="Usuario">
-          <ScalarProperty Name="Perfil" ColumnName="Perfil" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Nome" ColumnName="Nome" />
-          <ScalarProperty Name="Senha" ColumnName="Senha" />
-          <ScalarProperty Name="Login" ColumnName="Login" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -82,6 +72,18 @@
           <ScalarProperty Name="Conta" ColumnName="Conta" />
           <ScalarProperty Name="Tipo" ColumnName="Tipo" />
           <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Usuario">
+      <EntityTypeMapping TypeName="RecuperacaoCustoModel.Usuario">
+        <MappingFragment StoreEntitySet="Usuario">
+          <ScalarProperty Name="SenhaEnviada" ColumnName="SenhaEnviada" />
+          <ScalarProperty Name="Perfil" ColumnName="Perfil" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Nome" ColumnName="Nome" />
+          <ScalarProperty Name="Senha" ColumnName="Senha" />
+          <ScalarProperty Name="Login" ColumnName="Login" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

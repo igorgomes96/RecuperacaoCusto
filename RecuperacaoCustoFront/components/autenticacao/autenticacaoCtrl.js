@@ -1,6 +1,6 @@
 angular.module('recCustoApp', ['ui.router']);
 
-angular.module('recCustoApp').controller('autenticacaoCtrl', ['sessionStorageService', 'autenticacaoAPI', function (sessionStorageService, autenticacaoAPI) {
+angular.module('recCustoApp').controller('autenticacaoCtrl', ['sessionStorageService', 'autenticacaoAPI', 'messagesService', function (sessionStorageService, autenticacaoAPI, messagesService) {
 	var self = this;
 
 
@@ -9,12 +9,12 @@ angular.module('recCustoApp').controller('autenticacaoCtrl', ['sessionStorageSer
 		autenticacaoAPI.postLogin(user)
 		.then(function(dado) {
 
-			
 			sessionStorageService.saveUser(dado.data);
 			window.location.href = "../../index.html";
 			
 		}, function(error) {
 
+			messagesService.exibeMensagemErro(error.status, error.data.Message);
 			console.log(error);
 			
 		});

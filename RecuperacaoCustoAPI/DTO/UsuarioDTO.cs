@@ -13,14 +13,14 @@ namespace RecuperacaoCustoAPI.DTO
         {
             if (user == null) return;
             Login = user.Login;
-            Senha = user.Senha;
             Nome = user.Nome;
             Email = user.Email;
+            Perfil = user.Perfil;
         }
 
         public string Login { get; set; }
-        public string Senha { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
+        public string Perfil { get; set; }
     }
 }

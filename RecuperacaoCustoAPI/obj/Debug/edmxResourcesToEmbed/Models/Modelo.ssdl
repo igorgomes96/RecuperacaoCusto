@@ -16,7 +16,8 @@
     </Key>
     <Property Name="Codigo" Type="varchar" MaxLength="20" Nullable="false" />
     <Property Name="Descricao" Type="varchar" MaxLength="255" Nullable="false" />
-    <Property Name="ResponsavelLogin" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="ResponsavelLogin" Type="varchar" MaxLength="20" />
+    <Property Name="Categoria" Type="varchar" MaxLength="5" Nullable="false" />
   </EntityType>
   <EntityType Name="MesCiclo">
     <Key>
@@ -72,13 +73,14 @@
       <PropertyRef Name="Login" />
     </Key>
     <Property Name="Login" Type="varchar" MaxLength="20" Nullable="false" />
-    <Property Name="Senha" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Senha" Type="varchar" MaxLength="200" Nullable="false" />
     <Property Name="Nome" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="100" />
     <Property Name="Perfil" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="SenhaEnviada" Type="bit" />
   </EntityType>
   <Association Name="cr_responsavel_fk">
-    <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
     <End Role="CR" Type="Self.CR" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Usuario">

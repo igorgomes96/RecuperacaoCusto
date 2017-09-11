@@ -161,6 +161,39 @@
 &lt;/body&gt;
 &lt;/html&gt;</value>
   </data>
+  <data name="EnvioSenha" xml:space="preserve">
+    <value>&lt;!DOCTYPE html&gt;
+&lt;html lang="pt"&gt;
+&lt;head&gt;
+	&lt;title&gt;Recuperação de Custo&lt;/title&gt;
+	&lt;meta charset="utf-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"&gt;
+    &lt;style&gt;
+    	body {{
+    		font-family: 'Calibri', sans-serif;
+    	}}
+    	table {{
+    		border-collapse: collapse;
+    	}}
+    	#tabela-crs th {{
+    		border-bottom: 2px solid #ccc;
+    		padding: 5px 12px;
+    	}}
+    	#tabela-crs td {{
+    		border-bottom: 1px solid #eee;
+    		padding: 5px 12px;
+    	}}
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;p&gt;Boa tarde,&lt;/p&gt;
+	&lt;p&gt;Segue abaixo usuário e senha para acesso ao sistema de Recuperação de Custos - Orçamento 2018 (para envios e aprovações):&lt;/p&gt;
+	&lt;p&gt;&lt;strong&gt;Usuário: &lt;/strong&gt;{0}&lt;br&gt;&lt;strong&gt;Senha: &lt;/strong&gt;{1}&lt;/p&gt;
+	&lt;p&gt;Link para acesso ao sistema: &lt;a href="{2}"&gt;{2}&lt;/a&gt;&lt;/p&gt;
+	&lt;p&gt;Atenciosamente.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</value>
+  </data>
   <data name="Recuperacoes" xml:space="preserve">
     <value>&lt;tr&gt;
 	&lt;td&gt;{0}&lt;/td&gt;

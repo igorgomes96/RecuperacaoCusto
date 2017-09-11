@@ -89,6 +89,34 @@ namespace RecuperacaoCustoAPI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
+        ///&lt;html lang=&quot;pt&quot;&gt;
+        ///&lt;head&gt;
+        ///	&lt;title&gt;Recuperação de Custo&lt;/title&gt;
+        ///	&lt;meta charset=&quot;utf-8&quot;&gt;
+        ///    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+        ///    &lt;style&gt;
+        ///    	body {{
+        ///    		font-family: &apos;Calibri&apos;, sans-serif;
+        ///    	}}
+        ///    	table {{
+        ///    		border-collapse: collapse;
+        ///    	}}
+        ///    	#tabela-crs th {{
+        ///    		border-bottom: 2px solid #ccc;
+        ///    		padding: 5px 12px;
+        ///    	}}
+        ///    	#tabela-crs td {{
+        ///    		border-bottom: 1px solid #eee;
+        ///    		padding: 5px [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EnvioSenha {
+            get {
+                return ResourceManager.GetString("EnvioSenha", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;tr&gt;
         ///	&lt;td&gt;{0}&lt;/td&gt;
         ///	&lt;td&gt;{1}&lt;/td&gt;
