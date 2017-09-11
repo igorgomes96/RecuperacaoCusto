@@ -19,7 +19,9 @@ namespace RecuperacaoCustoAPI.Service
                 SmtpClient SmtpServer = new SmtpClient("smtp.office365.com");
 
                 mail.From = new MailAddress("igorago@algartech.com");
-                mail.To.Add("igorgomes96@hotmail.com");
+                foreach (string to in email.To)
+                    mail.To.Add(to);
+
                 mail.Subject = email.Subject;
                 mail.IsBodyHtml = true;
                 mail.Body = email.Message;

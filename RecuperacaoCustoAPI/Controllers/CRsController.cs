@@ -10,9 +10,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using RecuperacaoCustoAPI.Models;
 using RecuperacaoCustoAPI.DTO;
+using RecuperacaoCustoAPI.Filters;
 
 namespace RecuperacaoCustoAPI.Controllers
 {
+    [AuthenticationFilter]
     public class CRsController : ApiController
     {
         private Contexto db = new Contexto();
@@ -40,6 +42,7 @@ namespace RecuperacaoCustoAPI.Controllers
 
         // PUT: api/CRs/5
         [ResponseType(typeof(void))]
+        [Authorize(Roles = "Administrador")]
         public IHttpActionResult PutCR(string id, CR cR)
         {
             if (!ModelState.IsValid)
@@ -75,6 +78,7 @@ namespace RecuperacaoCustoAPI.Controllers
 
         // POST: api/CRs
         [ResponseType(typeof(CRDTO))]
+        [Authorize(Roles = "Administrador")]
         public IHttpActionResult PostCR(CR cR)
         {
             if (!ModelState.IsValid)
@@ -105,6 +109,7 @@ namespace RecuperacaoCustoAPI.Controllers
 
         // DELETE: api/CRs/5
         [ResponseType(typeof(CRDTO))]
+        [Authorize(Roles = "Administrador")]
         public IHttpActionResult DeleteCR(string id)
         {
             CR cR = db.CR.Find(id);

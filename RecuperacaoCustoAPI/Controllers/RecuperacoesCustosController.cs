@@ -16,33 +16,11 @@ using RecuperacaoCustoAPI.Service;
 
 namespace RecuperacaoCustoAPI.Controllers
 {
-    //[AuthenticationFilter]
+    [AuthenticationFilter]
     public class RecuperacoesCustosController : ApiController
     {
         private Contexto db = new Contexto();
 
-        // GET: api/RecuperacoesCustos
-        //public IEnumerable<RecuperacaoCustoDTO> GetRecuperacaoCusto(string crOrigem = null, string crDestino = null, bool? respondido = null, bool? aprovado = null)
-        //{
-        //    return db.RecuperacaoCusto.ToList()
-        //        .Where(x => (crOrigem == null || x.CROrigem == crOrigem) && (crDestino == null || x.CRDestino == crDestino)
-        //        && (respondido == null || ((respondido == true && x.Aprovado != null) || (respondido == false && x.Aprovado == null))) 
-        //        && (aprovado == null || x.Aprovado == aprovado))
-        //        .Select(x => new RecuperacaoCustoDTO(x));
-        //}
-
-        [HttpPost]
-        [Route("api/RecuperacoesCusto/Email")]
-        public IHttpActionResult TesteEmail (EmailDTO email)
-        {
-            try { 
-                SendEmail.Send(email);
-                return Ok();
-            } catch (Exception e)
-            {
-                return InternalServerError(e);
-            }
-        }
 
         [HttpGet]
         [Route("api/RecuperacoesCustos/PorCiclo/{codCiclo}")]
@@ -73,7 +51,7 @@ namespace RecuperacaoCustoAPI.Controllers
 
             IEnumerable<RecuperacaoCusto> lista = db.RecuperacaoCusto.Where(x => (aprovado == null || x.Aprovado == aprovado) && (!respondido.HasValue || respondido.Value ? x.Aprovado != null : x.Aprovado == null) && (x.CodCiclo == codCiclo));
             if (!User.IsInRole("Administrador"))
-                lista = lista.Where(x => ((CustomIdentity)(User.Identity)).Usuario.CRs.Count(y => y.Codigo == x.CROrigem) > 0);
+                lista = lista.Where(x => ((CustomIdentity)User.Identity).Usuario.CRs.Count(y => y.Codigo == x.CROrigem) > 0);
 
             foreach (RecuperacaoCusto rec in lista)
             {
@@ -97,7 +75,7 @@ namespace RecuperacaoCustoAPI.Controllers
 
             IEnumerable<RecuperacaoCusto> lista = db.RecuperacaoCusto.Where(x => (aprovado == null || x.Aprovado == aprovado) && (!respondido.HasValue || respondido.Value ? x.Aprovado != null : x.Aprovado == null) && (x.CodCiclo == codCiclo));
             if (!User.IsInRole("Administrador"))
-                lista = lista.Where(x => ((CustomIdentity)(User.Identity)).Usuario.CRs.Count(y => y.Codigo == x.CRDestino) > 0);
+                lista = lista.Where(x => ((CustomIdentity)User.Identity).Usuario.CRs.Count(y => y.Codigo == x.CRDestino) > 0);
 
 
             foreach (RecuperacaoCusto rec in lista)
@@ -203,7 +181,7 @@ namespace RecuperacaoCustoAPI.Controllers
 
         [HttpPost]
         [Route("api/RecuperacoesCustos/PorCiclo")]
-        [ResponseType(typeof(IEnumerable<RecuperacoesCicloDTO>))]
+        [ResponseType(typeof(void))]
         public IHttpActionResult PostRecuperacoesCustoPorCiclo (RecuperacoesCicloDTO rec)
         {
             if (!ModelState.IsValid)
@@ -239,7 +217,10 @@ namespace RecuperacaoCustoAPI.Controllers
 
             try
             {
+                db.Entry(r).State = EntityState.Detached;
+                r = db.RecuperacaoCusto.Find(r.Codigo);
                 db.SaveChanges();
+                SendEmail.Send(new EmailDTO(new [] { r.Destino.Responsavel.Email }, "Recuperações de Custos", r));
             } catch (Exception e)
             {
                 return InternalServerError(e);

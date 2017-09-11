@@ -10,9 +10,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using RecuperacaoCustoAPI.Models;
 using RecuperacaoCustoAPI.DTO;
+using RecuperacaoCustoAPI.Filters;
 
 namespace RecuperacaoCustoAPI.Controllers
 {
+    [AuthenticationFilter]
     public class TiposRecuperacoesController : ApiController
     {
         private Contexto db = new Contexto();

@@ -1,4 +1,5 @@
-﻿using RecuperacaoCustoAPI.Models;
+﻿using RecuperacaoCustoAPI.Filters;
+using RecuperacaoCustoAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +58,7 @@ namespace RecuperacaoCustoAPI.Controllers
 
         [HttpPost]
         [Route("api/Logout")]
-        [AllowAnonymous]
+        [AuthenticationFilter]
         public IHttpActionResult Logout()
         {
             Contexto db = new Contexto();

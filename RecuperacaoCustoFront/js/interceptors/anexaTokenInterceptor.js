@@ -1,7 +1,7 @@
-angular.module('recCustoApp').factory('anexaTokenInterceptor', ['sessionStorageService', function(sessionStorageService) {
+angular.module('recCustoApp').factory('anexaTokenInterceptor', ['sharedDataService', function(sharedDataService) {
 	return {
 		request: function(config) {
-			var user = sessionStorageService.getUser();
+			var user = sharedDataService.getUsuario();
 			if (user && user.Token) 
 				config.headers['Authorization'] = 'Basic ' + user.Token;
 			return config;

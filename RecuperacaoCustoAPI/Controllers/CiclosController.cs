@@ -10,9 +10,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using RecuperacaoCustoAPI.Models;
 using RecuperacaoCustoAPI.DTO;
+using RecuperacaoCustoAPI.Filters;
 
 namespace RecuperacaoCustoAPI.Controllers
 {
+    [AuthenticationFilter]
     public class CiclosController : ApiController
     {
         private Contexto db = new Contexto();
@@ -40,6 +42,7 @@ namespace RecuperacaoCustoAPI.Controllers
 
         // PUT: api/Ciclos/5
         [ResponseType(typeof(void))]
+        [Authorize(Roles = "Administrador")]
         public IHttpActionResult PutCiclo(int id, Ciclo ciclo)
         {
             if (!ModelState.IsValid)
@@ -81,6 +84,7 @@ namespace RecuperacaoCustoAPI.Controllers
 
         // POST: api/Ciclos
         [ResponseType(typeof(CicloDTO))]
+        [Authorize(Roles = "Administrador")]
         public IHttpActionResult PostCiclo(Ciclo ciclo)
         {
             if (!ModelState.IsValid)
@@ -125,6 +129,7 @@ namespace RecuperacaoCustoAPI.Controllers
 
         // DELETE: api/Ciclos/5
         [ResponseType(typeof(CicloDTO))]
+        [Authorize(Roles = "Administrador")]
         public IHttpActionResult DeleteCiclo(int id)
         {
             Ciclo ciclo = db.Ciclo.Find(id);

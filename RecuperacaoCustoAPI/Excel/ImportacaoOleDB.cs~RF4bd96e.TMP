@@ -109,13 +109,7 @@ namespace RecuperacaoCustoAPI.Excel
                 foreach (DataRow r in ds.Tables[0].Rows)
                 {
                     //Condição de parada
-                    if (r[0] == null || r[0].ToString() == "")
-                    {
-                        foreach (string email in recuperacoes.Keys)
-                            SendEmail.Send(new EmailDTO(new[] { email }, "Recuperações de Custos", recuperacoes[email]));
-
-                        return;
-                    }
+                    if (r[0] == null || r[0].ToString() == "") return;
 
                     CR crOrigem = db.CR.Find(r[0].ToString());
                     if (crOrigem == null) throw new CROrigemNaoEncontradoException(r[0].ToString(), ds.DataSetName, l);
@@ -192,7 +186,8 @@ namespace RecuperacaoCustoAPI.Excel
                     l++;
                 }
 
-               
+                foreach (string email in recuperacoes.Keys)
+                    SendEmail.Send(new EmailDTO(new[] { email }, "Recuperações de Custos", recuperacoes[email]));
 
             }
             catch (CROrigemNaoEncontradoException e)
