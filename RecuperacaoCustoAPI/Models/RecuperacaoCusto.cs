@@ -30,6 +30,7 @@ namespace RecuperacaoCustoAPI.Models
         public int CodCiclo { get; set; }
         public int TipoRecuperacaoCod { get; set; }
         public Nullable<System.DateTime> DataHoraResposta { get; set; }
+        public string LoginEnvio { get; set; }
     
         public virtual CR Destino { get; set; }
         public virtual CR Origem { get; set; }
@@ -37,5 +38,6 @@ namespace RecuperacaoCustoAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RecuperacaoCustoMes> RecuperacoesMensais { get; set; }
         public virtual TipoRecuperacao TipoRecuperacao { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

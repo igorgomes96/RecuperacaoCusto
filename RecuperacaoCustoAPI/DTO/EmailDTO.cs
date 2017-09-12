@@ -25,7 +25,7 @@ namespace RecuperacaoCustoAPI.DTO
                 string temp = string.Format(Resources.Recuperacoes, rec.CROrigem, rec.CRDestino, rec.TipoRecuperacao.Tipo, rec.Motivo);
                 tabela += temp;
             }
-            Message = string.Format(Resources.Email, tabela);
+            Message = string.Format(Resources.Email, tabela, LinkSistema);
         }
 
         public EmailDTO(IEnumerable<string> to, string subject, RecuperacaoCusto recuperacao)
@@ -34,11 +34,12 @@ namespace RecuperacaoCustoAPI.DTO
             To = to;
             Subject = subject;
             string tabela = string.Format(Resources.Recuperacoes, recuperacao.CROrigem, recuperacao.CRDestino, recuperacao.TipoRecuperacao.Tipo, recuperacao.Motivo);
-            Message = string.Format(Resources.Email, tabela);
+            Message = string.Format(Resources.Email, tabela, LinkSistema);
         }
 
         public IEnumerable<string> To { get; set; }
         public string Subject { get; set; }
         public string Message { get; set; }
+        public string LinkSistema { get; set; } = "http://10.200.51.46:8095";
     }
 }

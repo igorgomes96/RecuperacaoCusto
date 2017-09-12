@@ -46,6 +46,7 @@
           <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CodCiclo" Type="int" Nullable="false" />
           <Property Name="TipoRecuperacaoCod" Type="int" Nullable="false" />
+          <Property Name="LoginEnvio" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="RecuperacaoCustoMes">
           <Key>
@@ -156,6 +157,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="recuperacaocusto_usuario_fk">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="RecuperacaoCusto" Type="Self.RecuperacaoCusto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="RecuperacaoCusto">
+              <PropertyRef Name="LoginEnvio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="recuperacaocustomes_mesciclo_fk">
           <End Role="MesCiclo" Type="Self.MesCiclo" Multiplicity="1" />
           <End Role="RecuperacaoCustoMes" Type="Self.RecuperacaoCustoMes" Multiplicity="*" />
@@ -225,6 +238,10 @@
           </AssociationSet>
           <AssociationSet Name="recuperacaocusto_tiporecuperacao_fk" Association="Self.recuperacaocusto_tiporecuperacao_fk">
             <End Role="TipoRecuperacao" EntitySet="TipoRecuperacao" />
+            <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
+          </AssociationSet>
+          <AssociationSet Name="recuperacaocusto_usuario_fk" Association="Self.recuperacaocusto_usuario_fk">
+            <End Role="Usuario" EntitySet="Usuario" />
             <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
           </AssociationSet>
           <AssociationSet Name="recuperacaocustomes_mesciclo_fk" Association="Self.recuperacaocustomes_mesciclo_fk">
@@ -301,6 +318,10 @@
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Sessao" EntitySet="Sessao" />
           </AssociationSet>
+          <AssociationSet Name="recuperacaocusto_usuario_fk" Association="RecuperacaoCustoModel.recuperacaocusto_usuario_fk">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Sessao">
           <Key>
@@ -365,6 +386,8 @@
           <Property Name="TipoRecuperacaoCod" Type="Int32" Nullable="false" />
           <NavigationProperty Name="TipoRecuperacao" Relationship="RecuperacaoCustoModel.recuperacaocusto_tiporecuperacao_fk" FromRole="RecuperacaoCusto" ToRole="TipoRecuperacao" />
           <Property Name="DataHoraResposta" Type="DateTime" Precision="3" />
+          <Property Name="LoginEnvio" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Usuario" Relationship="RecuperacaoCustoModel.recuperacaocusto_usuario_fk" FromRole="RecuperacaoCusto" ToRole="Usuario" />
         </EntityType>
         <Association Name="recuperacaocusto_destino_fk">
           <End Type="RecuperacaoCustoModel.CR" Role="CR" Multiplicity="1" />
@@ -470,6 +493,7 @@
           <NavigationProperty Name="CRs" Relationship="RecuperacaoCustoModel.cr_responsavel_fk" FromRole="Usuario" ToRole="CR" />
           <NavigationProperty Name="Sessao" Relationship="RecuperacaoCustoModel.sessao_usuario_fk" FromRole="Usuario" ToRole="Sessao" />
           <Property Name="SenhaEnviada" Type="Boolean" />
+          <NavigationProperty Name="RecuperacoesEnviadas" Relationship="RecuperacaoCustoModel.recuperacaocusto_usuario_fk" FromRole="Usuario" ToRole="RecuperacaoCusto" />
         </EntityType>
         <Association Name="cr_responsavel_fk">
           <End Type="RecuperacaoCustoModel.Usuario" Role="Usuario" Multiplicity="0..1" />
@@ -494,6 +518,18 @@
             </Principal>
             <Dependent Role="Sessao">
               <PropertyRef Name="LoginUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="recuperacaocusto_usuario_fk">
+          <End Type="RecuperacaoCustoModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="RecuperacaoCustoModel.RecuperacaoCusto" Role="RecuperacaoCusto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Login" />
+            </Principal>
+            <Dependent Role="RecuperacaoCusto">
+              <PropertyRef Name="LoginEnvio" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -546,6 +582,7 @@
           <EntitySetMapping Name="RecuperacaoCusto">
             <EntityTypeMapping TypeName="RecuperacaoCustoModel.RecuperacaoCusto">
               <MappingFragment StoreEntitySet="RecuperacaoCusto">
+                <ScalarProperty Name="LoginEnvio" ColumnName="LoginEnvio" />
                 <ScalarProperty Name="DataHoraResposta" ColumnName="DataHoraResposta" />
                 <ScalarProperty Name="TipoRecuperacaoCod" ColumnName="TipoRecuperacaoCod" />
                 <ScalarProperty Name="CodCiclo" ColumnName="CodCiclo" />

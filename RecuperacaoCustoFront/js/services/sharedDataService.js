@@ -1,10 +1,11 @@
-angular.module('recCustoApp').service('sharedDataService', ['sessionStorageService', function(sessionStorageService) {
+angular.module('recCustoApp').service('sharedDataService', ['sessionStorageService', '$rootScope', function(sessionStorageService, $rootScope) {
 
     var self = this;
 
     var usuario = null;
     var cicloAtual = null;
     var ultimoCR = null;
+    var qtdaAprovacoesPendentes = 0;
 
     self.setUsuario = function(user) {
         usuario = user;
@@ -20,6 +21,10 @@ angular.module('recCustoApp').service('sharedDataService', ['sessionStorageServi
 
     self.setCicloAtual = function(valor) {
         cicloAtual = valor;
+        if (!valor)
+            $rootScope.$broadcast('eventoAprovacao', null);
+        else
+            $rootScope.$broadcast('eventoAprovacao', valor.Codigo);
     }
 
     self.getCicloAtual = function() {
@@ -33,6 +38,7 @@ angular.module('recCustoApp').service('sharedDataService', ['sessionStorageServi
     self.getUltimoCR = function() {
         return ultimoCR;
     }
+
 
 
 

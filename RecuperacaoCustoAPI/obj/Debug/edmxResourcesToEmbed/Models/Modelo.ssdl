@@ -41,6 +41,7 @@
     <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CodCiclo" Type="int" Nullable="false" />
     <Property Name="TipoRecuperacaoCod" Type="int" Nullable="false" />
+    <Property Name="LoginEnvio" Type="varchar" MaxLength="20" Nullable="false" />
   </EntityType>
   <EntityType Name="RecuperacaoCustoMes">
     <Key>
@@ -151,6 +152,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="recuperacaocusto_usuario_fk">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+    <End Role="RecuperacaoCusto" Type="Self.RecuperacaoCusto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Login" />
+      </Principal>
+      <Dependent Role="RecuperacaoCusto">
+        <PropertyRef Name="LoginEnvio" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="recuperacaocustomes_mesciclo_fk">
     <End Role="MesCiclo" Type="Self.MesCiclo" Multiplicity="1" />
     <End Role="RecuperacaoCustoMes" Type="Self.RecuperacaoCustoMes" Multiplicity="*" />
@@ -220,6 +233,10 @@
     </AssociationSet>
     <AssociationSet Name="recuperacaocusto_tiporecuperacao_fk" Association="Self.recuperacaocusto_tiporecuperacao_fk">
       <End Role="TipoRecuperacao" EntitySet="TipoRecuperacao" />
+      <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
+    </AssociationSet>
+    <AssociationSet Name="recuperacaocusto_usuario_fk" Association="Self.recuperacaocusto_usuario_fk">
+      <End Role="Usuario" EntitySet="Usuario" />
       <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
     </AssociationSet>
     <AssociationSet Name="recuperacaocustomes_mesciclo_fk" Association="Self.recuperacaocustomes_mesciclo_fk">

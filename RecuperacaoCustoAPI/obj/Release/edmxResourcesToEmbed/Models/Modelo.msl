@@ -44,6 +44,7 @@
     <EntitySetMapping Name="RecuperacaoCusto">
       <EntityTypeMapping TypeName="RecuperacaoCustoModel.RecuperacaoCusto">
         <MappingFragment StoreEntitySet="RecuperacaoCusto">
+          <ScalarProperty Name="LoginEnvio" ColumnName="LoginEnvio" />
           <ScalarProperty Name="DataHoraResposta" ColumnName="DataHoraResposta" />
           <ScalarProperty Name="TipoRecuperacaoCod" ColumnName="TipoRecuperacaoCod" />
           <ScalarProperty Name="CodCiclo" ColumnName="CodCiclo" />
@@ -78,6 +79,7 @@
     <EntitySetMapping Name="Usuario">
       <EntityTypeMapping TypeName="RecuperacaoCustoModel.Usuario">
         <MappingFragment StoreEntitySet="Usuario">
+          <ScalarProperty Name="SenhaEnviada" ColumnName="SenhaEnviada" />
           <ScalarProperty Name="Perfil" ColumnName="Perfil" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Nome" ColumnName="Nome" />

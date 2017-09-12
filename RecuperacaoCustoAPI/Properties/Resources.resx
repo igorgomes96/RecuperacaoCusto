@@ -157,6 +157,7 @@
 			{0}
 		&lt;/tbody&gt;
 	&lt;/table&gt;
+	&lt;p&gt;Link para acesso ao sistema: &lt;a href="{1}"&gt;{1}&lt;/a&gt;&lt;/p&gt;
 	&lt;p&gt;Atenciosamente.&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</value>

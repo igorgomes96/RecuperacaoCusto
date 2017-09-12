@@ -5,7 +5,9 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 	self.usuario = sharedDataService.getUsuario();
 	self.tipos = [];
 	self.recuperacoes = [];
-	self.novaRec = { CROrigem: sharedDataService.getUltimoCR() }
+	self.novaRec = null;
+	$scope.form = {};
+	// self.novaRec = { CROrigem: sharedDataService.getUltimoCR() }
 	$scope.cicloAtual = sharedDataService.getCicloAtual();
 
 
@@ -18,8 +20,8 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 		  	messagesService.exibeMensagemSucesso("Dados importados com sucesso!");
 		  	$("#input-files-label").hide();
         	$("#button-upload-file").hide();
-        	if (self.novaRec && self.novaRec.CROrigem && $scope.cicloAtual)
-        		loadRecuperacoes(self.novaRec.CROrigem, $scope.cicloAtual.Codigo);
+        	if ($scope.cicloAtual)
+        		loadRecuperacoes($scope.cicloAtual.Codigo);
         	ocultaLoader();
 		}).fail(function(jqXHR, textStatus, errorThrown) {
 			if (jqXHR && jqXHR.status && jqXHR.responseText) {
@@ -43,10 +45,10 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 		.then(success, error);
 	}
 
-	var loadCRs = function(success, error, responsavel) {
-		crsAPI.getCRs(responsavel)
-		.then(success, error);
-	}
+	// var loadCRs = function(success, error, responsavel) {
+	// 	crsAPI.getCRs(responsavel)
+	// 	.then(success, error);
+	// }
 
 	var loadTipos = function(success, error) {
 		tiposRecuperacoesAPI.getTiposRecuperacoes()
@@ -57,32 +59,35 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 		});
 	}
 
-	var loadRecuperacoes = function(crOrigem, codCiclo) {
-		recuperacoesCustosAPI.getRecuperacoesCustosPorCicloPorCREnvio(crOrigem, codCiclo)
+	var loadRecuperacoes = function(codCiclo) {
+		recuperacoesCustosAPI.getRecuperacoesCustosEnviadasPorCiclo(codCiclo)
 		.then(function(dado) {
 			self.recuperacoes = dado.data;
 		});
 	}
 
-	self.alteraCROrigem = function(crOrigem) {
-		sharedDataService.setUltimoCR(crOrigem);
-		if (!crOrigem || !$scope.cicloAtual){
-			self.recuperacoes = [];
-		} else {
-			loadRecuperacoes(crOrigem, $scope.cicloAtual.Codigo);
-		}
-	}
+	// self.alteraCROrigem = function(crOrigem) {
+	// 	sharedDataService.setUltimoCR(crOrigem);
+	// 	if (!crOrigem || !$scope.cicloAtual){
+	// 		self.recuperacoes = [];
+	// 	} else {
+	// 		loadRecuperacoes(crOrigem, $scope.cicloAtual.Codigo);
+	// 	}
+	// }
 
 	self.enviarRecuperacoes = function(rec) {
+		exibeLoader();
 		rec.CodCiclo = $scope.cicloAtual.Codigo;
 		rec.DataHora = new Date();
 		recuperacoesCustosAPI.postRecuperacoesCustosPorCiclo(rec)
 		.then(function() {
+			ocultaLoader();
 			messagesService.exibeMensagemSucesso('Solicitação de recuperações de custos enviadas com sucesso!');
-			loadRecuperacoes(self.novaRec.CROrigem, $scope.cicloAtual.Codigo);
-			$scope.formRecuperacoes.$setPristine();
-			self.novaRec = { CROrigem: sharedDataService.getUltimoCR() }
+			loadRecuperacoes($scope.cicloAtual.Codigo);
+			$scope.form.formRecuperacoes.$setPristine();
+			// self.novaRec = { CROrigem: sharedDataService.getUltimoCR() }
 		}, function(error) {
+			ocultaLoader();
 			if (error && error.status && error.status == 404) {
 				messagesService.exibeMensagemErro(error.status, 'CR de destino não encontrado!');
 			} else {
@@ -105,33 +110,34 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 		messagesService.exibeMensagemErro(error.status, 'Falha ao carregar os ciclos.');
 	}
 
-	var sucessoLoadCRs = function(dado) {
-		self.crsOrigem = dado.data;
-		//if (self.crsOrigem && self.crsOrigem.length > 0)
-			//self.novaRec.CROrigem = self.crsOrigem[0].Codigo;
-	}
+	// var sucessoLoadCRs = function(dado) {
+	// 	self.crsOrigem = dado.data;
+	// 	//if (self.crsOrigem && self.crsOrigem.length > 0)
+	// 		//self.novaRec.CROrigem = self.crsOrigem[0].Codigo;
+	// }
 
-	var errorLoadCRs = function(error) {
-		messagesService.exibeMensagemErro(error.status, "Falha ao carregar os CRs do usuário '" + self.usuario.Login + " - " + self.usuario.Nome + "'.");
-	}
+	// var errorLoadCRs = function(error) {
+	// 	messagesService.exibeMensagemErro(error.status, "Falha ao carregar os CRs do usuário '" + self.usuario.Login + " - " + self.usuario.Nome + "'.");
+	// }
 
 	loadCiclos(sucessoLoadCiclos, errorLoadCiclos, null, 'Aberto');
-	loadCRs(sucessoLoadCRs, errorLoadCRs, self.usuario.Login);
+	// loadCRs(sucessoLoadCRs, errorLoadCRs, self.usuario.Login);
 	loadTipos();
 
 
 	$scope.$watch('cicloAtual', function() {
 		sharedDataService.setCicloAtual($scope.cicloAtual);
-		if ($scope.cicloAtual && self.crOrigem) {
-			loadRecuperacoes(self.novaRec.CROrigem, $scope.cicloAtual.Codigo)
+		if ($scope.cicloAtual) {
+			// loadRecuperacoes(self.novaRec.CROrigem, $scope.cicloAtual.Codigo)
+			loadRecuperacoes($scope.cicloAtual.Codigo);
 		} else {
 			self.recuperacoes = [];
 		}
 		//$rootScope.$broadcast('cicloAlteradoEvento', $scope.cicloAtual);
 	});
 
-	if (self.novaRec.CROrigem && $scope.cicloAtual)
-		loadRecuperacoes(self.novaRec.CROrigem, $scope.cicloAtual.Codigo);
+	if ($scope.cicloAtual)
+		loadRecuperacoes($scope.cicloAtual.Codigo);
 
 
 }]); 

@@ -66,6 +66,23 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="components\ciclos\ciclos.html" />
+    <Content Include="components\ciclos\ciclosCtrl.js" />
+    <Content Include="components\container\menu.html" />
+    <Content Include="components\recebimentos\recebimentos.html" />
+    <Content Include="components\recebimentos\recebimentosCtrl.js" />
+    <Content Include="components\recuperacoes\recuperacoes.html" />
+    <Content Include="components\recuperacoes\recuperacoesCtrl.js" />
+    <Content Include="components\usuario\usuario.html" />
+    <Content Include="components\usuario\usuarioCtrl.js" />
+    <Content Include="js\APIs\ciclosAPI.js" />
+    <Content Include="js\APIs\crsAPI.js" />
+    <Content Include="js\APIs\importacoesAPI.js" />
+    <Content Include="js\APIs\recuperacoesCustosAPI.js" />
+    <Content Include="js\APIs\tiposRecuperacoesAPI.js" />
+    <Content Include="js\APIs\usuariosAPI.js" />
+    <Content Include="js\filters\ellipsisFilter.js" />
+    <Content Include="js\services\sessionStorageService.js" />
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -93,7 +110,6 @@
     <Content Include="js\config\routeConfig.js" />
     <Content Include="js\interceptors\anexaTokenInterceptor.js" />
     <Content Include="js\interceptors\errorInterceptor.js" />
-    <Content Include="js\services\localStorageService.js" />
     <Content Include="js\services\messagesService.js" />
     <Content Include="js\services\sharedDataService.js" />
     <Content Include="js\services\sharedDataWithoutInjectionService.js" />

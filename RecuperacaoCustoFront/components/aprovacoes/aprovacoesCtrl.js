@@ -1,4 +1,4 @@
-angular.module('recCustoApp').controller('aprovacoesCtrl', ['sharedDataService', 'messagesService', 'ciclosAPI', '$scope', 'crsAPI', 'recuperacoesCustosAPI', function(sharedDataService, messagesService, ciclosAPI, $scope, crsAPI, recuperacoesCustosAPI) {
+angular.module('recCustoApp').controller('aprovacoesCtrl', ['sharedDataService', 'messagesService', 'ciclosAPI', '$scope', 'crsAPI', 'recuperacoesCustosAPI', '$rootScope', function(sharedDataService, messagesService, ciclosAPI, $scope, crsAPI, recuperacoesCustosAPI, $rootScope) {
 
 	var self = this;
 
@@ -39,6 +39,7 @@ angular.module('recCustoApp').controller('aprovacoesCtrl', ['sharedDataService',
 		.then(function() {
 			messagesService.exibeMensagemSucesso('Recuperações aprovadas com sucesso!');
 			loadRecuperacoes($scope.cicloAtual.Codigo);
+			$rootScope.$broadcast('eventoAprovacao', $scope.cicloAtual.Codigo);
 		}, function(error) {
 			messagesService.exibeMensagemErro(error.status, 'Erro ao aprovar recuperações de custos. Contate o administrador do sistema.');
 		});
@@ -49,6 +50,7 @@ angular.module('recCustoApp').controller('aprovacoesCtrl', ['sharedDataService',
 		.then(function() {
 			messagesService.exibeMensagemSucesso('Recuperações reprovadas com sucesso!');
 			loadRecuperacoes($scope.cicloAtual.Codigo);
+			$rootScope.$broadcast('eventoAprovacao', $scope.cicloAtual.Codigo);
 		}, function(error) {
 			messagesService.exibeMensagemErro(error.status, 'Erro ao reprovar recuperações de custos. Contate o administrador do sistema.');
 		});

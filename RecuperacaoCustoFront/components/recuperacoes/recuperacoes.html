@@ -67,7 +67,7 @@
 			<th width="9%">CR Destino</th>
             <th width="13%">Tipo</th>
 			<!-- <th width="12%">Motivo</th> -->
-			<th ng-repeat="m in cicloAtual.Meses">
+			<th ng-repeat="m in cicloAtual.Meses" class="text-right">
 				{{m.Mes | date:'MMM/yy'}}
 			</th>
             <th width="2%"></th>
@@ -80,8 +80,8 @@
             <td>{{r.CRDestino}}</td>
             <td>{{r.Tipo | ellipsis:3:8}}</td>
            <!--  <td>{{r.Motivo | ellipsis:11:7}}</td> -->
-            <td ng-repeat="m in cicloAtual.Meses">
-                {{r.Recuperacoes[m.Codigo]}}
+            <td ng-repeat="m in cicloAtual.Meses" class="text-right">
+                {{r.Recuperacoes[m.Codigo] | number:2}}
             </td>
             <td>
             	<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalInfoRecuperacoes" ng-click="ct.recInfo = r;"><i class="fa fa-info"></i></button>
@@ -101,29 +101,61 @@
                 <div class="row">
                     <div class="col-md-12">
 
+                        
                         <dl class="dl-horizontal">
-                            <dt>CR Origem</dt>
+                            <dt><h4>Origem</h4></dt><dd></dd>
+                            <dt>CR</dt>
                             <dd>{{ct.recInfo.CROrigem}}</dd>
-                            <dt>Descrição CR Origem</dt>
+                            <dt>Descrição do CR</dt>
                             <dd>{{ct.recInfo.DescricaoCROrigem}}</dd>
                             <dt>Tipo de Recuperação</dt>
                             <dd>{{ct.recInfo.Tipo}}</dd>
                             <dt>Motivo da Recuperação</dt>
                             <dd>{{ct.recInfo.Motivo}}</dd>
+                            <dt>Responsável pelo CR</dt>
+                            <dd>{{ct.recInfo.ResponsavelOrigem}}</dd>
+                            <dt>E-mail do Responsavel</dt>
+                            <dd>{{ct.recInfo.EmailOrigem}}</dd>
                             <dt>Data de Envio</dt>
-                            <dd>{{ct.recInfo.DataHora | date:'dd/MMM/yy hh:mm'}}</dd>
+                            <dd>{{ct.recInfo.DataHora | date:'dd/MMM/yy HH:mm'}}</dd>
+                            <dt>Enviado por</dt>
+                            <dd>{{ct.recInfo.NomeEnvio}}</dd>
                         </dl>
 
                         <dl class="dl-horizontal">
-                            <dt>CR Destino</dt>
+                            <dt><h4>Destino</h4></dt><dd></dd>
+                            <dt>CR</dt>
                             <dd>{{ct.recInfo.CRDestino}}</dd>
-                            <dt>Descrição CR Destino</dt>
+                            <dt>Descrição do CR</dt>
                             <dd>{{ct.recInfo.DescricaoCRDestino}}</dd>
+                            <dt>Responsável pelo CR</dt>
+                            <dd>{{ct.recInfo.ResponsavelDestino}}</dd>
+                            <dt>E-mail do Responsavel</dt>
+                            <dd>{{ct.recInfo.EmailDestino}}</dd>
                         </dl>
 
-                        <dl class="dl-horizontal">
-                            <dt>Data da Aprovação</dt>
-                            <dd>{{ct.recInfo.DataHoraResposta | date:'dd/MMM/yy hh:mm'}}</dd>
+                        <dl class="dl-horizontal" ng-if="ct.recInfo.Aprovado">
+                            <dt><h4>Resposta</h4></dt><dd></dd>
+                            <dt>Status</dt>
+                            <dd>Aprovado</dd>
+                            <dt>Data da Resposta</dt>
+                            <dd>{{ct.recInfo.DataHoraResposta | date:'dd/MMM/yy HH:mm'}}</dd>
+                        </dl>
+
+                        <dl class="dl-horizontal" ng-if="ct.recInfo.Aprovado == false">
+                            <dt><h4>Resposta</h4></dt><dd></dd>
+                            <dt>Status</dt>
+                            <dd>Reprovado</dd>
+                            <dt>Motivo da Reprovação</dt>
+                            <dd>{{ct.recInfo.Resposta}}</dd>
+                            <dt>Data da Resposta</dt>
+                            <dd>{{ct.recInfo.DataHoraResposta | date:'dd/MMM/yy HH:mm'}}</dd>
+                        </dl>
+
+                        <dl class="dl-horizontal" ng-if="ct.recInfo.Aprovado == undefined">
+                            <dt><h4>Resposta</h4></dt><dd></dd>
+                            <dt>Status</dt>
+                            <dd>Aguardando resposta do gestor</dd>
                         </dl>
 
                     </div>

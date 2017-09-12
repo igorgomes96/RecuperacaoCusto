@@ -21,6 +21,11 @@ namespace RecuperacaoCustoAPI.DTO
             TipoRecuperacaoCod = rec.TipoRecuperacaoCod;
             Motivo = rec.Motivo;
             CodCiclo = rec.CodCiclo;
+            LoginEnvio = rec.LoginEnvio;
+            if (rec.Usuario != null)
+            {
+                NomeEnvio = rec.Usuario.Nome;
+            }
             if (rec.TipoRecuperacao != null)
             {
                 Tipo = rec.TipoRecuperacao.Tipo;
@@ -39,6 +44,8 @@ namespace RecuperacaoCustoAPI.DTO
         public string Conta { get; set; }
         public string Motivo { get; set; }
         public int Codigo { get; set; }
+        public string LoginEnvio { get; set; }
+        public string NomeEnvio { get; set; }
         public int CodCiclo { get; set; }
     }
 }

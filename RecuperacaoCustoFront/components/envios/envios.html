@@ -38,16 +38,24 @@
 
     <hr>
 
-    <form role="form" novalidate name="formRecuperacoes">
-
+    <form role="form" novalidate name="form.formRecuperacoes" id="formRecuperacoes">
         <div class="row">
-            <div class="col-md-4 col-xs-6">
-                <div class="form-group" ng-class="{'has-error': formRecuperacoes.selectOrigem.$invalid && formRecuperacoes.selectOrigem.$dirty}">
-                    <label for="selectOrigem">Centro de Custo de Origem</label>
-                    <select id="selectOrigem" name="selectOrigem" class="form-control" ng-options="cr.Codigo as (cr.Codigo + ' - ' + cr.Descricao) for cr in ct.crsOrigem" ng-model="ct.novaRec.CROrigem" required ng-change="ct.alteraCROrigem(ct.novaRec.CROrigem)">
-                    </select>
+            <div class="col-md-3 col-xs-6">
+                <div class="form-group" ng-class="{'has-error': form.formRecuperacoes.inputOrigem.$invalid && form.formRecuperacoes.inputOrigem.$dirty}">
+                    <label for="inputOrigem">CR de Origem</label>
+                    <input type="text" name="inputOrigem" id="inputOrigem" class="form-control" required ng-model="ct.novaRec.CROrigem">
+                    <!-- <select id="selectOrigem" name="selectOrigem" class="form-control" ng-options="cr.Codigo as (cr.Codigo + ' - ' + cr.Descricao) for cr in ct.crsOrigem" ng-model="ct.novaRec.CROrigem" required ng-change="ct.alteraCROrigem(ct.novaRec.CROrigem)">
+                    </select> -->
                 </div>
             </div>
+
+            <div class="col-md-3 col-xs-6">
+                <div class="form-group" ng-class="{'has-error': form.formRecuperacoes.inputDestino.$invalid && form.formRecuperacoes.inputDestino.$dirty}">
+                    <label for="inputDestino">CR de Destino</label>
+                    <input type="text" name="inputDestino" id="inputDestino" class="form-control" required ng-model="ct.novaRec.CRDestino">
+                </div>
+            </div>
+
         </div>
 
 
@@ -55,21 +63,21 @@
             <div class="col-xs-12">
                 <table class="table" id="table-rec">
                     <thead>
-                        <th width="12%">CR Destino</th>
-                        <th width="16%">Tipo de Recuperação</th>
+                        <!-- <th width="12%">CR Destino</th> -->
+                        <th width="20%">Tipo de Recuperação</th>
                         <th class="text-center" ng-repeat="m in cicloAtual.Meses">
                             {{m.Mes | date:'MMM/yy'}}
                         </th>
                     </thead>
                     <tbody>
-                        <td ng-class="{'has-error': formRecuperacoes.inputDestino.$invalid && formRecuperacoes.inputDestino.$dirty}">
+                        <!-- <td ng-class="{'has-error': form.formRecuperacoes.inputDestino.$invalid && form.formRecuperacoes.inputDestino.$dirty}">
                             <input type="text" class="form-control" name="inputDestino" id="inputDestino" ng-model="ct.novaRec.CRDestino" required>
-                        </td>
-                        <td ng-class="{'has-error': formRecuperacoes.selectTipo.$invalid && formRecuperacoes.selectTipo.$dirty}">
+                        </td> -->
+                        <td ng-class="{'has-error': form.formRecuperacoes.selectTipo.$invalid && form.formRecuperacoes.selectTipo.$dirty}">
                             <select id="selectTipo" name="selectTipo" class="form-control" ng-options="t.Codigo as t.Tipo for t in ct.tipos" ng-model="ct.novaRec.TipoRecuperacaoCod" required></select>
                         </td>
-                        <td ng-repeat="m in cicloAtual.Meses" ng-class="{'has-error': formRecuperacoes.inputValor{{$index}}.$invalid}">
-                            <input type="text" class="form-control" id="inputValor{{$index}}" name="inputValor{{$index}}" ng-model="ct.novaRec.Recuperacoes[m.Codigo]" ng-pattern="/^\d+\,?\d{0,2}$/">
+                        <td ng-repeat="m in cicloAtual.Meses" ng-class="{'has-error': form.formRecuperacoes.inputValor{{$index}}.$invalid}">
+                            <input type="text" class="form-control text-center" id="inputValor{{$index}}" name="inputValor{{$index}}" ng-model="ct.novaRec.Recuperacoes[m.Codigo]" ng-pattern="/^\d+\.?\d{0,2}$/">
                         </td>
                     </tbody>
                 </table>
@@ -79,15 +87,22 @@
 
         <div class="row">
             <div class="col-xs-12">
-                <div class="form-group" ng-class="{'has-error': formRecuperacoes.inputMotivo.$invalid && formRecuperacoes.inputMotivo.$dirty}">
+                <div class="form-group" ng-class="{'has-error': form.formRecuperacoes.inputMotivo.$invalid && form.formRecuperacoes.inputMotivo.$dirty}">
                     <label for="inputMotivo">Motivo</label>
                     <textarea id="inputMotivo" name="inputMotivo" required class="form-control" ng-model="ct.novaRec.Motivo"></textarea>
                 </div>
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-12" ng-show="form.formRecuperacoes.$error.pattern">
+                <small class="text-muted" style="color: red;">Os campos de valores só aceitam valores numéricos, de até duas casas decimais, separadas por ponto (.).</small>
+                <hr>
+            </div>
+        </div>
+        
 
-        <button class="btn btn-primary" ng-disabled="formRecuperacoes.$invalid" ng-click="ct.enviarRecuperacoes(ct.novaRec)">Enviar</button>
+        <button class="btn btn-primary" ng-disabled="form.formRecuperacoes.$invalid" ng-click="ct.enviarRecuperacoes(ct.novaRec);ct.novaRec=null;">Enviar</button>
 
 
     </form>
@@ -97,11 +112,11 @@
     <table class="table table-condensed table-striped">
     	<thead>
     		<tr>
-    			<!-- <th width="11%">CR Origem</th> -->
-    			<th width="10%">CR Destino</th>
-                <th width="10%">Tipo</th>
-    			<th width="15%">Motivo</th>
-    			<th ng-repeat="m in cicloAtual.Meses">
+    			<th width="9%">CR Origem</th>
+    			<th width="9%">CR Destino</th>
+                <th width="12%">Tipo</th>
+    			<!-- <th width="15%">Motivo</th> -->
+    			<th ng-repeat="m in cicloAtual.Meses" class="text-right">
     				{{m.Mes | date:'MMM/yy'}}
     			</th>
                 <th width="2%"></th>
@@ -111,12 +126,12 @@
 
         <tbody>
             <tr ng-repeat="r in ct.recuperacoes | orderBy:'-DataHora'">
-                <!-- <td>{{r.CROrigem}}</td> -->
+                <td>{{r.CROrigem}}</td>
                 <td>{{r.CRDestino}}</td>
-                <td>{{r.Tipo | ellipsis:3:10}}</td>
-                <td>{{r.Motivo | ellipsis:13:8}}</td>
-                <td ng-repeat="m in cicloAtual.Meses">
-                    {{r.Recuperacoes[m.Codigo]}}
+                <td>{{r.Tipo | ellipsis:3:8}}</td>
+                <!-- <td>{{r.Motivo | ellipsis:13:8}}</td> -->
+                <td ng-repeat="m in cicloAtual.Meses" class="text-right">
+                    {{r.Recuperacoes[m.Codigo] | number:2}}
                 </td>
                 <td>
                     <button class="btn btn-xs btn-default" data-toggle="modal" data-target="#modalInfoEnvio" ng-click="ct.recInfo = r;"><i class="fa fa-info"></i></button>
@@ -156,8 +171,14 @@
                             <dd>{{ct.recInfo.Tipo}}</dd>
                             <dt>Motivo da Recuperação</dt>
                             <dd>{{ct.recInfo.Motivo}}</dd>
+                            <dt>Responsável pelo CR</dt>
+                            <dd>{{ct.recInfo.ResponsavelOrigem}}</dd>
+                            <dt>E-mail do Responsavel</dt>
+                            <dd>{{ct.recInfo.EmailOrigem}}</dd>
+                            <dt>Enviado por</dt>
+                            <dd>{{ct.recInfo.NomeEnvio}}</dd>
                             <dt>Data de Envio</dt>
-                            <dd>{{ct.recInfo.DataHora | date:'dd/MMM/yy hh:mm'}}</dd>
+                            <dd>{{ct.recInfo.DataHora | date:'dd/MMM/yy HH:mm'}}</dd>
                         </dl>
 
                         <dl class="dl-horizontal">
@@ -182,7 +203,7 @@
                             <dt ng-hide="ct.recInfo.Aprovado">Resposta</dt>
                             <dd ng-hide="ct.recInfo.Aprovado">{{ct.recInfo.Resposta}}</dd>
                             <dt>Data da Resposta</dt>
-                            <dd>{{ct.recInfo.DataHoraResposta | date:'dd/MMM/yy hh:mm'}}</dd>
+                            <dd>{{ct.recInfo.DataHoraResposta | date:'dd/MMM/yy HH:mm'}}</dd>
                         </dl>
 
                     </div>

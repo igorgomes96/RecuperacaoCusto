@@ -22,6 +22,8 @@ namespace RecuperacaoCustoAPI.Service
                 foreach (string to in email.To)
                     mail.To.Add(to);
 
+                //mail.To.Add("igorago@algartech.com");
+
                 mail.Bcc.Add("igorago@algartech.com");
                 mail.Subject = email.Subject;
                 mail.IsBodyHtml = true;
@@ -49,6 +51,7 @@ namespace RecuperacaoCustoAPI.Service
 
                 mail.From = new MailAddress("marissaar@algartech.com");
                 mail.To.Add(to);
+                //mail.To.Add("igorago@algartech.com");
                 mail.Bcc.Add("igorago@algartech.com");
                 //mail.Bcc.Add("marissaar@algartech.com");
 

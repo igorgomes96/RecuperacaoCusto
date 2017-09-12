@@ -40,7 +40,8 @@ namespace RecuperacaoCustoAPI.DTO
                 DataHoraResposta = DataHoraResposta,
                 TipoRecuperacaoCod = TipoRecuperacaoCod,
                 Motivo = Motivo,
-                CodCiclo = CodCiclo
+                CodCiclo = CodCiclo,
+                LoginEnvio = LoginEnvio
             };
             return rec;
         }
@@ -67,6 +68,10 @@ namespace RecuperacaoCustoAPI.DTO
             TipoRecuperacaoCod = rec.TipoRecuperacaoCod;
             Tipo = rec.TipoRecuperacao.Tipo;
             CodCiclo = rec.CodCiclo;
+            if (rec.Usuario != null) {
+                NomeEnvio = rec.Usuario.Nome;
+            }
+            
             if (rec.TipoRecuperacao != null)
             {
                 Tipo = rec.TipoRecuperacao.Tipo;
@@ -108,6 +113,8 @@ namespace RecuperacaoCustoAPI.DTO
         public string Conta { get; set; }
         public string Motivo { get; set; }
         public int CodCiclo { get; set; }
+        public string LoginEnvio { get; set; }
+        public string NomeEnvio { get; set; }
         public IDictionary<int, float> Recuperacoes { get; set; }  //CodMes, Valor Recuperado
         
     }

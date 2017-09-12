@@ -120,8 +120,8 @@ namespace RecuperacaoCustoAPI.Excel
                     CR crOrigem = db.CR.Find(r[0].ToString());
                     if (crOrigem == null) throw new CROrigemNaoEncontradoException(r[0].ToString(), ds.DataSetName, l);
 
-                    //if (crOrigem.ResponsavelLogin != ((CustomIdentity)user.Identity).Usuario.Login)
-                    //    throw new CROrigemNaoAutorizadoException(r[0].ToString(), ds.DataSetName, l);
+                    if (crOrigem.ResponsavelLogin != ((CustomIdentity)user.Identity).Usuario.Login)
+                        throw new CROrigemNaoAutorizadoException(r[0].ToString(), ds.DataSetName, l);
 
                     CR crDestino = db.CR.Find(r[1].ToString());
                     if (crDestino == null) throw new CRDestinoNaoEncontradoException(r[1].ToString(), ds.DataSetName, l);

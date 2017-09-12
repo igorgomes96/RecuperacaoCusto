@@ -21,22 +21,21 @@ namespace RecuperacaoCustoAPI.Controllers
     {
         private Contexto db = new Contexto();
 
-        [HttpGet]
-        [Route("api/RecuperacoesCustos/PorCiclo/{codCiclo}")]
-        [ResponseType(typeof(IEnumerable<RecuperacoesCicloDTO>))]
-        [Authorize(Roles = "Administrador")]
-        public IHttpActionResult GetRecuperacoesPorCiclo(int codCiclo, string crOrigem = null, string crDestino = null, int? codTipo = null, bool? respondido = null, bool? aprovado = null)
-        {
-            Ciclo c = db.Ciclo.Find(codCiclo);
-            if (c == null) return NotFound();
+        //[HttpGet]
+        //[Route("api/RecuperacoesCustos/PorCiclo/{codCiclo}")]
+        //[ResponseType(typeof(IEnumerable<RecuperacoesCicloDTO>))]
+        //public IHttpActionResult GetRecuperacoesPorCiclo (int codCiclo, string crOrigem = null, string crDestino = null, int? codTipo = null, bool? respondido = null, bool? aprovado = null)
+        //{
+        //    Ciclo c = db.Ciclo.Find(codCiclo);
+        //    if (c == null) return NotFound();
 
-            return Ok(db.RecuperacaoCusto.ToList()
-                .Where(x => (crOrigem == null || x.CROrigem == crOrigem) && (crDestino == null || x.CRDestino == crDestino) && (!codTipo.HasValue || x.TipoRecuperacaoCod == codTipo)
-                && (respondido == null || ((respondido == true && x.Aprovado != null) || (respondido == false && x.Aprovado == null)))
-                && (aprovado == null || x.Aprovado == aprovado))
-                .Select(x => new RecuperacoesCicloDTO(x, c))
-                .OrderBy(x => x.DataHora).OrderBy(x => x.CRDestino).OrderBy(x => x.CROrigem));
-        }
+        //    return Ok(db.RecuperacaoCusto.ToList()
+        //        .Where(x => (crOrigem == null || x.CROrigem == crOrigem) && (crDestino == null || x.CRDestino == crDestino) && (!codTipo.HasValue || x.TipoRecuperacaoCod == codTipo)
+        //        && (respondido == null || ((respondido == true && x.Aprovado != null) || (respondido == false && x.Aprovado == null)))
+        //        && (aprovado == null || x.Aprovado == aprovado))
+        //        .Select(x => new RecuperacoesCicloDTO(x, c))
+        //        .OrderBy(x => x.DataHora).OrderBy(x => x.CRDestino).OrderBy(x => x.CROrigem));
+        //}
 
         [HttpGet]
         [Route("api/RecuperacoesCustos/PorCiclo/Enviadas/{codCiclo}")]
@@ -52,7 +51,7 @@ namespace RecuperacaoCustoAPI.Controllers
             IEnumerable<RecuperacaoCusto> lista = db.RecuperacaoCusto
                 .Where(x => (aprovado == null || x.Aprovado == aprovado) && (!respondido.HasValue || (respondido.Value ? x.Aprovado != null : x.Aprovado == null)) && (x.CodCiclo == codCiclo));
             if (User.IsInRole("Gestor"))
-                lista = lista.Where(x => (((CustomIdentity)User.Identity).Usuario.CRs.Count(y => y.Codigo == x.CROrigem) > 0) || x.LoginEnvio == ((CustomIdentity)User.Identity).Usuario.Login);
+                lista = lista.Where(x => ((CustomIdentity)User.Identity).Usuario.CRs.Count(y => y.Codigo == x.CROrigem) > 0);
             else if (User.IsInRole("Usuário"))
                 lista = lista.Where(x => x.LoginEnvio == ((CustomIdentity)User.Identity).Usuario.Login);
 
@@ -279,15 +278,10 @@ namespace RecuperacaoCustoAPI.Controllers
         [ResponseType(typeof(int))]
         [Route("api/RecuperacoesCustos/QtdaAprovacoesPendentes/{codCiclo}")]
         [Authorize(Roles = "Gestor")]
-        public IHttpActionResult QtdaAprovacoesPendentes(int codCiclo)
+        public IHttpActionResult QtdaAprovacoesPendentes()
         {
             Usuario user = ((CustomIdentity)User.Identity).Usuario;
 
-            Ciclo ciclo = db.Ciclo.Find(codCiclo);
-            if (ciclo == null) return NotFound();
-
-            return Ok(db.RecuperacaoCusto
-                .Count(x => x.Aprovado == null && x.CodCiclo == codCiclo && x.Destino.ResponsavelLogin == user.Login));
 
         }
 

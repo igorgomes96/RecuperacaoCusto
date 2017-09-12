@@ -10,10 +10,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>09/11/2017 16:56:27</publishTime>
+      <publishTime>09/12/2017 17:47:12</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>09/11/2017 16:56:27</publishTime>
+      <publishTime>09/12/2017 17:47:12</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>11/03/2015 18:43:42</publishTime>
@@ -31,7 +31,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/03/2014 20:33:56</publishTime>
     </File>
     <File Include="bin/RecuperacaoCustoAPI.dll">
-      <publishTime>09/11/2017 16:56:14</publishTime>
+      <publishTime>09/12/2017 17:46:56</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>06/18/2015 20:19:46</publishTime>
@@ -103,13 +103,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/28/2015 05:04:30</publishTime>
     </File>
     <File Include="Models/Modelo.edmx.diagram">
-      <publishTime>09/11/2017 16:34:42</publishTime>
+      <publishTime>09/12/2017 11:40:19</publishTime>
     </File>
     <File Include="packages.config">
       <publishTime>08/30/2017 14:41:53</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>09/11/2017 16:56:17</publishTime>
+      <publishTime>09/12/2017 17:47:00</publishTime>
     </File>
     <File Include="Web.config">
       <publishTime>09/11/2017 15:06:07</publishTime>

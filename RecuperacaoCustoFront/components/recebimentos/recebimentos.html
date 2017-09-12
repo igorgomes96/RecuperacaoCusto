@@ -16,9 +16,9 @@
     		<tr>
     			<th width="9%">CR Origem</th>
     			<th width="9%">CR Destino</th>
-                <th width="13%">Tipo</th>
+                <th width="12%">Tipo</th>
     			<!-- <th width="12%">Motivo</th> -->
-    			<th ng-repeat="m in cicloAtual.Meses">
+    			<th ng-repeat="m in cicloAtual.Meses" class="text-right">
     				{{m.Mes | date:'MMM/yy'}}
     			</th>
                 <th width="2%"></th>
@@ -31,8 +31,8 @@
                 <td>{{r.CRDestino}}</td>
                 <td>{{r.Tipo | ellipsis:3:8}}</td>
                <!--  <td>{{r.Motivo | ellipsis:11:7}}</td> -->
-                <td ng-repeat="m in cicloAtual.Meses">
-                    {{r.Recuperacoes[m.Codigo]}}
+                <td ng-repeat="m in cicloAtual.Meses" class="text-right">
+                    {{r.Recuperacoes[m.Codigo] | number:2}}
                 </td>
                 <td>
                 	<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalInfoRecebimento" ng-click="ct.recInfo = r;"><i class="fa fa-info"></i></button>
@@ -66,8 +66,14 @@
                             <dd>{{ct.recInfo.Tipo}}</dd>
                             <dt>Motivo da Recuperação</dt>
                             <dd>{{ct.recInfo.Motivo}}</dd>
+                            <dt>Responsável pelo CR</dt>
+                            <dd>{{ct.recInfo.ResponsavelOrigem}}</dd>
+                            <dt>E-mail do Responsavel</dt>
+                            <dd>{{ct.recInfo.EmailOrigem}}</dd>
+                            <dt>Enviado por</dt>
+                            <dd>{{ct.recInfo.NomeEnvio}}</dd>
                             <dt>Data de Envio</dt>
-                            <dd>{{ct.recInfo.DataHora | date:'dd/MMM/yy hh:mm'}}</dd>
+                            <dd>{{ct.recInfo.DataHora | date:'dd/MMM/yy HH:mm'}}</dd>
                         </dl>
 
                         <dl class="dl-horizontal">
@@ -79,7 +85,7 @@
 
                         <dl class="dl-horizontal">
                             <dt>Data da Aprovação</dt>
-                            <dd>{{ct.recInfo.DataHoraResposta | date:'dd/MMM/yy hh:mm'}}</dd>
+                            <dd>{{ct.recInfo.DataHoraResposta | date:'dd/MMM/yy HH:mm'}}</dd>
                         </dl>
 
                     </div>

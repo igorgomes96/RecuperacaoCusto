@@ -44,6 +44,7 @@
     <EntitySetMapping Name="RecuperacaoCusto">
       <EntityTypeMapping TypeName="RecuperacaoCustoModel.RecuperacaoCusto">
         <MappingFragment StoreEntitySet="RecuperacaoCusto">
+          <ScalarProperty Name="LoginEnvio" ColumnName="LoginEnvio" />
           <ScalarProperty Name="DataHoraResposta" ColumnName="DataHoraResposta" />
           <ScalarProperty Name="TipoRecuperacaoCod" ColumnName="TipoRecuperacaoCod" />
           <ScalarProperty Name="CodCiclo" ColumnName="CodCiclo" />
