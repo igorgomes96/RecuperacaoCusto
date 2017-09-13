@@ -43,7 +43,7 @@
             <div class="col-md-3 col-xs-6">
                 <div class="form-group" ng-class="{'has-error': form.formRecuperacoes.inputOrigem.$invalid && form.formRecuperacoes.inputOrigem.$dirty}">
                     <label for="inputOrigem">CR de Origem</label>
-                    <input type="text" name="inputOrigem" id="inputOrigem" class="form-control" required ng-model="ct.novaRec.CROrigem">
+                    <input type="text" name="inputOrigem" id="inputOrigem" class="form-control" required ng-model="ct.novaRec.CROrigem" ng-maxlength="9">
                     <!-- <select id="selectOrigem" name="selectOrigem" class="form-control" ng-options="cr.Codigo as (cr.Codigo + ' - ' + cr.Descricao) for cr in ct.crsOrigem" ng-model="ct.novaRec.CROrigem" required ng-change="ct.alteraCROrigem(ct.novaRec.CROrigem)">
                     </select> -->
                 </div>
@@ -52,7 +52,7 @@
             <div class="col-md-3 col-xs-6">
                 <div class="form-group" ng-class="{'has-error': form.formRecuperacoes.inputDestino.$invalid && form.formRecuperacoes.inputDestino.$dirty}">
                     <label for="inputDestino">CR de Destino</label>
-                    <input type="text" name="inputDestino" id="inputDestino" class="form-control" required ng-model="ct.novaRec.CRDestino">
+                    <input type="text" name="inputDestino" id="inputDestino" class="form-control" required ng-model="ct.novaRec.CRDestino" ng-maxlength="9">
                 </div>
             </div>
 
@@ -63,16 +63,12 @@
             <div class="col-xs-12">
                 <table class="table" id="table-rec">
                     <thead>
-                        <!-- <th width="12%">CR Destino</th> -->
                         <th width="20%">Tipo de Recuperação</th>
                         <th class="text-center" ng-repeat="m in cicloAtual.Meses">
                             {{m.Mes | date:'MMM/yy'}}
                         </th>
                     </thead>
                     <tbody>
-                        <!-- <td ng-class="{'has-error': form.formRecuperacoes.inputDestino.$invalid && form.formRecuperacoes.inputDestino.$dirty}">
-                            <input type="text" class="form-control" name="inputDestino" id="inputDestino" ng-model="ct.novaRec.CRDestino" required>
-                        </td> -->
                         <td ng-class="{'has-error': form.formRecuperacoes.selectTipo.$invalid && form.formRecuperacoes.selectTipo.$dirty}">
                             <select id="selectTipo" name="selectTipo" class="form-control" ng-options="t.Codigo as t.Tipo for t in ct.tipos" ng-model="ct.novaRec.TipoRecuperacaoCod" required></select>
                         </td>
@@ -89,7 +85,7 @@
             <div class="col-xs-12">
                 <div class="form-group" ng-class="{'has-error': form.formRecuperacoes.inputMotivo.$invalid && form.formRecuperacoes.inputMotivo.$dirty}">
                     <label for="inputMotivo">Motivo</label>
-                    <textarea id="inputMotivo" name="inputMotivo" required class="form-control" ng-model="ct.novaRec.Motivo"></textarea>
+                    <textarea id="inputMotivo" name="inputMotivo" required class="form-control" ng-model="ct.novaRec.Motivo" ng-maxlength="4000"></textarea>
                 </div>
             </div>
         </div>
@@ -99,10 +95,20 @@
                 <small class="text-muted" style="color: red;">Os campos de valores só aceitam valores numéricos, de até duas casas decimais, separadas por ponto (.).</small>
                 <hr>
             </div>
+
+            <div class="col-md-12" ng-show="form.formRecuperacoes.inputOrigem.$error.maxlength || form.formRecuperacoes.inputDestino.$error.maxlength">
+                <small class="text-muted" style="color: red;">Código do CR deve conter no máximo 9 caracteres.</small>
+                <hr>
+            </div>
+
+            <div class="col-md-12" ng-show="form.formRecuperacoes.inputMotivo.$error.maxlength">
+                <small class="text-muted" style="color: red;">O motivo deve conter no máximo 4000 caracteres.</small>
+                <hr>
+            </div>
         </div>
         
 
-        <button class="btn btn-primary" ng-disabled="form.formRecuperacoes.$invalid" ng-click="ct.enviarRecuperacoes(ct.novaRec);ct.novaRec=null;">Enviar</button>
+        <button class="btn btn-primary" ng-disabled="form.formRecuperacoes.$invalid" ng-click="ct.enviarRecuperacoes()">Enviar</button>
 
 
     </form>

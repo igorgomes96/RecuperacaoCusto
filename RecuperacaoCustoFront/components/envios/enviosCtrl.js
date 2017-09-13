@@ -1,4 +1,4 @@
-angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'messagesService', 'ciclosAPI', '$scope', 'crsAPI', 'tiposRecuperacoesAPI', 'recuperacoesCustosAPI', 'uploadFileService', function(sharedDataService, messagesService, ciclosAPI, $scope, crsAPI, tiposRecuperacoesAPI, recuperacoesCustosAPI, uploadFileService) {
+angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'messagesService', 'ciclosAPI', '$scope', 'crsAPI', 'tiposRecuperacoesAPI', 'recuperacoesCustosAPI', 'uploadFileService', '$rootScope', function(sharedDataService, messagesService, ciclosAPI, $scope, crsAPI, tiposRecuperacoesAPI, recuperacoesCustosAPI, uploadFileService, $rootScope) {
 
 	var self = this;
 	self.crsOrigem = [];
@@ -41,6 +41,7 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 
 
 	var loadCiclos = function(success, error, ano, status) {
+		$rootScope.mostraLoader = true;
 		ciclosAPI.getCiclos(ano, status)
 		.then(success, error);
 	}
@@ -51,18 +52,26 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 	// }
 
 	var loadTipos = function(success, error) {
+		$rootScope.mostraLoader = true;
 		tiposRecuperacoesAPI.getTiposRecuperacoes()
 		.then(function(dado) {
 			self.tipos = dado.data;
+			$rootScope.mostraLoader = false;
 		}, function(error) {
 			messagesService.exibeMensagemErro(error.status, 'Falha ao carregar os Tipos de Recuperações.');
+			$rootScope.mostraLoader = false;
 		});
 	}
 
 	var loadRecuperacoes = function(codCiclo) {
+		$rootScope.mostraLoader = true;
 		recuperacoesCustosAPI.getRecuperacoesCustosEnviadasPorCiclo(codCiclo)
 		.then(function(dado) {
 			self.recuperacoes = dado.data;
+			$rootScope.mostraLoader = false;
+		}, function(error) {
+			messagesService.exibeMensagemErro(error.status, 'Falha ao carregar as recuperações.');
+			$rootScope.mostraLoader = false;
 		});
 	}
 
@@ -75,21 +84,22 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 	// 	}
 	// }
 
-	self.enviarRecuperacoes = function(rec) {
+	self.enviarRecuperacoes = function() {
 		exibeLoader();
-		rec.CodCiclo = $scope.cicloAtual.Codigo;
-		rec.DataHora = new Date();
-		recuperacoesCustosAPI.postRecuperacoesCustosPorCiclo(rec)
+		self.novaRec.CodCiclo = $scope.cicloAtual.Codigo;
+		self.novaRec.DataHora = new Date();
+		recuperacoesCustosAPI.postRecuperacoesCustosPorCiclo(self.novaRec)
 		.then(function() {
 			ocultaLoader();
 			messagesService.exibeMensagemSucesso('Solicitação de recuperações de custos enviadas com sucesso!');
 			loadRecuperacoes($scope.cicloAtual.Codigo);
 			$scope.form.formRecuperacoes.$setPristine();
+			self.novaRec = null;
 			// self.novaRec = { CROrigem: sharedDataService.getUltimoCR() }
 		}, function(error) {
 			ocultaLoader();
-			if (error && error.status && error.status == 404) {
-				messagesService.exibeMensagemErro(error.status, 'CR de destino não encontrado!');
+			if (error && error.status && error.data) {
+				messagesService.exibeMensagemErro(error.status, error.data);
 			} else {
 				messagesService.exibeMensagemErro(error.status, 'Falha ao enviar solicitação.');
 			}
@@ -104,10 +114,12 @@ angular.module('recCustoApp').controller('enviosCtrl', ['sharedDataService', 'me
 		self.ciclos = dado.data;
 		if (self.ciclos.length > 0 && !$scope.cicloAtual)
 			$scope.cicloAtual = self.ciclos[0];
+		$rootScope.mostraLoader = false;
 	}
 
 	var errorLoadCiclos = function(error) {
 		messagesService.exibeMensagemErro(error.status, 'Falha ao carregar os ciclos.');
+		$rootScope.mostraLoader = false;
 	}
 
 	// var sucessoLoadCRs = function(dado) {

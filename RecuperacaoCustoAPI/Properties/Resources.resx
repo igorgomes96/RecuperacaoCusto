@@ -142,7 +142,7 @@
     &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
-	&lt;p&gt;Prezado,&lt;/p&gt;
+	&lt;p&gt;Prezado(a),&lt;/p&gt;
 	&lt;p&gt;Segue abaixo a relação de Recuperações de Custos enviados para os CRs de sua gestão:&lt;/p&gt;
 	&lt;table id="tabela-recuperacoes"&gt;
 		&lt;thead&gt;

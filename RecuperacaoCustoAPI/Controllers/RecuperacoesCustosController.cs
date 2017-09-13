@@ -234,7 +234,9 @@ namespace RecuperacaoCustoAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (db.CR.Find(rec.CRDestino) == null) return NotFound();
+            if (db.CR.Find(rec.CROrigem) == null) return Content(HttpStatusCode.NotFound, "CR de Origem não encontrado!");
+            if (db.CR.Find(rec.CRDestino) == null) return Content(HttpStatusCode.NotFound, "CR de Destino não encontrado!");
+            
 
             RecuperacaoCusto r = rec.GetRecuperacaoCusto();
             db.RecuperacaoCusto.AddOrUpdate(r);

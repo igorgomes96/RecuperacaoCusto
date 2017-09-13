@@ -49,13 +49,6 @@ namespace RecuperacaoCustoAPI.Controllers
         //}
 
         //[HttpGet]
-        //[Route("api/Base64/{texto}")]
-        //public string AlteraTodasSenhas(string texto)
-        //{
-        //    return Convert.ToBase64String(Encoding.UTF8.GetBytes(texto));
-        //}
-
-        //[HttpGet]
         //[Route("EnviarSenhas")]
         //[ResponseType(typeof(void))]
         //public IHttpActionResult EnviaSenhas()

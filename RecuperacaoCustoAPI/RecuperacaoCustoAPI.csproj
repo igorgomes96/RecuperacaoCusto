@@ -142,6 +142,7 @@
     <Compile Include="Controllers\CRsController.cs" />
     <Compile Include="Controllers\ImportacoesController.cs" />
     <Compile Include="Controllers\RecuperacoesCustosController.cs" />
+    <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\TiposRecuperacoesController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="DTO\AlteraSenhaDTO.cs" />

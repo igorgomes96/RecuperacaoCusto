@@ -5,11 +5,13 @@
   <li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'container.envios'}"><a ui-sref="container.envios">Envios</a></li>
   <li role="presentation" ng-if="ctMain.usuario.Perfil == 'Gestor'" ng-class="{'active': ctMain.estadoAtual == 'container.aprovacoes'}"><a ui-sref="container.aprovacoes">Aprovações <span class="badge" ng-show="ctMain.qtdaAprovacoesPendentes" style="background-color: #337ab7;">{{ctMain.qtdaAprovacoesPendentes}}</span></a></li>
   <li role="presentation" ng-if="ctMain.usuario.Perfil == 'Gestor'" ng-class="{'active': ctMain.estadoAtual == 'container.recebimentos'}"><a ui-sref="container.recebimentos">Recebimentos</a></li>
+  <div class="custom-loader loader-azul pull-right" style="margin-top: 10px" ng-show="mostraLoader"></div>
 </ul>
 
 <ul class="nav nav-tabs" ng-if="ctMain.usuario.Perfil == 'Administrador'">
   <li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'container.home'}"><a ui-sref="container.home">Home</a></li>
   <li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'container.ciclos'}"><a ui-sref="container.ciclos">Ciclos</a></li>
   <li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'container.recuperacoes'}"><a ui-sref="container.recuperacoes">Recuperações de Custos</a></li>
+  <div class="custom-loader loader-azul pull-right" style="margin-top: 10px" ng-show="mostraLoader"></div>
 </ul>
 <div class="container-fluid" ui-view style="margin-top: 15px;"></div>

@@ -20,11 +20,12 @@
 </head>
 
 <body ng-app="recCustoApp">
-	<div class="container-fluid" ng-controller="autenticacaoCtrl as ct">
+	<div class="container-fluid">
 
-		<div id="panel-login" class="panel panel-default">
+		<div id="panel-login" class="panel panel-default" ng-controller="autenticacaoCtrl as ct">
 			<div class="panel-heading">
-		        <h3 class="panel-title">Autenticação</h3>
+		        <h3 class="panel-title" style="display: inline;">Autenticação</h3>
+		        <div class="custom-loader loader-verde pull-right" ng-show="ct.mostraLoader"></div>
 		    </div>
 		    <div class="panel-body">
 		        <form role="form">

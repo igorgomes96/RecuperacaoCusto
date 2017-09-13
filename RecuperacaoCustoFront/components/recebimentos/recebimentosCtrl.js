@@ -1,4 +1,4 @@
-angular.module('recCustoApp').controller('recebimentosCtrl', ['sharedDataService', 'messagesService', 'ciclosAPI', '$scope', 'crsAPI', 'recuperacoesCustosAPI', function(sharedDataService, messagesService, ciclosAPI, $scope, crsAPI, recuperacoesCustosAPI) {
+angular.module('recCustoApp').controller('recebimentosCtrl', ['sharedDataService', 'messagesService', 'ciclosAPI', '$scope', 'crsAPI', 'recuperacoesCustosAPI', '$rootScope', function(sharedDataService, messagesService, ciclosAPI, $scope, crsAPI, recuperacoesCustosAPI, $rootScope) {
 
 	var self = this;
 
@@ -7,6 +7,7 @@ angular.module('recCustoApp').controller('recebimentosCtrl', ['sharedDataService
 	$scope.cicloAtual = sharedDataService.getCicloAtual();
 
 	var loadCiclos = function(success, error, ano, status) {
+		$rootScope.mostraLoader = true;
 		ciclosAPI.getCiclos(ano, status)
 		.then(success, error);
 	}
@@ -20,16 +21,23 @@ angular.module('recCustoApp').controller('recebimentosCtrl', ['sharedDataService
 
 		if (self.ciclos.length > 0 && !$scope.cicloAtual)
 			$scope.cicloAtual = self.ciclos[0];
+		$rootScope.mostraLoader = false;
 	}
 
 	var errorLoadCiclos = function(error) {
 		messagesService.exibeMensagemErro(error.status, 'Falha ao carregar os ciclos.');
+		$rootScope.mostraLoader = false;
 	}
 
 	var loadRecuperacoes = function(codCiclo) {
+		$rootScope.mostraLoader = true;
 		recuperacoesCustosAPI.getRecuperacoesCustosRecebidasPorCiclo(codCiclo, true, true)
 		.then(function(dado) {
 			self.recuperacoes = dado.data;
+			$rootScope.mostraLoader = false;
+		}, function(error) {
+			messagesService.exibeMensagemErro(error.status, 'Falha ao carregar as recuperações.');
+			$rootScope.mostraLoader = false;
 		});
 	}
 
