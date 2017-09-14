@@ -187,7 +187,7 @@
     &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
-	&lt;p&gt;Boa tarde,&lt;/p&gt;
+	&lt;p&gt;Bom dia,&lt;/p&gt;
 	&lt;p&gt;Segue abaixo usuário e senha para acesso ao sistema de Recuperação de Custos - Orçamento 2018 (para envios e aprovações):&lt;/p&gt;
 	&lt;p&gt;&lt;strong&gt;Usuário: &lt;/strong&gt;{0}&lt;br&gt;&lt;strong&gt;Senha: &lt;/strong&gt;{1}&lt;/p&gt;
 	&lt;p&gt;Link para acesso ao sistema: &lt;a href="{2}"&gt;{2}&lt;/a&gt;&lt;/p&gt;

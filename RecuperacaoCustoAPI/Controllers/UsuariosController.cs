@@ -48,22 +48,6 @@ namespace RecuperacaoCustoAPI.Controllers
 
         //}
 
-        //[HttpGet]
-        //[Route("EnviarSenhas")]
-        //[ResponseType(typeof(void))]
-        //public IHttpActionResult EnviaSenhas()
-        //{
-        //    foreach (Usuario u in db.Usuario)
-        //    {
-        //        if (u.Email != null && !u.SenhaEnviada.Value)
-        //        {
-        //            byte[] data = Convert.FromBase64String(u.Senha);
-        //            string senha = Encoding.UTF8.GetString(data);
-        //            SendEmail.Send(u.Email, "Acesso ao Sistema de Recuperação de Custos", string.Format(Resources.EnvioSenha, u.Login, senha, "http://10.200.51.46:8095"));
-        //        }
-        //    }
-        //    return Ok();
-        //}
 
         // GET: api/Usuarios/5
         [ResponseType(typeof(UsuarioDTO))]

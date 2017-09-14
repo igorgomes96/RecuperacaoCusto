@@ -1,87 +1,93 @@
 <div ng-include="'components/container/menu.html'"></div>
 
-<form role="form" name="formUsuario" novalidate style="margin-bottom: 15px; max-width: 600px; margin: auto;">
+<div style="margin-bottom: 40px;">
+    <form role="form" name="formUsuario" novalidate style="max-width: 600px; margin: auto;">
 
-	<h3>Dados do Usuário</h3>
+        <h3>Dados do Usuário</h3>
 
-	<div class="row">
-	    <div class="col-xs-12 col-md-6">
-	        <div class="form-group">
-	            <label for="inputLogin">Login</label>
-	            <input type="text" id="inputLogin" name="inputLogin" class="form-control" disabled ng-model="ct.usuario.Login">
-	        </div>
-	    </div>
-	</div>
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="form-group">
+                    <label for="inputLogin">Login</label>
+                    <input type="text" id="inputLogin" name="inputLogin" class="form-control" disabled ng-model="ct.usuario.Login">
+                </div>
+            </div>
+        </div>
 
-	<div class="row">
-	    <div class="col-xs-12">
-	        <div class="form-group" ng-class="{'has-error': formUsuario.inputNome.$invalid}">
-	            <label for="inputNome">Nome</label>
-	            <input type="text" id="inputNome" name="inputNome" required class="form-control" ng-disabled="!ct.editando" ng-model="ct.usuario.Nome">
-	        </div>
-	    </div>
-	</div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group" ng-class="{'has-error': formUsuario.inputNome.$invalid}">
+                    <label for="inputNome">Nome</label>
+                    <input type="text" id="inputNome" name="inputNome" required class="form-control" ng-disabled="!ct.editando" ng-model="ct.usuario.Nome">
+                </div>
+            </div>
+        </div>
 
-	<div class="row">
-	    <div class="col-xs-12">
-	        <div class="form-group" ng-class="{'has-error': formUsuario.inputEmail.$invalid}">
-	            <label for="inputEmail">Email</label>
-	            <input type="email" id="inputEmail" name="inputEmail" required class="form-control" ng-disabled="!ct.editando" ng-model="ct.usuario.Email">
-	        </div>
-	    </div>
-	</div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group" ng-class="{'has-error': formUsuario.inputEmail.$invalid}">
+                    <label for="inputEmail">Email</label>
+                    <input type="email" id="inputEmail" name="inputEmail" required class="form-control" ng-disabled="!ct.editando" ng-model="ct.usuario.Email">
+                </div>
+            </div>
+        </div>
 
-	<div class="row">
-	    <div class="col-xs-12">
-	        <div class="form-group">
-	            <label for="inputPerfil">Perfil</label>
-	            <input type="text" id="inputPerfil" name="inputPerfil" class="form-control" ng-disabled="!ct.editando || ct.userLogado.Perfil != 'Administrador'" ng-model="ct.usuario.Perfil">
-	        </div>
-	    </div>
-	</div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="inputPerfil">Perfil</label>
+                    <input type="text" id="inputPerfil" name="inputPerfil" class="form-control" ng-disabled="!ct.editando || ct.userLogado.Perfil != 'Administrador'" ng-model="ct.usuario.Perfil">
+                </div>
+            </div>
+        </div>
 
 
-	<div ng-if="ct.userLogado.Login == ct.usuario.Login && ct.alterarSenha">
-		<hr>
-		<h3>Alteração de Senha</h3>
+        <div ng-if="ct.userLogado.Login == ct.usuario.Login && ct.alterarSenha">
+            <hr>
+            <h3>Alteração de Senha</h3>
 
-		<div class="row">
-		    <div class="col-xs-12">
-		        <div class="form-group" ng-class="{'has-error': formUsuario.inputSenhaAtual.$invalid && formUsuario.inputSenhaAtual.$dirty}">
-		            <label for="inputSenhaAtual">Senha Atual</label>
-		            <input type="password" id="inputSenhaAtual" name="inputSenhaAtual" class="form-control" ng-disabled="!ct.editando" ng-model="ct.usuario.NovaSenha.SenhaAtual" required ng-minlength="6" ng-maxlength="100">
-		        </div>
-		    </div>
-		</div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group" ng-class="{'has-error': formUsuario.inputSenhaAtual.$invalid && formUsuario.inputSenhaAtual.$dirty}">
+                        <label for="inputSenhaAtual">Senha Atual</label>
+                        <input type="password" id="inputSenhaAtual" name="inputSenhaAtual" class="form-control" ng-disabled="!ct.editando" ng-model="ct.usuario.NovaSenha.SenhaAtual" required ng-minlength="6" ng-maxlength="100">
+                    </div>
+                </div>
+            </div>
 
-		<div class="row">
-		    <div class="col-xs-12">
-		        <div class="form-group" ng-class="{'has-error': formUsuario.inputNovaSenha.$invalid && formUsuario.inputNovaSenha.$dirty}">
-		            <label for="inputNovaSenha">Nova Senha</label>
-		            <input type="password" id="inputNovaSenha" name="inputNovaSenha" class="form-control" ng-disabled="!ct.editando" ng-model="ct.usuario.NovaSenha.NovaSenha" required ng-minlength="6" ng-maxlength="100">
-		        </div>
-		    </div>
-		</div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group" ng-class="{'has-error': formUsuario.inputNovaSenha.$invalid && formUsuario.inputNovaSenha.$dirty}">
+                        <label for="inputNovaSenha">Nova Senha</label>
+                        <input type="password" id="inputNovaSenha" name="inputNovaSenha" class="form-control" ng-disabled="!ct.editando" ng-model="ct.usuario.NovaSenha.NovaSenha" required ng-minlength="6" ng-maxlength="100">
+                    </div>
+                </div>
+            </div>
 
-		<div class="row">
-		    <div class="col-xs-12">
-		        <div class="form-group" ng-class="{'has-error': (formUsuario.inputConfirmacao.$invalid || ct.usuario.NovaSenha.Confirmacao != ct.usuario.NovaSenha.NovaSenha) && formUsuario.inputConfirmacao.$dirty}">
-		            <label for="inputConfirmacao">Confirmação</label>
-		            <input type="password" id="inputConfirmacao" name="inputConfirmacao" class="form-control" ng-disabled="!ct.editando" ng-model="ct.usuario.NovaSenha.Confirmacao" required ng-minlength="6" ng-maxlength="100">
-		        </div>
-		    </div>
-		</div>
-	</div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group" ng-class="{'has-error': (formUsuario.inputConfirmacao.$invalid || ct.usuario.NovaSenha.Confirmacao != ct.usuario.NovaSenha.NovaSenha) && formUsuario.inputConfirmacao.$dirty}">
+                        <label for="inputConfirmacao">Confirmação</label>
+                        <input type="password" id="inputConfirmacao" name="inputConfirmacao" class="form-control" ng-disabled="!ct.editando" ng-model="ct.usuario.NovaSenha.Confirmacao" required ng-minlength="6" ng-maxlength="100">
+                    </div>
+                </div>
+            </div>
+        </div>
 
-	<div class="row">
-		<div class="col-xs-12">
-			<button class="btn btn-success" ng-disabled="formUsuario.$invalid || ct.usuario.NovaSenha.Confirmacao != ct.usuario.NovaSenha.NovaSenha" ng-show="ct.editando" ng-click="ct.salvar(ct.usuario)">Salvar</button>
-			<button class="btn btn-primary" ng-hide="ct.editando" ng-click="ct.editando = true">Editar</button>
-			<button class="btn btn-default" ng-show="ct.editando" ng-click="ct.cancelar()">Cancelar</button>
-			<button class="btn btn-default" ng-hide="ct.editando || ct.alterarSenha == true" ng-click="ct.alterarSenha = true">Alterar Senha</button>
-			<a class="btn btn-default pull-right" ng-hide="ct.editando" ui-sref="container.home">Voltar</a>
-		</div>
-	</div>
+        <div class="row">
+            <div class="col-xs-12">
+                <button class="btn btn-success" ng-disabled="formUsuario.$invalid || ct.usuario.NovaSenha.Confirmacao != ct.usuario.NovaSenha.NovaSenha" ng-show="ct.editando" ng-click="ct.salvar(ct.usuario)">Salvar</button>
+                <button class="btn btn-primary" ng-hide="ct.editando" ng-click="ct.editando = true">Editar</button>
+                <button class="btn btn-default" ng-show="ct.editando" ng-click="ct.cancelar()">Cancelar</button>
+                <button class="btn btn-default" ng-hide="ct.editando || ct.alterarSenha == true" ng-click="ct.alterarSenha = true">Alterar Senha</button>
+                <a class="btn btn-default pull-right" ng-hide="ct.editando" ui-sref="container.home">Voltar</a>
+            </div>
+        </div>
 
-	
-</form>
+
+    </form>
+</div>
+
+<div class="footer">
+    <small class="text-muted pull-right">Desenvolvido por Igor Ap. Gomes (FSW - UDI)</small>
+</div>
