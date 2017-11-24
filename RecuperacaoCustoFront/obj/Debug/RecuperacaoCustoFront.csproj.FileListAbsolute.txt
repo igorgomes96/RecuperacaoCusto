@@ -59,3 +59,4 @@ C:\Users\igorg\Documents\GitHub\RecuperacaoCusto\RecuperacaoCustoFront\obj\Debug
 C:\Users\igorg\Documents\GitHub\RecuperacaoCusto\RecuperacaoCustoFront\obj\Debug\RecuperacaoCustoFront.csproj.CoreCompileInputs.cache
 C:\Users\igorg\Documents\GitHub\RecuperacaoCusto\RecuperacaoCustoFront\obj\Debug\RecuperacaoCustoFront.dll
 C:\Users\igorg\Documents\GitHub\RecuperacaoCusto\RecuperacaoCustoFront\obj\Debug\RecuperacaoCustoFront.pdb
+C:\Users\igorago\Documents\GitHub\RecuperacaoCusto\RecuperacaoCustoFront\obj\Debug\RecuperacaoCustoFront.csproj.CoreCompileInputs.cache

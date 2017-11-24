@@ -38,5 +38,19 @@ namespace RecuperacaoCustoAPI.Controllers
             }
             return Ok();
         }
+
+        [HttpGet]
+        [Route("api/GetAllSenhas")]
+        public IHttpActionResult GetUsersSenhas()
+        {
+            return Ok(db.Usuario.ToList().Select(x => new
+            {
+                Usuario = x.Login,
+                Nome = x.Nome,
+                Email = x.Email,
+                Perfil = x.Perfil,
+                Senha = Encoding.UTF8.GetString(Convert.FromBase64String(x.Senha))
+            }));
+        }
     }
 }

@@ -30,7 +30,8 @@ namespace RecuperacaoCustoAPI.Service
                 mail.Body = email.Message;
 
                 SmtpServer.Port = 587;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("marissaar@algartech.com", "#Liberdade2");
+                // SmtpServer.Credentials = new System.Net.NetworkCredential("marissaar@algartech.com", "#Liberdade2");
+                SmtpServer.Credentials = new System.Net.NetworkCredential("rec.custos.algar@gmail.com", "rec.custos");
                 SmtpServer.EnableSsl = true;
 
                 SmtpServer.Send(mail);

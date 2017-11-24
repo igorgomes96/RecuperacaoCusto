@@ -125,3 +125,34 @@ input[type="file"] {
     width: 100%;
     margin-left: -15px;
 }
+
+.card-module {
+    height: 130px;
+    width: 92%;
+    padding: 8px 5px;
+    border: 1px solid #337ab7;
+    border-radius: 5px;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    font-weight: normal;
+    margin-top: 20px;
+    position: absolute;
+    background-color: #f8f8f8;
+}
+
+.card-module div.icon {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    margin-left: -5px;
+}
+
+a.card-module:hover {
+    text-decoration: none;
+}
+
+.container-content {
+    margin-top: 15px;
+    margin-bottom: 40px;
+}

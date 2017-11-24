@@ -1,0 +1,26 @@
+﻿using RecuperacaoCustoAPI.DTO;
+using RecuperacaoCustoAPI.Mapping.Interfaces;
+using RecuperacaoCustoAPI.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace RecuperacaoCustoAPI.Mapping.Implementations
+{
+    public class TransferenciaReceitaMapper : CollectionMapper<TransferenciaReceita, TransferenciaReceitaDTO>, IMapper<TransferenciaReceita, TransferenciaReceitaDTO>
+    {
+        
+        public TransferenciaReceitaMapper(ISingleMapper<TransferenciaReceita, TransferenciaReceitaDTO> singleMapper) : base(singleMapper) { }
+
+        public TransferenciaReceitaDTO Map(TransferenciaReceita source)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TransferenciaReceita Map(TransferenciaReceitaDTO destination)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

@@ -10,6 +10,13 @@
     <Property Name="DataFim" Type="date" Nullable="false" />
     <Property Name="Status" Type="varchar" MaxLength="30" Nullable="false" />
   </EntityType>
+  <EntityType Name="Conta">
+    <Key>
+      <PropertyRef Name="Descricao" />
+    </Key>
+    <Property Name="Descricao" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="NumConta" Type="varchar" MaxLength="10" Nullable="false" />
+  </EntityType>
   <EntityType Name="CR">
     <Key>
       <PropertyRef Name="Codigo" />
@@ -68,6 +75,24 @@
     <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Tipo" Type="varchar" MaxLength="80" Nullable="false" />
     <Property Name="Conta" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TransferenciaReceita">
+    <Key>
+      <PropertyRef Name="Codigo" />
+    </Key>
+    <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CROrigem" Type="varchar" MaxLength="20" />
+    <Property Name="CRDestino" Type="varchar" MaxLength="20" />
+    <Property Name="RegimeTributacao" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ISS" Type="real" Nullable="false" />
+    <Property Name="Valor" Type="real" Nullable="false" />
+    <Property Name="Intercompany" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="NF" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="DataEmissao" Type="date" Nullable="false" />
+    <Property Name="RazaoSocial" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Historico" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="DataHora" Type="datetime" Nullable="false" />
+    <Property Name="LoginUsuario" Type="varchar" MaxLength="20" Nullable="false" />
   </EntityType>
   <EntityType Name="Usuario">
     <Key>
@@ -202,14 +227,64 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="tranferenciareceita_cr_fk">
+    <End Role="CR" Type="Self.CR" Multiplicity="0..1" />
+    <End Role="TransferenciaReceita" Type="Self.TransferenciaReceita" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CR">
+        <PropertyRef Name="Codigo" />
+      </Principal>
+      <Dependent Role="TransferenciaReceita">
+        <PropertyRef Name="CROrigem" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="tranferenciareceita_crdestino_fk">
+    <End Role="CR" Type="Self.CR" Multiplicity="0..1" />
+    <End Role="TransferenciaReceita" Type="Self.TransferenciaReceita" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CR">
+        <PropertyRef Name="Codigo" />
+      </Principal>
+      <Dependent Role="TransferenciaReceita">
+        <PropertyRef Name="CRDestino" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="transferencia_receita_fk">
+    <End Role="Conta" Type="Self.Conta" Multiplicity="1" />
+    <End Role="TransferenciaReceita" Type="Self.TransferenciaReceita" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Conta">
+        <PropertyRef Name="Descricao" />
+      </Principal>
+      <Dependent Role="TransferenciaReceita">
+        <PropertyRef Name="RegimeTributacao" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="transferenciareceita_usuario_fk">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+    <End Role="TransferenciaReceita" Type="Self.TransferenciaReceita" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Login" />
+      </Principal>
+      <Dependent Role="TransferenciaReceita">
+        <PropertyRef Name="LoginUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="RecuperacaoCustoModelStoreContainer">
     <EntitySet Name="Ciclo" EntityType="Self.Ciclo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Conta" EntityType="Self.Conta" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CR" EntityType="Self.CR" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MesCiclo" EntityType="Self.MesCiclo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RecuperacaoCusto" EntityType="Self.RecuperacaoCusto" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RecuperacaoCustoMes" EntityType="Self.RecuperacaoCustoMes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Sessao" EntityType="Self.Sessao" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TipoRecuperacao" EntityType="Self.TipoRecuperacao" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TransferenciaReceita" EntityType="Self.TransferenciaReceita" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="cr_responsavel_fk" Association="Self.cr_responsavel_fk">
       <End Role="Usuario" EntitySet="Usuario" />
@@ -250,6 +325,22 @@
     <AssociationSet Name="sessao_usuario_fk" Association="Self.sessao_usuario_fk">
       <End Role="Usuario" EntitySet="Usuario" />
       <End Role="Sessao" EntitySet="Sessao" />
+    </AssociationSet>
+    <AssociationSet Name="tranferenciareceita_cr_fk" Association="Self.tranferenciareceita_cr_fk">
+      <End Role="CR" EntitySet="CR" />
+      <End Role="TransferenciaReceita" EntitySet="TransferenciaReceita" />
+    </AssociationSet>
+    <AssociationSet Name="tranferenciareceita_crdestino_fk" Association="Self.tranferenciareceita_crdestino_fk">
+      <End Role="CR" EntitySet="CR" />
+      <End Role="TransferenciaReceita" EntitySet="TransferenciaReceita" />
+    </AssociationSet>
+    <AssociationSet Name="transferencia_receita_fk" Association="Self.transferencia_receita_fk">
+      <End Role="Conta" EntitySet="Conta" />
+      <End Role="TransferenciaReceita" EntitySet="TransferenciaReceita" />
+    </AssociationSet>
+    <AssociationSet Name="transferenciareceita_usuario_fk" Association="Self.transferenciareceita_usuario_fk">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="TransferenciaReceita" EntitySet="TransferenciaReceita" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

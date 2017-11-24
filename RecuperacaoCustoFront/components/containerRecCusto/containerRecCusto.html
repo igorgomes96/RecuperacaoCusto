@@ -1,0 +1,19 @@
+<div ng-include="'components/menu/menu.html'"></div>
+
+<ul class="nav nav-tabs" ng-if="ctMain.usuario.Perfil != 'Administrador'">
+  <li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'containerRecCusto.envios'}"><a ui-sref="containerRecCusto.envios">Envios</a></li>
+  <li role="presentation" ng-if="ctMain.usuario.Perfil == 'Gestor'" ng-class="{'active': ctMain.estadoAtual == 'containerRecCusto.aprovacoes'}"><a ui-sref="containerRecCusto.aprovacoes">Aprovações <span class="badge" ng-show="ctMain.qtdaAprovacoesPendentes" style="background-color: #337ab7;">{{ctMain.qtdaAprovacoesPendentes}}</span></a></li>
+  <li role="presentation" ng-if="ctMain.usuario.Perfil == 'Gestor'" ng-class="{'active': ctMain.estadoAtual == 'containerRecCusto.recebimentos'}"><a ui-sref="containerRecCusto.recebimentos">Recebimentos</a></li>
+  <div class="custom-loader loader-azul pull-right" style="margin-top: 10px" ng-show="mostraLoader"></div>
+</ul>
+
+<ul class="nav nav-tabs" ng-if="ctMain.usuario.Perfil == 'Administrador'">
+  <li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'containerRecCusto.ciclos'}"><a ui-sref="containerRecCusto.ciclos">Ciclos</a></li>
+  <li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'containerRecCusto.recuperacoes'}"><a ui-sref="containerRecCusto.recuperacoes">Recuperações de Custos</a></li>
+  <div class="custom-loader loader-azul pull-right" style="margin-top: 10px" ng-show="mostraLoader"></div>
+</ul>
+<div class="container-fluid container-content" ui-view></div>
+
+<div class="footer">
+    <small class="text-muted pull-right">Desenvolvido por Igor Ap. Gomes (FSW - UDI)</small>
+</div>

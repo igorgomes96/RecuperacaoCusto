@@ -16,44 +16,56 @@ angular.module('recCustoApp').config(['$stateProvider', '$urlRouterProvider', '$
         controller: 'usuarioCtrl as ct'
     })
 
-    .state('container', {
-        templateUrl: 'components/container/container.html',
-        controller: 'containerCtrl as ctMain'
+    .state('containerRecCusto', {
+        templateUrl: 'components/containerRecCusto/containerRecCusto.html',
+        controller: 'containerRecCustoCtrl as ctMain'
     })
 
-    .state('container.home', {
+    .state('containerTransfReceita', {
+        templateUrl: 'components/containerTransfReceita/containerTransfReceita.html',
+        controller: 'containerTransfReceitaCtrl as ctMain'
+    })
+
+    .state('home', {
     	url: '/home',
-    	templateUrl: 'components/home/home.html'
+    	templateUrl: 'components/home/home.html',
+        controller: 'homeCtrl as ct'
     })
 
-    .state('container.ciclos', {
+    .state('containerRecCusto.ciclos', {
         url: '/ciclos',
         templateUrl: 'components/ciclos/ciclos.html',
         controller: 'ciclosCtrl as ct'
     })
 
-    .state('container.envios', {
+    .state('containerRecCusto.envios', {
     	url: '/envios',
     	templateUrl: 'components/envios/envios.html',
     	controller: 'enviosCtrl as ct'
     })
 
-    .state('container.aprovacoes', {
+    .state('containerRecCusto.aprovacoes', {
     	url: '/aprovacoes',
     	templateUrl: 'components/aprovacoes/aprovacoes.html',
     	controller: 'aprovacoesCtrl as ct'
     })
 
-    .state('container.recebimentos', {
+    .state('containerRecCusto.recebimentos', {
         url: '/recebimentos',
         templateUrl: 'components/recebimentos/recebimentos.html',
         controller: 'recebimentosCtrl as ct'
     })
 
-    .state('container.recuperacoes', {
+    .state('containerRecCusto.recuperacoes', {
         url: '/recuperacoes',
         templateUrl: 'components/recuperacoes/recuperacoes.html',
         controller: 'recuperacoesCtrl as ct'
+    })
+
+    .state('containerTransfReceita.transferenciaReceita', {
+        url: '/transferenciaReceita',
+        templateUrl: 'components/transfReceita/transfReceita.html',
+        controller: 'transfReceitaCtrl as ct'
     });
     
 }]);

@@ -19,6 +19,8 @@ namespace RecuperacaoCustoAPI.Models
         {
             this.RecuperacoesDestino = new HashSet<RecuperacaoCusto>();
             this.RecuperacoesOrigem = new HashSet<RecuperacaoCusto>();
+            this.TransfReceitaOrigem = new HashSet<TransferenciaReceita>();
+            this.TransfReceitaDestino = new HashSet<TransferenciaReceita>();
         }
     
         public string Codigo { get; set; }
@@ -31,5 +33,9 @@ namespace RecuperacaoCustoAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RecuperacaoCusto> RecuperacoesOrigem { get; set; }
         public virtual Usuario Responsavel { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TransferenciaReceita> TransfReceitaOrigem { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TransferenciaReceita> TransfReceitaDestino { get; set; }
     }
 }

@@ -88,5 +88,32 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Conta">
+      <EntityTypeMapping TypeName="RecuperacaoCustoModel.Conta">
+        <MappingFragment StoreEntitySet="Conta">
+          <ScalarProperty Name="NumConta" ColumnName="NumConta" />
+          <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TransferenciaReceita">
+      <EntityTypeMapping TypeName="RecuperacaoCustoModel.TransferenciaReceita">
+        <MappingFragment StoreEntitySet="TransferenciaReceita">
+          <ScalarProperty Name="LoginUsuario" ColumnName="LoginUsuario" />
+          <ScalarProperty Name="DataHora" ColumnName="DataHora" />
+          <ScalarProperty Name="Historico" ColumnName="Historico" />
+          <ScalarProperty Name="RazaoSocial" ColumnName="RazaoSocial" />
+          <ScalarProperty Name="DataEmissao" ColumnName="DataEmissao" />
+          <ScalarProperty Name="NF" ColumnName="NF" />
+          <ScalarProperty Name="Intercompany" ColumnName="Intercompany" />
+          <ScalarProperty Name="Valor" ColumnName="Valor" />
+          <ScalarProperty Name="ISS" ColumnName="ISS" />
+          <ScalarProperty Name="RegimeTributacao" ColumnName="RegimeTributacao" />
+          <ScalarProperty Name="CRDestino" ColumnName="CRDestino" />
+          <ScalarProperty Name="CROrigem" ColumnName="CROrigem" />
+          <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
