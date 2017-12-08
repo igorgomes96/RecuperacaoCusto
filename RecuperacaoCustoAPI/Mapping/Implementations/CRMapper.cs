@@ -17,6 +17,8 @@ namespace RecuperacaoCustoAPI.Mapping.Implementations
                 Codigo = source.Codigo,
                 Descricao = source.Descricao,
                 ResponsavelLogin = source.ResponsavelLogin,
+                Categoria = source.Categoria,
+                ResponsavelNome = source.Responsavel?.Nome
             };
         }
 
@@ -27,6 +29,7 @@ namespace RecuperacaoCustoAPI.Mapping.Implementations
                 Codigo = destination.Codigo,
                 Descricao = destination.Descricao,
                 ResponsavelLogin = destination.ResponsavelLogin,
+                Categoria = destination.Categoria
             };
         }
     }

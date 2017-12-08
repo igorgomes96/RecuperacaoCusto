@@ -28,7 +28,6 @@ namespace RecuperacaoCustoAPI.Models
         public string Nome { get; set; }
         public string Email { get; set; }
         public string Perfil { get; set; }
-        public Nullable<bool> SenhaEnviada { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CR> CRs { get; set; }

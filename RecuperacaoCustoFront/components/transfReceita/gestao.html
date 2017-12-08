@@ -1,0 +1,56 @@
+<div class="row">
+	<div class="form-group col-md-2">
+		<label for="inputFiltroAno">Ano</label>
+		<select class="form-control" ng-model="ct.ano" ng-options="a for a in ct.anos">
+			<option value="">(Selecione o ano)</option>
+		</select>
+	</div>
+
+	<div class="form-group col-md-2">
+		<label for="inputFiltroMes">Mes</label>
+		<select class="form-control" ng-model="ct.mes" ng-options="m.Mes as m.Texto for m in ct.meses">
+			<option value="">(Selecione o mês)</option>
+		</select>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<button class="btn btn-primary" ng-disabled="!ct.ano || ct.mes == undefined" ng-click="ct.downloadFile()">Baixar Relatório <i class="fa fa-download"></i></button>
+		<button class="btn btn-danger" ng-disabled="!ct.ano || ct.mes == undefined" ng-click="ct.bloquearMes()">Bloquear Mês <i class="fa fa-lock"></i></button>
+	</div>
+</div>
+<hr>
+
+<h4>Meses Bloqueados</h4>
+<div class="row">
+	<div class="col-md-3 col-sm-6 col-xs-12">
+		<div class="form-group">
+			<label for="inputFiltroAno">Filtrar por Ano</label>
+			<select class="form-control" ng-model="ct.filtroAno" ng-options="a for a in ct.anosBloqueados">
+				<option value="">(Todos)</option>
+			</select>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-3 col-sm-6 col-xs-12">
+		<table class="table table-condensed table-striped">
+			<thead>
+				<tr>
+					<th>Mês</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="m in ct.mesesBloqueados | filter:ct.filtrarPorAno(ct.filtroAno) | orderBy:'-Mes'">
+					<td>{{m.Mes | date:'MMMM/yyyy'}}</td>
+					<td class="text-right">
+						<button class="btn btn-success btn-xs" ng-click="ct.desbloquearMes(m.Mes)"><i class="fa fa-unlock"></i></button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

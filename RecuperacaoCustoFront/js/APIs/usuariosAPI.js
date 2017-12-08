@@ -7,6 +7,10 @@ angular.module('recCustoApp').service('usuariosAPI', ['$http', 'config', functio
         return $http.get(config.baseUrl + resource);
     }
 
+    self.getGestores = function() {
+        return $http.get(config.baseUrl + resource + '/Gestores');
+    }
+
     self.getUsuario = function(id) {
         return $http.get(config.baseUrl + resource + '/' + id);
     }
@@ -25,5 +29,9 @@ angular.module('recCustoApp').service('usuariosAPI', ['$http', 'config', functio
 
     self.deleteUsuario = function(id) {
         return $http.delete(config.baseUrl + resource + '/' + id);
+    }
+
+    self.recuperarSenha = function(login) {
+        return $http.post(config.baseUrl + resource + '/' + login + '/RecuperarSenha');
     }
 }]);

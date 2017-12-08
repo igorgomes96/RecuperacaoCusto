@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="08d71c1306414702a10c3e6705e8b309" Name="Diagram1" ZoomLevel="86">
-        <EntityTypeShape EntityType="RecuperacaoCustoModel.CR" Width="2.25" PointX="3" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="RecuperacaoCustoModel.CR" Width="2.25" PointX="2.75" PointY="3.25" IsExpanded="true" />
         <EntityTypeShape EntityType="RecuperacaoCustoModel.Sessao" Width="1.5" PointX="3" PointY="6.875" />
         <EntityTypeShape EntityType="RecuperacaoCustoModel.Ciclo" Width="1.5" PointX="3.75" PointY="10.25" />
         <EntityTypeShape EntityType="RecuperacaoCustoModel.MesCiclo" Width="1.5" PointX="6" PointY="0.75" />
@@ -23,6 +23,14 @@
         <AssociationConnector Association="RecuperacaoCustoModel.cr_responsavel_fk" />
         <AssociationConnector Association="RecuperacaoCustoModel.sessao_usuario_fk" />
         <AssociationConnector Association="RecuperacaoCustoModel.recuperacaocusto_usuario_fk" />
+        <EntityTypeShape EntityType="RecuperacaoCustoModel.TransferenciaReceita" Width="1.5" PointX="9.5" PointY="8.125" />
+        <AssociationConnector Association="RecuperacaoCustoModel.tranferenciareceita_cr_fk" />
+        <AssociationConnector Association="RecuperacaoCustoModel.tranferenciareceita_crdestino_fk" />
+        <AssociationConnector Association="RecuperacaoCustoModel.transferenciareceita_usuario_fk" />
+        <EntityTypeShape EntityType="RecuperacaoCustoModel.RelatorioTransfReceita" Width="1.5" PointX="0.75" PointY="9.125" />
+        <EntityTypeShape EntityType="RecuperacaoCustoModel.MesBloqueadoTransfReceita" Width="1.5" PointX="2.375" PointY="0.75" />
+        <EntityTypeShape EntityType="RecuperacaoCustoModel.CategoriaCR" Width="1.5" PointX="8.375" PointY="0.875" />
+        <AssociationConnector Association="RecuperacaoCustoModel.cr_categoriacr_fk" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

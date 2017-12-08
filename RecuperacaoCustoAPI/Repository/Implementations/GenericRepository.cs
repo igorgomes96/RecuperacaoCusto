@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
+using System.Data.Entity.Migrations;
 
 namespace RecuperacaoCustoAPI.Repository.Implementations
 {
@@ -34,6 +35,7 @@ namespace RecuperacaoCustoAPI.Repository.Implementations
 
         }
 
+
         public ICollection<TDto> Query(Func<TEntity, bool> predicate)
         {
             return _mapper.Map(_db.Set<TEntity>().Where(predicate).ToList());
@@ -54,25 +56,27 @@ namespace RecuperacaoCustoAPI.Repository.Implementations
 
         public TDto Save(TDto entidade)
         {
-            TEntity entidadeSalva;
-            entidadeSalva = _db.Set<TEntity>().Add(_mapper.Map(entidade));
-            _db.SaveChanges();
+            TEntity entidadeSalva = null;
+            try { 
+                entidadeSalva = _db.Set<TEntity>().Add(_mapper.Map(entidade));
+                _db.SaveChanges();
+            } catch (Exception e)
+            {
+                _db.Entry(entidadeSalva).State = EntityState.Detached;
+                throw e;
+            }
 
             return _mapper.Map(entidadeSalva);
         }
 
-        public TDto Update(TDto entidade)
+        public TDto Update(TKey chave, TDto entidade)
         {
-            try
-            {
-                TEntity entidadeDB = _mapper.Map(entidade);
-                _db.Entry(entidadeDB).State = EntityState.Detached;
-                _db.Entry(entidadeDB).State = EntityState.Modified;
-                _db.SaveChanges();
-            } catch (DbUpdateConcurrencyException)
-            {
+            TEntity entidadeDB = _db.Set<TEntity>().Find(chave);
+            if (entidadeDB == null)
                 throw new NaoEncontradoException<TEntity>();
-            }
+
+            _db.Entry(entidadeDB).CurrentValues.SetValues(_mapper.Map(entidade));
+            _db.SaveChanges();
             return entidade;
 
         }
@@ -80,6 +84,15 @@ namespace RecuperacaoCustoAPI.Repository.Implementations
         public bool Existe(TKey chave)
         {
             return _db.Set<TEntity>().Find(chave) != null;
+        }
+
+        public void Delete(Func<TEntity, bool> predicate)
+        {
+            foreach (TEntity entity in _db.Set<TEntity>().Where(predicate))
+            {
+                _db.Set<TEntity>().Remove(entity);
+            }
+            _db.SaveChanges();
         }
     }
 }

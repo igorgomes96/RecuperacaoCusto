@@ -16,5 +16,7 @@ namespace RecuperacaoCustoAPI.Services.Interfaces
         TransferenciaReceitaDTO Save(TransferenciaReceitaDTO transf);
         TransferenciaReceitaDTO Update(TransferenciaReceitaDTO transf);
         TransferenciaReceitaDTO Delete(int codigo);
+        void Report(string FileName, string Template, DateTime mes);
+        ICollection<int> GetAnos();
     }
 }

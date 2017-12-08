@@ -79,12 +79,71 @@
     <EntitySetMapping Name="Usuario">
       <EntityTypeMapping TypeName="RecuperacaoCustoModel.Usuario">
         <MappingFragment StoreEntitySet="Usuario">
-          <ScalarProperty Name="SenhaEnviada" ColumnName="SenhaEnviada" />
           <ScalarProperty Name="Perfil" ColumnName="Perfil" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Nome" ColumnName="Nome" />
           <ScalarProperty Name="Senha" ColumnName="Senha" />
           <ScalarProperty Name="Login" ColumnName="Login" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TransferenciaReceita">
+      <EntityTypeMapping TypeName="RecuperacaoCustoModel.TransferenciaReceita">
+        <MappingFragment StoreEntitySet="TransferenciaReceita">
+          <ScalarProperty Name="CPRB" ColumnName="CPRB" />
+          <ScalarProperty Name="LoginUsuario" ColumnName="LoginUsuario" />
+          <ScalarProperty Name="DataHora" ColumnName="DataHora" />
+          <ScalarProperty Name="Historico" ColumnName="Historico" />
+          <ScalarProperty Name="RazaoSocial" ColumnName="RazaoSocial" />
+          <ScalarProperty Name="DataEmissao" ColumnName="DataEmissao" />
+          <ScalarProperty Name="NF" ColumnName="NF" />
+          <ScalarProperty Name="Intercompany" ColumnName="Intercompany" />
+          <ScalarProperty Name="Valor" ColumnName="Valor" />
+          <ScalarProperty Name="ISS" ColumnName="ISS" />
+          <ScalarProperty Name="RegimeTributacao" ColumnName="RegimeTributacao" />
+          <ScalarProperty Name="CRDestino" ColumnName="CRDestino" />
+          <ScalarProperty Name="CROrigem" ColumnName="CROrigem" />
+          <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RelatorioTransfReceita">
+      <EntityTypeMapping TypeName="RecuperacaoCustoModel.RelatorioTransfReceita">
+        <MappingFragment StoreEntitySet="RelatorioTransfReceita">
+          <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+          <ScalarProperty Name="Historico" ColumnName="Historico" />
+          <ScalarProperty Name="DataEmissao" ColumnName="DataEmissao" />
+          <ScalarProperty Name="NF" ColumnName="NF" />
+          <ScalarProperty Name="Documento" ColumnName="Documento" />
+          <ScalarProperty Name="ItemFaturamento" ColumnName="ItemFaturamento" />
+          <ScalarProperty Name="Credito" ColumnName="Credito" />
+          <ScalarProperty Name="Debito" ColumnName="Debito" />
+          <ScalarProperty Name="Reserva2" ColumnName="Reserva2" />
+          <ScalarProperty Name="Reserva1" ColumnName="Reserva1" />
+          <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+          <ScalarProperty Name="UF" ColumnName="UF" />
+          <ScalarProperty Name="Intercompany" ColumnName="Intercompany" />
+          <ScalarProperty Name="Produto" ColumnName="Produto" />
+          <ScalarProperty Name="CR" ColumnName="CR" />
+          <ScalarProperty Name="Conta_Contabil" ColumnName="Conta_Contabil" />
+          <ScalarProperty Name="UR" ColumnName="UR" />
+          <ScalarProperty Name="UN" ColumnName="UN" />
+          <ScalarProperty Name="Empresa" ColumnName="Empresa" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MesBloqueadoTransfReceita">
+      <EntityTypeMapping TypeName="RecuperacaoCustoModel.MesBloqueadoTransfReceita">
+        <MappingFragment StoreEntitySet="MesBloqueadoTransfReceita">
+          <ScalarProperty Name="Mes" ColumnName="Mes" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CategoriaCR">
+      <EntityTypeMapping TypeName="RecuperacaoCustoModel.CategoriaCR">
+        <MappingFragment StoreEntitySet="CategoriaCR">
+          <ScalarProperty Name="Numero" ColumnName="Numero" />
+          <ScalarProperty Name="Categoria" ColumnName="Categoria" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

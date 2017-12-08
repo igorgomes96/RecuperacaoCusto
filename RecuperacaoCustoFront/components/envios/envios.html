@@ -68,12 +68,12 @@
                             {{m.Mes | date:'MMM/yy'}}
                         </th>
                     </thead>
-                    <tbody>
+                    <tbody ui-input-parent>
                         <td ng-class="{'has-error': form.formRecuperacoes.selectTipo.$invalid && form.formRecuperacoes.selectTipo.$dirty}">
                             <select id="selectTipo" name="selectTipo" class="form-control" ng-options="t.Codigo as t.Tipo for t in ct.tipos" ng-model="ct.novaRec.TipoRecuperacaoCod" required></select>
                         </td>
                         <td ng-repeat="m in cicloAtual.Meses" ng-class="{'has-error': form.formRecuperacoes.inputValor{{$index}}.$invalid}">
-                            <input type="text" class="form-control text-center" id="inputValor{{$index}}" name="inputValor{{$index}}" ng-model="ct.novaRec.Recuperacoes[m.Codigo]" ng-pattern="/^\d+\.?\d{0,2}$/">
+                            <input type="text" ui-input-child class="form-control text-center" id="inputValor{{$index}}" name="inputValor{{$index}}" ng-model="ct.novaRec.Recuperacoes[m.Codigo]" ng-pattern="/^\d+\.?\d{0,2}$/">
                         </td>
                     </tbody>
                 </table>
@@ -125,7 +125,7 @@
     			<th ng-repeat="m in cicloAtual.Meses" class="text-right">
     				{{m.Mes | date:'MMM/yy'}}
     			</th>
-                <th width="2%"></th>
+                <th width="5%"></th>
                 <th width="2%"></th>
     		</tr>
     	</thead>
@@ -139,8 +139,9 @@
                 <td ng-repeat="m in cicloAtual.Meses" class="text-right">
                     {{r.Recuperacoes[m.Codigo] | number:2}}
                 </td>
-                <td>
+                <td class="text-right">
                     <button class="btn btn-xs btn-default" data-toggle="modal" data-target="#modalInfoEnvio" ng-click="ct.recInfo = r;"><i class="fa fa-info"></i></button>
+                    <button class="btn btn-danger btn-xs" ng-if="r.Aprovado == null" ng-click="ct.deleteRecuperacao(r.Codigo)"><i class="fa fa-trash-o"></i></button>
                 </td>
                 <td>
                     <i ng-show="r.Aprovado == null" class="fa fa-hourglass-start"></i>

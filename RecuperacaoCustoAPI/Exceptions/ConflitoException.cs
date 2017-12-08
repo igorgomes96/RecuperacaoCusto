@@ -8,5 +8,6 @@ namespace RecuperacaoCustoAPI.Exceptions
     public class ConflitoException<T>: Exception
     {
         public ConflitoException() : base(typeof(T) + " já cadastrado!") { }
+        public ConflitoException(string v) : base(v) { }
     }
 }

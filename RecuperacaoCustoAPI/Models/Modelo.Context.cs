@@ -33,7 +33,9 @@ namespace RecuperacaoCustoAPI.Models
         public virtual DbSet<RecuperacaoCustoMes> RecuperacaoCustoMes { get; set; }
         public virtual DbSet<TipoRecuperacao> TipoRecuperacao { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
-        public virtual DbSet<Conta> Conta { get; set; }
         public virtual DbSet<TransferenciaReceita> TransferenciaReceita { get; set; }
+        public virtual DbSet<RelatorioTransfReceita> RelatorioTransfReceita { get; set; }
+        public virtual DbSet<MesBloqueadoTransfReceita> MesBloqueadoTransfReceita { get; set; }
+        public virtual DbSet<CategoriaCR> CategoriaCR { get; set; }
     }
 }

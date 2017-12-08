@@ -34,3 +34,32 @@
 	<button class="btn btn-success" ng-click="ct.abrirCiclo(cicloAtual)" ng-disabled="formCiclos.$invalid" ng-if="!cicloAtual.Codigo"><i class="fa fa-unlock"></i> Abrir o ciclo</button>
 	<button class="btn btn-danger" ng-if="cicloAtual.Codigo" ng-click="ct.fecharCiclo(cicloAtual)"><i class="fa fa-lock"></i> Fechar o ciclo</button>
 </form>
+<hr>
+
+<div class="row">
+	<div class="col-md-12">
+		<table class="table table-condensed table-striped">
+			<thead>
+				<tr>
+					<th>Código</th>
+					<th>Descrição</th>
+					<th>Data Início</th>
+					<th>Data Fim</th>
+					<th width="6%"></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr ng-repeat="c in ct.todosCiclos">
+					<td>{{c.Codigo}}</td>
+					<td>{{c.Descricao}}</td>
+					<td>{{c.DataInicio | date:'dd/MMM/yy'}}</td>
+					<td>{{c.DataFim | date:'dd/MMM/yy'}}</td>
+					<td class="text-right">
+						<button class="btn btn-success btn-xs" ng-click="ct.reabrirCiclo(c)"><i class="fa fa-unlock"></i></button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

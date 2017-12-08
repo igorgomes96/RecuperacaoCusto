@@ -16,6 +16,12 @@ angular.module('recCustoApp').config(['$stateProvider', '$urlRouterProvider', '$
         controller: 'usuarioCtrl as ct'
     })
 
+    .state('cadastroUsuario', {
+        url: '/usuarios/Cadastro',
+        templateUrl: 'components/usuario/cadastroUsuario.html',
+        controller: 'cadastroUsuarioCtrl as ct'
+    })
+
     .state('containerRecCusto', {
         templateUrl: 'components/containerRecCusto/containerRecCusto.html',
         controller: 'containerRecCustoCtrl as ctMain'
@@ -24,6 +30,11 @@ angular.module('recCustoApp').config(['$stateProvider', '$urlRouterProvider', '$
     .state('containerTransfReceita', {
         templateUrl: 'components/containerTransfReceita/containerTransfReceita.html',
         controller: 'containerTransfReceitaCtrl as ctMain'
+    })
+
+    .state('containerCR', {
+        templateUrl: 'components/containerCR/containerCR.html',
+        controller: 'containerCRCtrl as ctMain'
     })
 
     .state('home', {
@@ -66,6 +77,18 @@ angular.module('recCustoApp').config(['$stateProvider', '$urlRouterProvider', '$
         url: '/transferenciaReceita',
         templateUrl: 'components/transfReceita/transfReceita.html',
         controller: 'transfReceitaCtrl as ct'
+    })
+
+    .state('containerTransfReceita.gestao', {
+        url: '/transferenciaReceita/gestao',
+        templateUrl: 'components/transfReceita/gestao.html',
+        controller: 'transfReceitaGestaoCtrl as ct'
+    })
+
+    .state('containerCR.cadastro', {
+        url: '/crs/cadastro',
+        templateUrl: 'components/crs/cadastro.html',
+        controller: 'cadastroCRCtrl as ct'
     });
     
 }]);

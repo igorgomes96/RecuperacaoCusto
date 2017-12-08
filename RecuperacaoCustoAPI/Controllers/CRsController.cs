@@ -11,100 +11,63 @@ using System.Web.Http.Description;
 using RecuperacaoCustoAPI.Models;
 using RecuperacaoCustoAPI.DTO;
 using RecuperacaoCustoAPI.Filters;
+using RecuperacaoCustoAPI.Services.Interfaces;
+using RecuperacaoCustoAPI.Exceptions;
 
 namespace RecuperacaoCustoAPI.Controllers
 {
     [AuthenticationFilter]
     public class CRsController : ApiController
     {
-        private Contexto db = new Contexto();
+        private readonly ICRService _crsService;
+
+        public CRsController(ICRService crsService)
+        {
+            _crsService = crsService;
+        }
 
         // GET: api/CRs
-        public IEnumerable<CRDTO> GetCRs(string responsavel = null)
+        public IEnumerable<CRDTO> GetCRs(string search = null)
         {
-            return db.CR.ToList()
-                .Where(x => (responsavel == null || x.ResponsavelLogin == responsavel))
-                .Select(x => new CRDTO(x));
+            return _crsService.List(search);
         }
 
         // GET: api/CRs/5
         [ResponseType(typeof(CRDTO))]
         public IHttpActionResult GetCR(string id)
         {
-            CR cR = db.CR.Find(id);
-            if (cR == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(new CRDTO(cR));
-        }
-
-        // PUT: api/CRs/5
-        [ResponseType(typeof(void))]
-        [Authorize(Roles = "Administrador")]
-        public IHttpActionResult PutCR(string id, CR cR)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != cR.Codigo)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(cR).State = EntityState.Modified;
-
             try
             {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
+                return Ok(_crsService.Find(id));
+            } catch (NaoEncontradoException<CR>)
             {
-                if (!CRExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return Content(HttpStatusCode.NotFound, "CR não encontrado!");
+            } catch (Exception e)
+            {
+                return Content(HttpStatusCode.InternalServerError, e.Message);
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST: api/CRs
         [ResponseType(typeof(CRDTO))]
         [Authorize(Roles = "Administrador")]
-        public IHttpActionResult PostCR(CR cR)
+        public IHttpActionResult PostCR(CRDTO cR)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return Content(HttpStatusCode.BadRequest, ModelState);
             }
-
-            db.CR.Add(cR);
 
             try
             {
-                db.SaveChanges();
-            }
-            catch (DbUpdateException)
+                return CreatedAtRoute("DefaultApi", new { id = cR.Codigo }, _crsService.Save(cR));
+            } catch (ConflitoException<CR>)
             {
-                if (CRExists(cR.Codigo))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+                return Content(HttpStatusCode.Conflict, "CR já cadastrado!");
+            } catch (Exception e)
+            {
+                return Content(HttpStatusCode.InternalServerError, e.Message);
             }
-
-            return CreatedAtRoute("DefaultApi", new { id = cR.Codigo }, new CRDTO(cR));
         }
 
         // DELETE: api/CRs/5
@@ -112,31 +75,17 @@ namespace RecuperacaoCustoAPI.Controllers
         [Authorize(Roles = "Administrador")]
         public IHttpActionResult DeleteCR(string id)
         {
-            CR cR = db.CR.Find(id);
-            if (cR == null)
+            try
             {
-                return NotFound();
-            }
-
-            CRDTO c = new CRDTO(cR);
-            db.CR.Remove(cR);
-            db.SaveChanges();
-
-            return Ok(c);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+                return Ok(_crsService.Delete(id));
+            } catch (NaoEncontradoException<CR>)
             {
-                db.Dispose();
+                return Content(HttpStatusCode.NotFound, "CR não encontrado!");
+            } catch (Exception e)
+            {
+                return Content(HttpStatusCode.InternalServerError, e.Message);
             }
-            base.Dispose(disposing);
         }
 
-        private bool CRExists(string id)
-        {
-            return db.CR.Count(e => e.Codigo == id) > 0;
-        }
     }
 }

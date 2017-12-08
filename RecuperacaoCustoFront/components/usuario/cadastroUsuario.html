@@ -1,0 +1,120 @@
+<div ng-include="'components/menu/menu.html'"></div>
+
+<div style="margin-bottom: 40px;">
+    <form role="form" name="formUsuario" novalidate style="max-width: 600px; margin: auto;">
+
+        <h3>Dados do Usuário</h3>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <label for="inputLogin">Login</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-9 col-md-6">
+                    <div class="input-group">
+                        <input type="text" id="inputLogin" name="inputLogin" ng-disabled="!ct.editaLogin" class="form-control" ng-model="ct.usuario.Login">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" ng-click="ct.editaLogin = true;"><i class="fa fa-pencil"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-md-2">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalBuscaUsuario"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+                   
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group" ng-class="{'has-error': formUsuario.inputEmail.$dirty && formUsuario.inputEmail.$invalid}">
+                    <label for="inputEmail">Email</label>
+                    <input type="email" id="inputEmail" name="inputEmail" required class="form-control" ng-model="ct.usuario.Email" ng-change="ct.atualizaLogin(ct.usuario)">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group" ng-class="{'has-error': formUsuario.inputNome.$dirty && formUsuario.inputNome.$invalid}">
+                    <label for="inputNome">Nome</label>
+                    <input type="text" id="inputNome" name="inputNome" required class="form-control" ng-model="ct.usuario.Nome">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="selectPerfil">Perfil</label>
+                    <select name="selectPerfil" id="selectPerfil" required class="form-control" ng-model="ct.usuario.Perfil">
+                        <option value="">(Selecione o Perfil)</option>
+                        <option value="Usuário">Usuário Padrão</option>
+                        <option value="Gestor">Gestor</option>
+                        <option value="Administrador">Administrador</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <button class="btn btn-success" ng-click="ct.saveUser(ct.usuario)">Salvar Usuário <i class="fa fa-floppy-o"></i></button>
+
+    </form>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalBuscaUsuario" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Buscar Usuário</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="form-group">
+                            <label for="inputFiltro">Filtro</label>
+                            <input type="text" name="inputFiltro" id="inputFiltro" ng-model="ct.filtro" class="form-control">
+                        </div>
+
+                        <div class="container-fluid" style="max-height: 400px;overflow-y: auto;">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Login</th>
+                                        <th>Nome</th>
+                                        <th>E-mail</th>
+                                        <th>Perfil</th>
+                                        <th width="13%"></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr ng-repeat="u in ct.usuarios | filter:ct.filtro | orderBy:'Nome'">
+                                        <td>{{u.Login}}</td>
+                                        <td>{{u.Nome}}</td>
+                                        <td>{{u.Email}}</td>
+                                        <td>{{u.Perfil}}</td>
+                                        <td class="text-right">
+                                            <button class="btn btn-xs btn-primary" ng-click="ct.selecionarUsuario(u)"><i class="fa fa-pencil" data-toggle="tooltip" title="Editar"></i></button>
+                                            <button class="btn btn-xs btn-danger" ng-click="ct.excluirUsuario(u.Login)" data-toggle="tooltip" title="Excluir"><i class="fa fa-trash-o"></i></button>
+                                            <button class="btn btn-xs btn-warning" data-toggle="tooltip" title="Recuperar Senha"><i class="fa fa-key" ng-click="ct.recuperarSenha(u)"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

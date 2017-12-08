@@ -11,9 +11,10 @@ namespace RecuperacaoCustoAPI.Repository.Interfaces
         ICollection<TDto> List();
         TDto Find(TKey chave);
         TDto Save(TDto entidade);
-        TDto Update(TDto entidade);
+        TDto Update(TKey chave, TDto entidade);
         TDto Delete(TKey chave);
         ICollection<TDto> Query(Func<TEntity, bool> predicate);
+        void Delete(Func<TEntity, bool> predicate);
         bool Existe(TKey chave);
     }
 }

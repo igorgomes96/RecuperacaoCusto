@@ -3,8 +3,8 @@ angular.module('recCustoApp').service('crsAPI', ['$http', 'config', function($ht
     var self = this;
     var resource = 'CRs';
 
-    self.getCRs = function(responsavel) {
-        return $http.get(config.baseUrl + resource, {params:{responsavel:responsavel}});
+    self.getCRs = function(search) {
+        return $http.get(config.baseUrl + resource, {params:{search:search}});
     }
 
     self.getCR = function(id) {
@@ -13,10 +13,6 @@ angular.module('recCustoApp').service('crsAPI', ['$http', 'config', function($ht
 
     self.postCR = function(CR) {
         return $http.post(config.baseUrl + resource, CR);
-    }
-
-    self.putCR = function(id, CR) {
-        return $http.put(config.baseUrl + resource + '/' + id, CR);
     }
 
     self.deleteCR = function(id) {

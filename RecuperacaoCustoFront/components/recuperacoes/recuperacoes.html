@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    <div class="col-md-3 col-xs-4">
+    <div class="col-md-4">
         <div class="form-group">
             <label for="selectTipo">Tipo de Recuperação</label>
             <select class="form-control" id="selectTipo" name="selectTipo" ng-model="ct.filtro.codTipo" ng-options="t.Codigo as t.Tipo for t in ct.tipos">
@@ -60,17 +60,17 @@
 
 <hr>
 
-<table class="table table-condensed table-striped">
+<table class="table table-condensed table-striped table-responsive">
 	<thead>
 		<tr>
 			<th width="9%">CR Origem</th>
 			<th width="9%">CR Destino</th>
-            <th width="13%">Tipo</th>
+            <!-- <th width="10%">Tipo</th> -->
 			<!-- <th width="12%">Motivo</th> -->
 			<th ng-repeat="m in cicloAtual.Meses" class="text-right">
 				{{m.Mes | date:'MMM/yy'}}
 			</th>
-            <th width="2%"></th>
+            <th width="6%"></th>
 		</tr>
 	</thead>
 
@@ -78,13 +78,14 @@
         <tr ng-repeat="r in ct.recuperacoes">
             <td>{{r.CROrigem}}</td>
             <td>{{r.CRDestino}}</td>
-            <td>{{r.Tipo | ellipsis:3:8}}</td>
+            <!-- <td>{{r.Tipo | ellipsis:3:8}}</td> -->
            <!--  <td>{{r.Motivo | ellipsis:11:7}}</td> -->
             <td ng-repeat="m in cicloAtual.Meses" class="text-right">
                 {{r.Recuperacoes[m.Codigo] | number:2}}
             </td>
-            <td>
+            <td class="text-right">
             	<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalInfoRecuperacoes" ng-click="ct.recInfo = r;"><i class="fa fa-info"></i></button>
+                <button class="btn btn-danger btn-xs" ng-click="ct.deleteRecuperacao(r.Codigo)"><i class="fa fa-trash-o"></i></button>
             </td>
         </tr>
     </tbody>

@@ -166,21 +166,26 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AutenticacaoController.cs" />
+    <Compile Include="Controllers\CategoriasCRController.cs" />
     <Compile Include="Controllers\CiclosController.cs" />
     <Compile Include="Controllers\CRsController.cs" />
+    <Compile Include="Controllers\MesesBloqueadosTransfReceitaController.cs" />
+    <Compile Include="DTO\MesBloqueadoTransfReceitaDTO.cs" />
+    <Compile Include="Exceptions\GestorDeCRException.cs" />
     <Compile Include="Controllers\ImportacoesController.cs" />
     <Compile Include="Controllers\RecuperacoesCustosController.cs" />
-    <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\TiposRecuperacoesController.cs" />
     <Compile Include="Controllers\TransferenciasReceitasController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="DTO\AlteraSenhaDTO.cs" />
+    <Compile Include="DTO\CategoriaCRDTO.cs" />
     <Compile Include="DTO\CicloDTO.cs" />
     <Compile Include="DTO\CicloMesesDTO.cs" />
     <Compile Include="DTO\CRDTO.cs" />
     <Compile Include="DTO\EmailDTO.cs" />
     <Compile Include="DTO\MesCicloDTO.cs" />
     <Compile Include="DTO\RecuperacaoCustoDTO.cs" />
+    <Compile Include="DTO\RecuperacaoCustoMesDTO.cs" />
     <Compile Include="DTO\RecuperacoesCicloDTO.cs" />
     <Compile Include="DTO\TipoRecuperacaoDTO.cs" />
     <Compile Include="DTO\TransferenciaReceitaDTO.cs" />
@@ -188,7 +193,9 @@
     <Compile Include="Exceptions\ConflitoException.cs" />
     <Compile Include="Exceptions\CRDestinoNaoEncontradoException.cs" />
     <Compile Include="Exceptions\CROrigemNaoAutorizadoException.cs" />
+    <Compile Include="Exceptions\MesBloqueadoException.cs" />
     <Compile Include="Exceptions\NaoEncontradoException.cs" />
+    <Compile Include="Exceptions\SenhaIncorretaException.cs" />
     <Compile Include="Exceptions\TipoRecuperacaoNaoEncontradoException.cs" />
     <Compile Include="Exceptions\CROrigemNaoEncontradoException.cs" />
     <Compile Include="Exceptions\ExcelException.cs" />
@@ -199,19 +206,28 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mapping\Implementations\CategoriaCRMapper.cs" />
+    <Compile Include="Mapping\Implementations\MesBloqueadoTransfReceitaMapper.cs" />
+    <Compile Include="Mapping\Implementations\MesCicloMapper.cs" />
     <Compile Include="Mapping\Implementations\CRMapper.cs" />
     <Compile Include="Mapping\Implementations\Mapper.cs" />
+    <Compile Include="Mapping\Implementations\RecuperacaoCustoMapper.cs" />
+    <Compile Include="Mapping\Implementations\RecuperacaoCustoMesMapper.cs" />
     <Compile Include="Mapping\Implementations\TransferenciaReceitaMapper.cs" />
+    <Compile Include="Mapping\Implementations\UsuarioMapper.cs" />
     <Compile Include="Mapping\Interfaces\ICollectionMapper.cs" />
     <Compile Include="Mapping\Interfaces\IMapper.cs" />
     <Compile Include="Mapping\Interfaces\ISingleMapper.cs" />
+    <Compile Include="Models\CategoriaCR.cs">
+      <DependentUpon>Modelo.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Ciclo.cs">
       <DependentUpon>Modelo.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Conta.cs">
+    <Compile Include="Models\CR.cs">
       <DependentUpon>Modelo.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CR.cs">
+    <Compile Include="Models\MesBloqueadoTransfReceita.cs">
       <DependentUpon>Modelo.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MesCiclo.cs">
@@ -238,6 +254,9 @@
     <Compile Include="Models\RecuperacaoCustoMes.cs">
       <DependentUpon>Modelo.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\RelatorioTransfReceita.cs">
+      <DependentUpon>Modelo.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Sessao.cs">
       <DependentUpon>Modelo.tt</DependentUpon>
     </Compile>
@@ -256,12 +275,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Repository\Implementations\AuthRepository.cs" />
     <Compile Include="Repository\Implementations\GenericRepository.cs" />
+    <Compile Include="Repository\Implementations\RelatorioTransfReceitaRepository.cs" />
+    <Compile Include="Repository\Interfaces\IAuthRepository.cs" />
     <Compile Include="Repository\Interfaces\IGenericRepository.cs" />
+    <Compile Include="Repository\Interfaces\IRelatorioTransfReceitaRepository.cs" />
+    <Compile Include="Services\Implementations\CategoriaCRService.cs" />
     <Compile Include="Services\Implementations\CRService.cs" />
+    <Compile Include="Services\Implementations\MesesBloqueadosService.cs" />
+    <Compile Include="Services\Implementations\OleDb.cs" />
+    <Compile Include="Services\Implementations\RecuperacoesService.cs" />
     <Compile Include="Services\Implementations\TransferenciaReceitaService.cs" />
+    <Compile Include="Services\Implementations\UsuariosService.cs" />
+    <Compile Include="Services\Interfaces\ICategoriaCRService.cs" />
     <Compile Include="Services\Interfaces\ICRService.cs" />
+    <Compile Include="Services\Interfaces\IMesesBloqueadosService.cs" />
+    <Compile Include="Services\Interfaces\IOleDb.cs" />
+    <Compile Include="Services\Interfaces\IRecuperacoesService.cs" />
     <Compile Include="Services\Interfaces\ITransferenciaReceitaService.cs" />
+    <Compile Include="Services\Interfaces\IUsuariosService.cs" />
     <Compile Include="Services\SendEmail.cs" />
   </ItemGroup>
   <ItemGroup>

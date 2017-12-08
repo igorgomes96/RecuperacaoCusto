@@ -1,4 +1,4 @@
-<div ng-include="'components/container/menu.html'"></div>
+<div ng-include="'components/menu/menu.html'"></div>
 
 <div style="margin-bottom: 40px;">
     <form role="form" name="formUsuario" novalidate style="max-width: 600px; margin: auto;">
@@ -80,7 +80,7 @@
                 <button class="btn btn-primary" ng-hide="ct.editando" ng-click="ct.editando = true">Editar</button>
                 <button class="btn btn-default" ng-show="ct.editando" ng-click="ct.cancelar()">Cancelar</button>
                 <button class="btn btn-default" ng-hide="ct.editando || ct.alterarSenha == true" ng-click="ct.alterarSenha = true">Alterar Senha</button>
-                <a class="btn btn-default pull-right" ng-hide="ct.editando" ui-sref="container.home">Voltar</a>
+                <a class="btn btn-default pull-right" ng-hide="ct.editando" ui-sref="home">Voltar</a>
             </div>
         </div>
 

@@ -1,6 +1,25 @@
 <div ng-include="'components/menu/menu.html'"></div>
 
 <div class="row">
+
+	<div class="col-lg-2 col-md-3 col-sm-6" ng-if="ct.usuario.Perfil == 'Administrador'">
+		<a ui-sref="containerCR.cadastro" class="card-module">
+			Cadastro de CRs
+			<div class="icon">
+				<i class="fa fa-3x fa-edit"></i>
+			</div>
+		</a>
+	</div>
+
+	<div class="col-lg-2 col-md-3 col-sm-6" ng-if="ct.usuario.Perfil == 'Administrador'">
+		<a ui-sref="cadastroUsuario" class="card-module">
+			Cadastro de Usuários
+			<div class="icon">
+				<i class="fa fa-3x fa-users"></i>
+			</div>
+		</a>
+	</div>
+	
 	<div class="col-lg-2 col-md-3 col-sm-6">
 		<a ui-sref="{{ct.stateRecuperacao}}" class="card-module">
 			Recuperação de Custo
@@ -18,4 +37,5 @@
 			</div>
 		</a>
 	</div>
+
 </div>

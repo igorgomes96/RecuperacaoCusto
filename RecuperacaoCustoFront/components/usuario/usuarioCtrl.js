@@ -10,7 +10,8 @@ angular.module('recCustoApp').controller('usuarioCtrl', ['sharedDataService', 'u
 		.then(function(dado) {
 			self.usuario = dado.data;
 		}, function(error) {
-			messagesService.exibeMensagemErro(error.status, 'Erro ao carregar dados do usuário!');
+			swal('Erro ' + error.status, (error.data && error.data.Message) || error.data || error, 'error');
+			//messagesService.exibeMensagemErro(error.status, 'Erro ao carregar dados do usuário!');
 		});
 	}
 
@@ -39,18 +40,21 @@ angular.module('recCustoApp').controller('usuarioCtrl', ['sharedDataService', 'u
 				usuariosAPI.putUsuarioAlteraSenha(usuario.Login, usuario.NovaSenha)
 				.then(function() {
 					self.cancelar();
-					messagesService.exibeMensagemSucesso("Usuário salvo com sucesso!");
+					swal('Sucesso!', 'Usuário salvo com sucesso!', 'success');
+					//messagesService.exibeMensagemSucesso("Usuário salvo com sucesso!");
 				}, function(error) {
-					messagesService.exibeMensagemErro(error.status, error.data.Message);
+					messagesService.exibeMensagemErro(error.status, error.data.Message || error.data || error);
 				});
 			}
 			else{
 				self.cancelar();
-				messagesService.exibeMensagemSucesso("Usuário salvo com sucesso!");
+				swal('Sucesso!', 'Usuário salvo com sucesso!', 'success');
+				//messagesService.exibeMensagemSucesso("Usuário salvo com sucesso!");
 			}
 		}, function(error) {
 			console.log(error);
-			messagesService.exibeMensagemErro(error.status, error.data.Message);
+			swal('Erro ' + error.status, (error.data && error.data.Message) || error.data || error, 'error');
+			//messagesService.exibeMensagemErro(error.status, error.data.Message);
 		});
 	}
 

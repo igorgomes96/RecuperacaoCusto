@@ -26,6 +26,8 @@ namespace RecuperacaoCustoAPI.DTO
 
         public float ISS { get; set; }
 
+        public float CPRB { get; set; }
+
         public float Valor { get; set; }
 
         [Required(ErrorMessage = "Intercompany não informado!")]
@@ -33,7 +35,7 @@ namespace RecuperacaoCustoAPI.DTO
         public string Intercompany { get; set; }
 
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "A NF deve ser composta somente por caraceteres numéricos!")]
-        [MaxLength(10, ErrorMessage = "Quantidade máxima de caracteres (10) ultrapassada para o Regime de Tributação!")]
+        [MaxLength(10, ErrorMessage = "Quantidade máxima de caracteres (10) ultrapassada para a Nota Fiscal!")]
         public string NF { get; set; }
 
         public System.DateTime DataEmissao { get; set; }

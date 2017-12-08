@@ -1,12 +1,20 @@
-angular.module('recCustoApp').controller('ciclosCtrl', ['ciclosAPI', 'messagesService', '$scope', 'sharedDataService', 'crsAPI', function(ciclosAPI, messagesService, $scope, sharedDataService, crsAPI) {
+angular.module('recCustoApp').controller('ciclosCtrl', ['ciclosAPI', '$scope', 'sharedDataService', 'crsAPI', function(ciclosAPI, $scope, sharedDataService, crsAPI) {
 
 	var self = this;
 	self.ciclos = [];
+	self.todosCiclos = [];
 	$scope.cicloAtual = sharedDataService.getCicloAtual();
 
 	var loadCiclos = function(success, error, ano, status) {
 		ciclosAPI.getCiclos(ano, status)
 		.then(success, error);
+	}
+
+	var loadCiclosFechados = function() {
+		ciclosAPI.getCiclos(null, 'Fechado')
+		.then(function(dado) {
+			self.todosCiclos = dado.data;
+		});
 	}
 
 
@@ -21,7 +29,8 @@ angular.module('recCustoApp').controller('ciclosCtrl', ['ciclosAPI', 'messagesSe
 	}
 
 	var errorLoadCiclos = function(error) {
-		messagesService.exibeMensagemErro(error.status, 'Falha ao carregar os ciclos.');
+		swal('Erro ' + error.status, 'Falha ao carregar os ciclos. ' + ((error.data && error.data.Message) || error.data || error), 'error');
+		//messagesService.exibeMensagemErro(error.status, 'Falha ao carregar os ciclos.');
 	}
 
 	self.abrirCiclo = function(ciclo) {
@@ -29,7 +38,8 @@ angular.module('recCustoApp').controller('ciclosCtrl', ['ciclosAPI', 'messagesSe
 		ciclosAPI.postCiclo(ciclo)
 		.then(function(dado) {
 			$scope.cicloAtual.Codigo = dado.data.Codigo;
-			messagesService.exibeMensagemSucesso('Ciclo Aberto com sucesso!');
+			swal('Sucesso!', 'Ciclo aberto com sucesso!', 'success');
+			//messagesService.exibeMensagemSucesso('Ciclo Aberto com sucesso!');
 		});
 	}
 
@@ -37,13 +47,30 @@ angular.module('recCustoApp').controller('ciclosCtrl', ['ciclosAPI', 'messagesSe
 		ciclo.Status = 'Fechado';
 		ciclosAPI.putCiclo(ciclo.Codigo, ciclo)
 		.then(function(dado) {
+			loadCiclosFechados();
 			$scope.cicloAtual = null;
-			messagesService.exibeMensagemSucesso('Ciclo Fechado com sucesso!');
+			swal('Sucesso!', 'Ciclo fechado com sucesso!', 'success');
+			//messagesService.exibeMensagemSucesso('Ciclo Fechado com sucesso!');
 		});
 	}
 
-	loadCiclos(sucessoLoadCiclos, errorLoadCiclos, null, 'Aberto');
+	self.reabrirCiclo = function(ciclo) {
+		if (self.cicloAtual) {
+			swal('Inválido!', 'Não podem haver ciclos abertos para reabrir outro ciclo!', 'error');
+		} else { 
+			ciclo.Status = 'Aberto';
+			ciclosAPI.putCiclo(ciclo.Codigo, ciclo)
+			.then(function() {
+				loadCiclos(sucessoLoadCiclos, errorLoadCiclos, null, 'Aberto');
+				loadCiclosFechados();
+				swal('Sucesso!', 'Ciclo reaberto com sucesso!', 'success');
+				//messagesService.exibeMensagemSucesso('Ciclo Fechado com sucesso!');
+			});
+		}
+	}
 
+	loadCiclos(sucessoLoadCiclos, errorLoadCiclos, null, 'Aberto');
+	loadCiclosFechados();
 
 	$scope.$watch('cicloAtual', function() {
 		sharedDataService.setCicloAtual($scope.cicloAtual);

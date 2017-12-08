@@ -1,8 +1,11 @@
 <div ng-include="'components/menu/menu.html'"></div>
 
 <ul class="nav nav-tabs">
-	<li role="presentation" class="active">
+	<li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'containerTransfReceita.transferenciaReceita'}">
 		<a ui-sref="containerTransfReceita.transferenciaReceita">Transferências</a>
+	</li>
+	<li role="presentation" ng-class="{'active': ctMain.estadoAtual == 'containerTransfReceita.gestao'}" ng-if="ctMain.usuario.Perfil == 'Administrador'">
+		<a ui-sref="containerTransfReceita.gestao">Gestão</a>
 	</li>
 </ul>
 

@@ -1,4 +1,4 @@
-angular.module('recCustoApp', ['ui.router']);
+angular.module('recCustoApp', ['ui.router', 'uiInputSiblings']);
 
 //Verifica se está autenticado
 angular.module('recCustoApp').run(function() {

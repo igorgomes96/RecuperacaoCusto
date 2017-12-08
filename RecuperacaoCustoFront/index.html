@@ -26,6 +26,11 @@
     <div class="container-fluid">
         <div ui-view></div>
     </div>
+
+    <div class="footer">
+        <a href onclick="history.back()"><i class="fa fa-arrow-circle-left"></i> Voltar</a>
+        <small class="text-muted pull-right">Desenvolvido por Igor Ap. Gomes (FSW - UDI)</small>
+    </div>
     
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -59,6 +64,8 @@
     <script src="js/APIs/autenticacaoAPI.js"></script>
     <script src="js/APIs/transferenciaReceitaAPI.js"></script>
     <script src="js/APIs/usuariosAPI.js"></script>
+    <script src="js/APIs/categoriasCRAPI.js"></script>
+    <script src="js/APIs/mesesBloqueadosTransfReceitaAPI.js"></script>
 
     <!-- Filters -->
     <script src="js/filters/ellipsisFilter.js"></script>
@@ -67,6 +74,7 @@
     <!-- <script src="components/autenticacao/autenticacaoCtrl.js"></script> -->
     <script src="components/containerRecCusto/containerRecCustoCtrl.js"></script>
     <script src="components/containerTransfReceita/containerTransfReceitaCtrl.js"></script>
+    <script src="components/containerCR/containerCRCtrl.js"></script>
     <script src="components/envios/enviosCtrl.js"></script>
     <script src="components/home/homeCtrl.js"></script>
     <script src="components/aprovacoes/aprovacoesCtrl.js"></script>
@@ -74,16 +82,26 @@
     <script src="components/recebimentos/recebimentosCtrl.js"></script>
     <script src="components/recuperacoes/recuperacoesCtrl.js"></script>
     <script src="components/transfReceita/transfReceitaCtrl.js"></script>
+    <script src="components/transfReceita/transfReceitaGestaoCtrl.js"></script>
     <script src="components/usuario/usuarioCtrl.js"></script>
+    <script src="components/usuario/cadastroUsuarioCtrl.js"></script>
+    <script src="components/crs/cadastroCRCtrl.js"></script>
     <script src="components/menu/menuCtrl.js"></script>
+
 
     <!-- Interceptors -->
     <script src="js/config/interceptorsConfig.js"></script>
     <script src="js/interceptors/anexaTokenInterceptor.js"></script>
     <script src="js/interceptors/errorInterceptor.js"></script>
 
+    <!-- Directives -->
+    <script src="lib/uiInputSiblingsDirective.js"></script>
+
     <!-- Values -->
     <script src="js/values/configValue.js"></script>
+
+    <!-- Alert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <!-- Optional JavaScript -->
     <!-- Inclui todos os plugins compilados (abaixo), ou inclua arquivos separadados se necessário -->

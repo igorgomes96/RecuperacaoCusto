@@ -14,52 +14,56 @@ using RecuperacaoCustoAPI.DTO;
 using System.Text;
 using RecuperacaoCustoAPI.Service;
 using RecuperacaoCustoAPI.Properties;
+using RecuperacaoCustoAPI.Services.Interfaces;
+using RecuperacaoCustoAPI.Exceptions;
 
 namespace RecuperacaoCustoAPI.Controllers
 {
     [AuthenticationFilter]
     public class UsuariosController : ApiController
     {
-        private Contexto db = new Contexto();
+
+        private readonly IUsuariosService _usuariosService;
+
+        public UsuariosController(IUsuariosService usuariosService)
+        {
+            _usuariosService = usuariosService;
+        }
 
         [Authorize(Roles = "Administrador")]
         // GET: api/Usuarios
         public IEnumerable<UsuarioDTO> GetUsuarios()
         {
-            return db.Usuario.ToList()
-                    .Select(x => new UsuarioDTO(x));
+            return _usuariosService.List();
         }
 
-        //[HttpGet]
-        //[Route("api/AlteraTodasSenhas")]
-        //public void AlteraTodasSenhas()
-        //{
-        //    IDictionary<string, string> senhas = new Dictionary<string, string>();
-        //    foreach (Usuario u in db.Usuario.ToList())
-        //    {
-        //        senhas.Add(u.Login, Convert.ToBase64String(Encoding.UTF8.GetBytes(u.Senha)));
-        //    }
-
-        //    foreach (string key in senhas.Keys)
-        //    {
-        //        db.Usuario.Find(key).Senha = senhas[key];
-        //        db.SaveChanges();
-        //    }
-
-        //}
+        [Authorize(Roles = "Administrador")]
+        [Route("api/Usuarios/Gestores")]
+        public IHttpActionResult GetGestores()
+        {
+            try
+            {
+                return Ok(_usuariosService.ListGestores());
+            } catch (Exception e)
+            {
+                return Content(HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
 
 
         // GET: api/Usuarios/5
         [ResponseType(typeof(UsuarioDTO))]
         public IHttpActionResult GetUsuario(string id)
         {
-            Usuario usuario = db.Usuario.Find(id);
-            if (usuario == null)
+            try
             {
-                return NotFound();
+                return Ok(_usuariosService.Find(id));
+            } catch (NaoEncontradoException<Usuario>)
+            {
+                return Content(HttpStatusCode.NotFound, "Usuário não encontrado!");
+            } catch (Exception e) {
+                return Content(HttpStatusCode.InternalServerError, e.Message);
             }
-
-            return Ok(new UsuarioDTO(usuario));
         }
 
         [HttpPut]
@@ -67,93 +71,78 @@ namespace RecuperacaoCustoAPI.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutAlteraSenha (string login, AlteraSenhaDTO senha)
         {
-            Usuario user = db.Usuario.Find(login);
-            if (user == null) return NotFound();
-
-            senha.SenhaAtual = Convert.ToBase64String(Encoding.UTF8.GetBytes(senha.SenhaAtual));
-            senha.NovaSenha = Convert.ToBase64String(Encoding.UTF8.GetBytes(senha.NovaSenha));
-            senha.Confirmacao = Convert.ToBase64String(Encoding.UTF8.GetBytes(senha.Confirmacao));
-
-            if (user.Senha != senha.SenhaAtual)
-                return BadRequest("Senha incorreta!");
-
             if (senha.NovaSenha != senha.Confirmacao)
                 return BadRequest("As senhas não correspondem!");
 
-            user.Senha = senha.NovaSenha;
-
             try
             {
-                db.SaveChanges();
+                _usuariosService.AlterarSenha(login, senha);
+                return Ok();
+            } catch (SenhaIncorretaException)
+            {
+                return Content(HttpStatusCode.BadRequest, "Senha incorreta!");
             } catch (Exception e)
             {
-                return InternalServerError(e);
+                return Content(HttpStatusCode.InternalServerError, e.Message);
             }
-            return Ok();
         }
 
         // PUT: api/Usuarios/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutUsuario(string id, Usuario usuario)
+        public IHttpActionResult PutUsuario(string id, UsuarioDTO usuario)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             if (id != usuario.Login)
-            {
-                return BadRequest();
-            }
-
-            Usuario user = db.Usuario.Find(usuario.Login);
-            if (user == null) return NotFound();
-
-            usuario.Senha = user.Senha;
-            db.Entry(user).State = EntityState.Detached;
-            db.Entry(usuario).State = EntityState.Modified;
+                return Content(HttpStatusCode.BadRequest, "Parâmetros incosistentes!");
 
             try
             {
-                db.SaveChanges();
+                _usuariosService.Update(usuario);
+                return Ok();
+            } catch(NaoEncontradoException<Usuario>)
+            {
+                return Content(HttpStatusCode.NotFound, "Usuário não encontrado!");
             }
             catch (Exception e)
             {
                 return InternalServerError(e);
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST: api/Usuarios
         [ResponseType(typeof(UsuarioDTO))]
         [Authorize(Roles = "Administrador")]
-        public IHttpActionResult PostUsuario(Usuario usuario)
+        public IHttpActionResult PostUsuario(UsuarioDTO usuario)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Usuario.Add(usuario);
-
             try
             {
-                db.SaveChanges();
-            }
-            catch (DbUpdateException)
+                _usuariosService.Save(usuario);
+                return Ok();
+            } catch (ConflitoException<Usuario>)
             {
-                if (UsuarioExists(usuario.Login))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+                return Content(HttpStatusCode.Conflict, "Já existe um usuário cadastrado com esse mesmo login!");
+            } catch (Exception e)
+            {
+                return Content(HttpStatusCode.InternalServerError, e.Message);
             }
+            
+        }
 
-            return CreatedAtRoute("DefaultApi", new { id = usuario.Login }, new UsuarioDTO(usuario));
+        [ResponseType(typeof(void))]
+        [Authorize(Roles = "Administrador")]
+        [Route("api/Usuarios/{login}/RecuperarSenha")]
+        public IHttpActionResult PostRecuperarSenha(string login)
+        {
+            try
+            {
+                _usuariosService.RecuperarSenha(login);
+                return Ok();
+            } catch (NaoEncontradoException<Usuario>)
+            {
+                return Content(HttpStatusCode.NotFound, "Usuário não encontrado!");
+            } catch (Exception e)
+            {
+                return Content(HttpStatusCode.InternalServerError, e.Message);
+            }
         }
 
         // DELETE: api/Usuarios/5
@@ -161,31 +150,17 @@ namespace RecuperacaoCustoAPI.Controllers
         [Authorize(Roles = "Administrador")]
         public IHttpActionResult DeleteUsuario(string id)
         {
-            Usuario usuario = db.Usuario.Find(id);
-            if (usuario == null)
+            try
             {
-                return NotFound();
-            }
-
-            UsuarioDTO u = new UsuarioDTO(usuario);
-            db.Usuario.Remove(usuario);
-            db.SaveChanges();
-
-            return Ok(u);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+                return Ok(_usuariosService.Delete(id));
+            } catch (NaoEncontradoException<Usuario>)
             {
-                db.Dispose();
+                return Content(HttpStatusCode.NotFound, "Usuário não cadastrado!");
+            } catch (Exception e)
+            {
+                return Content(HttpStatusCode.InternalServerError, e.Message);
             }
-            base.Dispose(disposing);
         }
 
-        private bool UsuarioExists(string id)
-        {
-            return db.Usuario.Count(e => e.Login == id) > 0;
-        }
     }
 }

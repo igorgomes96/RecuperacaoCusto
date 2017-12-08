@@ -19,17 +19,33 @@ namespace RecuperacaoCustoAPI
         {
 			var container = new UnityContainer();
 
-            // register all your components with the container here
-            // it is NOT necessary to register your controllers
 
-            // e.g. container.RegisterType<ITestService, TestService>();
             container.RegisterType<DbContext, Contexto>();
+
+            //Mappers
+            container.RegisterType<ISingleMapper<CategoriaCR, CategoriaCRDTO>, CategoriaCRMapper>();
             container.RegisterType<ISingleMapper<TransferenciaReceita, TransferenciaReceitaDTO>, TransferenciaReceitaMapper>();
             container.RegisterType<ISingleMapper<CR, CRDTO>, CRMapper>();
+            container.RegisterType<ISingleMapper<Usuario, UsuarioDTO>, UsuarioMapper>();
+            container.RegisterType<ISingleMapper<RecuperacaoCusto, RecuperacaoCustoDTO>, RecuperacaoCustoMapper>();
+            container.RegisterType<ISingleMapper<MesCiclo, MesCicloDTO>, MesCicloMapper>();
+            container.RegisterType<ISingleMapper<MesBloqueadoTransfReceita, MesBloqueadoTransfReceitaDTO>, MesBloqueadoTransfReceitaMapper>();
+            container.RegisterType<ISingleMapper<RecuperacaoCustoMes, RecuperacaoCustoMesDTO>, RecuperacaoCustoMesMapper>();
             container.RegisterType(typeof(IMapper<,>), typeof(Mapper<,>));
+
+            //Repository
+            container.RegisterType<IRelatorioTransfReceitaRepository, RelatorioTransfReceitaRepository>();
             container.RegisterType(typeof(IGenericRepository<,,>), typeof(GenericRepository<,,>));
+            container.RegisterType<IAuthRepository, AuthRepository>();
+
+            //Services
+            container.RegisterType<IOleDb, OleDb>();
             container.RegisterType<ITransferenciaReceitaService, TransferenciaReceitaService>();
+            container.RegisterType<IUsuariosService, UsuariosService>();
+            container.RegisterType<IMesesBloqueadosService, MesesBloqueadosService>();
             container.RegisterType<ICRService, CRService>();
+            container.RegisterType<ICategoriaCRService, CategoriaCRService>();
+            container.RegisterType<IRecuperacoesService, RecuperacoesService>();
 
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }

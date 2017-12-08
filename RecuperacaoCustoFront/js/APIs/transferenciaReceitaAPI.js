@@ -3,8 +3,8 @@ angular.module('recCustoApp').service('transferenciaReceitaAPI', ['$http', 'conf
 	var self = this;
     var resource = 'TransferenciasReceitas';
 
-    self.getTransferenciasReceitas = function() {
-        return $http.get(config.baseUrl + resource);
+    self.getTransferenciasReceitas = function(ano, mes) {
+        return $http.get(config.baseUrl + resource, {params:{ano:ano, mes:mes}});
     }
 
     self.getTransferenciaReceita = function(id) {
@@ -21,6 +21,14 @@ angular.module('recCustoApp').service('transferenciaReceitaAPI', ['$http', 'conf
 
     self.deleteTransferenciaReceita = function(id) {
         return $http.delete(config.baseUrl + resource + '/' + id);
+    }
+
+    self.report = function(mes) {
+        window.open(config.baseUrl + resource + '/Report?mes=' + mes);
+    }
+
+    self.getAnos = function() {
+        return $http.get(config.baseUrl + resource + '/Anos');
     }
 
 }]);

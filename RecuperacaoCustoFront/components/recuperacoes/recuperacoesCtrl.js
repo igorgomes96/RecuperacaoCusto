@@ -10,8 +10,8 @@ angular.module('recCustoApp').controller('recuperacoesCtrl', ['$scope', 'sharedD
 		crOrigem: null,
 		crDestino: null,
 		codTipo: null,
-		respondido: true,
-		aprovado: true
+		respondido: null,
+		aprovado: null
 	}
 
 	var loadTipos = function() {
@@ -19,7 +19,8 @@ angular.module('recCustoApp').controller('recuperacoesCtrl', ['$scope', 'sharedD
 		.then(function(dado) {
 			self.tipos = dado.data;
 		}, function(error) {
-			messagesService.exibeMensagemErro(error.status, 'Falha ao carregar os Tipos de Recuperações.');
+			swal('Erro ' + error.status, (error.data && error.data.Message) || error.data || error, 'error');
+			//messagesService.exibeMensagemErro(error.status, 'Falha ao carregar os Tipos de Recuperações.');
 		});
 	}
 
@@ -43,7 +44,8 @@ angular.module('recCustoApp').controller('recuperacoesCtrl', ['$scope', 'sharedD
 	}
 
 	var errorLoadCiclos = function(error) {
-		messagesService.exibeMensagemErro(error.status, 'Falha ao carregar os ciclos.');
+		swal('Erro ' + error.status, (error.data && error.data.Message) || error.data || error, 'error');
+		//messagesService.exibeMensagemErro(error.status, 'Falha ao carregar os ciclos.');
 		$rootScope.mostraLoader = false;
 	}
 
@@ -54,15 +56,27 @@ angular.module('recCustoApp').controller('recuperacoesCtrl', ['$scope', 'sharedD
 			self.recuperacoes = dado.data;
 			$rootScope.mostraLoader = false;
 		}, function(error) {
-			messagesService.exibeMensagemErro(error.status, 'Falha ao carregar as recuperações.');
+			swal('Erro ' + error.status, (error.data && error.data.Message) || error.data || error, 'error');
+			//messagesService.exibeMensagemErro(error.status, 'Falha ao carregar as recuperações.');
 			$rootScope.mostraLoader = false;
 		});
 	}
 
-	$scope.$watch('cicloAtual', function() {
-		if ($scope.cicloAtual)
+	self.deleteRecuperacao = function(id) {
+		recuperacoesCustosAPI.deleteRecuperacaoCusto(id)
+		.then(function() {
 			self.loadRecuperacoes($scope.cicloAtual.Codigo);
-		else 
+			swal('Sucesso!', 'Recuperação de Custo cancelada com sucesso!', 'success');
+		}, function(error) {
+			swal('Erro!', error.data.Message || error.data || error, 'error');
+		});
+	}
+
+	$scope.$watch('cicloAtual', function() {
+		if ($scope.cicloAtual){
+			//self.loadRecuperacoes($scope.cicloAtual.Codigo);
+			self.recuperacoes = [];
+		}else 
 			self.recuperacoes = [];
 	});
 

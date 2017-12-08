@@ -1,4 +1,4 @@
-angular.module('recCustoApp').controller('aprovacoesCtrl', ['sharedDataService', 'messagesService', 'ciclosAPI', '$scope', 'crsAPI', 'recuperacoesCustosAPI', '$rootScope', function(sharedDataService, messagesService, ciclosAPI, $scope, crsAPI, recuperacoesCustosAPI, $rootScope) {
+angular.module('recCustoApp').controller('aprovacoesCtrl', ['sharedDataService', 'ciclosAPI', '$scope', 'crsAPI', 'recuperacoesCustosAPI', '$rootScope', function(sharedDataService, ciclosAPI, $scope, crsAPI, recuperacoesCustosAPI, $rootScope) {
 
 	var self = this;
 
@@ -24,7 +24,8 @@ angular.module('recCustoApp').controller('aprovacoesCtrl', ['sharedDataService',
 	}
 
 	var errorLoadCiclos = function(error) {
-		messagesService.exibeMensagemErro(error.status, 'Falha ao carregar os ciclos.');
+		swal('Erro', 'Falha ao carregar os ciclos.', 'error');
+		//messagesService.exibeMensagemErro(error.status, 'Falha ao carregar os ciclos.');
 	}
 
 	var loadRecuperacoes = function(codCiclo) {
@@ -34,7 +35,8 @@ angular.module('recCustoApp').controller('aprovacoesCtrl', ['sharedDataService',
 			$rootScope.mostraLoader = false;
 			self.recuperacoes = dado.data;
 		}, function(error) {
-			messagesService.exibeMensagemErro(error.status, 'Erro ao carregar informações. Contate o administrador do sistema.');
+			swal('Erro ' + error.status, 'Erro ao carregar informações. Contate o administrador do sistema.', 'error');
+			//messagesService.exibeMensagemErro(error.status, 'Erro ao carregar informações. Contate o administrador do sistema.');
 			$rootScope.mostraLoader = false;
 		});
 	}
@@ -43,12 +45,14 @@ angular.module('recCustoApp').controller('aprovacoesCtrl', ['sharedDataService',
 		$rootScope.mostraLoader = true;
 		recuperacoesCustosAPI.putAprovarRecuperacao(codRec)
 		.then(function() {
-			messagesService.exibeMensagemSucesso('Recuperações aprovadas com sucesso!');
+			//messagesService.exibeMensagemSucesso('Recuperações aprovadas com sucesso!');
+			swal('Sucesso!', 'Recuperações aprovadas com sucesso!', 'success');
 			loadRecuperacoes($scope.cicloAtual.Codigo);
 			$rootScope.$broadcast('eventoAprovacao', $scope.cicloAtual.Codigo);
 			$rootScope.mostraLoader = false;
 		}, function(error) {
-			messagesService.exibeMensagemErro(error.status, 'Erro ao aprovar recuperações de custos. Contate o administrador do sistema.');
+			swal('Erro ' + error.status, 'Erro ao aprovar recuperação de custos! ' + ((error.data && error.data.Message) || error.data || error), 'error');
+			//messagesService.exibeMensagemErro(error.status, 'Erro ao aprovar recuperações de custos. Contate o administrador do sistema.');
 			$rootScope.mostraLoader = false;
 		});
 	}
@@ -57,12 +61,14 @@ angular.module('recCustoApp').controller('aprovacoesCtrl', ['sharedDataService',
 		$rootScope.mostraLoader = true;
 		recuperacoesCustosAPI.putReprovarRecuperacao(codRec, rec)
 		.then(function() {
-			messagesService.exibeMensagemSucesso('Recuperações reprovadas com sucesso!');
+			//messagesService.exibeMensagemSucesso('Recuperações reprovadas com sucesso!');
+			swal('Sucesso!', 'Recuperações reprovadas com sucesso!', 'success');
 			loadRecuperacoes($scope.cicloAtual.Codigo);
 			$rootScope.$broadcast('eventoAprovacao', $scope.cicloAtual.Codigo);
 			$rootScope.mostraLoader = false;
 		}, function(error) {
-			messagesService.exibeMensagemErro(error.status, 'Erro ao reprovar recuperações de custos. Contate o administrador do sistema.');
+			swal('Erro ' + error.status, 'Erro ao aprovar recuperação de custos! ' + ((error.data && error.data.Message) || error.data || error), 'error');
+			//messagesService.exibeMensagemErro(error.status, 'Erro ao reprovar recuperações de custos. Contate o administrador do sistema.');
 			$rootScope.mostraLoader = false;
 		});
 	}

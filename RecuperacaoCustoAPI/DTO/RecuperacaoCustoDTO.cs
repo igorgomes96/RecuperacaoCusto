@@ -13,7 +13,7 @@ namespace RecuperacaoCustoAPI.DTO
         {
             if (rec == null) return;
             CRDestino = rec.CRDestino;
-            CRDestino = rec.CRDestino;
+            CROrigem = rec.CROrigem;
             DataHora = rec.DataHora;
             Aprovado = rec.Aprovado;
             Resposta = rec.Resposta;

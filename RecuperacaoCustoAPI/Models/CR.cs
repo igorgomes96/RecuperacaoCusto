@@ -37,5 +37,6 @@ namespace RecuperacaoCustoAPI.Models
         public virtual ICollection<TransferenciaReceita> TransfReceitaOrigem { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TransferenciaReceita> TransfReceitaDestino { get; set; }
+        public virtual CategoriaCR CategoriaCR { get; set; }
     }
 }

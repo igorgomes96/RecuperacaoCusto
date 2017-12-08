@@ -1,0 +1,93 @@
+<div class="row">
+	<div class="col-md-12">
+		<form name="formCadastro" class="form" role="form" novalidate>
+
+			<div class="row">
+
+				<div class="form-group col-md-3" ng-class="{'has-error': formCadastro.inputCR.$invalid && formCadastro.inputCR.$dirty, 'has-success': formCadastro.inputCR.$valid}">
+					<label for="inputCR">Código do CR</label>
+					<div class="input-group">
+						<input type="text" name="inputCR" id="inputCR" class="form-control" ng-minlength="9" ng-maxlength="9" required ng-model="ct.cr.Codigo" ng-pattern="/^[0-9]*$/">
+						<span class="input-group-btn">
+					        <button class="btn btn-default" type="button" ng-click="ct.buscarCR()" ng-disabled="formCadastro.inputCR.$invalid"><i class="fa fa-search"></i></button>
+					    </span>
+					</div>				
+					<small class="form-text text-muted">9 caracteres numéricos</small>
+				</div>
+
+
+				<div class="form-group col-md-2" ng-class="{'has-error': formCadastro.selectCategoria.$invalid && formCadastro.selectCategoria.$dirty, 'has-success': formCadastro.selectCategoria.$valid}">
+					<label for="selectCategoria">Categoria</label>
+					<select ng-model="ct.cr.Categoria" ng-options="c.Categoria as c.Categoria for c in ct.categorias" class="form-control" required name="selectCategoria" id="selectCategoria">
+						<option value="">(Selecione)</option>
+					</select>
+					<small class="form-text text-muted">Categoria do CR</small>
+				</div>
+
+				<div class="form-group col-md-7" ng-class="{'has-error': formCadastro.selectResponsavel.$invalid && formCadastro.selectResponsavel.$dirty, 'has-success': formCadastro.selectResponsavel.$valid}">
+					<label for="selectResponsavel">Responsável pelo CR</label>
+					<select ng-model="ct.cr.ResponsavelLogin" ng-options="g.Login as g.Nome for g in ct.gestores" class="form-control" required name="selectResponsavel" id="selectResponsavel">
+						<option value="">(Selecione)</option>
+					</select>
+					<small class="form-text text-muted">Responsável pelo CR</small>
+				</div>
+
+			</div>
+
+			<div class="row">
+				<div class="form-group col-md-12" ng-class="{'has-error': formCadastro.inputDescricao.$invalid && formCadastro.inputDescricao.$dirty, 'has-success': formCadastro.inputDescricao.$valid}">
+					<label for="inputDescricao">Descrição</label>
+					<textarea name="inputDescricao" id="inputDescricao" class="form-control" ng-maxlength="255" required ng-model="ct.cr.Descricao"></textarea>
+					<small class="form-text text-muted">Até 255 caracteres</small>
+				</div>
+			</div>
+
+			<button class="btn btn-success" ng-click="ct.salvarCR()" ng-disabled="formCadastro.$invalid">Salvar <i class="fa fa-floppy-o"></i></button>
+		</form>
+	</div>
+</div>
+
+<hr>
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label for="inputFiltro">Filtro</label>
+			<div class="input-group">
+				<input type="text" name="inputFiltro" id="inputFiltro" ng-model="ct.filtroCR" class="form-control" placeholder="Digite uma parte do código, da descrição ou do responsável">
+				<span class="input-group-btn">
+					<button class="btn btn-default" ng-click="ct.loadCRs(ct.filtroCR)"><i class="fa fa-search"></i></button>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		
+		<table class="table table-condensed">
+			<thead>
+				<tr>
+					<th>Código</th>
+					<th>Categoria</th>
+					<th>Responsável</th>
+					<th>Descrição</th>
+					<th width="5%"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="c in ct.crs">
+					<td>{{c.Codigo}}</td>
+					<td>{{c.Categoria}}</td>
+					<td>{{c.ResponsavelNome}}</td>
+					<td>{{c.Descricao}}</td>
+					<td class="text-right">
+						<button class="btn btn-danger btn-xs" ng-click="ct.excluirCR(c.Codigo)"><i class="fa fa-trash-o"></i></button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div> 
+</div>

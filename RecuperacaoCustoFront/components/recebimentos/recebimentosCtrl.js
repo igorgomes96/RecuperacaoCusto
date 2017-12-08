@@ -1,4 +1,4 @@
-angular.module('recCustoApp').controller('recebimentosCtrl', ['sharedDataService', 'messagesService', 'ciclosAPI', '$scope', 'crsAPI', 'recuperacoesCustosAPI', '$rootScope', function(sharedDataService, messagesService, ciclosAPI, $scope, crsAPI, recuperacoesCustosAPI, $rootScope) {
+angular.module('recCustoApp').controller('recebimentosCtrl', ['sharedDataService', 'ciclosAPI', '$scope', 'crsAPI', 'recuperacoesCustosAPI', '$rootScope', function(sharedDataService, ciclosAPI, $scope, crsAPI, recuperacoesCustosAPI, $rootScope) {
 
 	var self = this;
 
@@ -25,7 +25,8 @@ angular.module('recCustoApp').controller('recebimentosCtrl', ['sharedDataService
 	}
 
 	var errorLoadCiclos = function(error) {
-		messagesService.exibeMensagemErro(error.status, 'Falha ao carregar os ciclos.');
+		swal('Erro ' + error.status, (error.data && error.data.Message) || error.data || error, 'error');
+		//messagesService.exibeMensagemErro(error.status, 'Falha ao carregar os ciclos.');
 		$rootScope.mostraLoader = false;
 	}
 
@@ -36,7 +37,8 @@ angular.module('recCustoApp').controller('recebimentosCtrl', ['sharedDataService
 			self.recuperacoes = dado.data;
 			$rootScope.mostraLoader = false;
 		}, function(error) {
-			messagesService.exibeMensagemErro(error.status, 'Falha ao carregar as recuperações.');
+			swal('Erro ' + error.status, (error.data && error.data.Message) || error.data || error, 'error');
+			//messagesService.exibeMensagemErro(error.status, 'Falha ao carregar as recuperações.');
 			$rootScope.mostraLoader = false;
 		});
 	}

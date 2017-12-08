@@ -4,13 +4,13 @@
 
 			<div class="row">
 
-				<div class="form-group col-md-3" ng-class="{'has-error': formTransf.inputCROrigem.$invalid && formTransf.inputCROrigem.$dirty, 'has-success': formTransf.inputCROrigem.$valid}">
+				<div class="form-group col-md-2" ng-class="{'has-error': formTransf.inputCROrigem.$invalid && formTransf.inputCROrigem.$dirty, 'has-success': formTransf.inputCROrigem.$valid}">
 					<label for="inputCROrigem">CR Origem</label>
 					<input type="text" name="inputCROrigem" id="inputCROrigem" class="form-control" ng-minlength="9" ng-maxlength="9" required ng-model="ct.transf.CROrigem" ng-pattern="/^[0-9]*$/">
 					<small class="form-text text-muted">9 caracteres numéricos</small>
 				</div>
 
-				<div class="form-group col-md-3" ng-class="{'has-error': formTransf.inputCRDestino.$invalid && formTransf.inputCRDestino.$dirty, 'has-success': formTransf.inputCRDestino.$valid}">
+				<div class="form-group col-md-2" ng-class="{'has-error': formTransf.inputCRDestino.$invalid && formTransf.inputCRDestino.$dirty, 'has-success': formTransf.inputCRDestino.$valid}">
 					<label for="inputCRDestino">CR Destino</label>
 					<input type="text" name="inputCRDestino" id="inputCRDestino" class="form-control" ng-minlength="9" ng-maxlength="9" required ng-model="ct.transf.CRDestino" ng-pattern="/^[0-9]*$/">
 					<small class="form-text text-muted">9 caracteres numéricos</small>
@@ -32,6 +32,15 @@
 						<span class="input-group-addon">%</span>
 					</div>
 					<small class="form-text text-muted">Percentual de ISS (%)</small>
+				</div>
+
+				<div class="form-group col-md-2" ng-class="{'has-error': formTransf.inputCPRB.$invalid && formTransf.inputCPRB.$dirty, 'has-success': formTransf.inputCPRB.$valid}">
+					<label for="inputCPRB">CPRB</label>
+					<div class="input-group">
+						<input type="number" name="inputCPRB" id="inputCPRB" class="form-control" required ng-model="ct.transf.CPRB">
+						<span class="input-group-addon">%</span>
+					</div>
+					<small class="form-text text-muted">Percentual de CPRB (%)</small>
 				</div>
 
 			</div>
@@ -68,7 +77,7 @@
 				<div class="form-group col-md-3" ng-class="{'has-error': formTransf.inputRazaoSocial.$invalid && formTransf.inputRazaoSocial.$dirty, 'has-success': formTransf.inputRazaoSocial.$valid}">
 					<label for="inputRazaoSocial">Razão Social</label>
 					<input type="text" name="inputRazaoSocial" id="inputRazaoSocial" class="form-control" required ng-maxlength="10" ng-model="ct.transf.RazaoSocial">
-					<small class="form-text text-muted">10 caracteres numéricos</small>
+					<small class="form-text text-muted">10 caracteres</small>
 				</div>
 
 			</div>
@@ -97,6 +106,37 @@
 	<div class="col-md-12">
 		<h4>Transferências Realizadas</h4>
 
+		<!-- <div class="row">
+			<div class="form-group col-md-3">
+				<label for="inputFiltroMes">Filtrar por Mês de Referência</label>
+				<input type="date" name="inputFiltroMes" id="inputFiltroMes" class="form-control" ng-model="ct.filtroMes" ng-change="ct.loadTransf()">
+			</div>
+		</div> -->
+
+		<div class="row">
+			<div class="form-group col-md-2">
+				<label for="inputFiltroAno">Ano</label>
+				<select class="form-control" ng-model="ct.ano" ng-options="a for a in ct.anos">
+					<option value="">(Selecione o ano)</option>
+				</select>
+			</div>
+
+			<div class="form-group col-md-2">
+				<label for="inputFiltroMes">Mes</label>
+				<select class="form-control" ng-model="ct.mes" ng-options="m.Mes as m.Texto for m in ct.meses">
+					<option value="">(Selecione o mês)</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<button class="btn btn-primary" ng-click="ct.loadTransf()">Filtrar <i class="fa fa-filter"></i></button>
+			</div>
+		</div>
+
+		<hr>
+
 		<table class="table table-striped table-condensed table-responsive">
 			<thead>
 				<tr>
@@ -105,10 +145,13 @@
 					<th>Razão Social</th>
 					<th>Regime Tributação</th>
 					<th>ISS</th>
+					<th>CPRB</th>
 					<th>NF</th>
-					<th>Data Emissão</th>
+					<th>Intercompany</th>
+					<th>Emissão</th>
 					<th>Valor</th>
-					<th>Histórico</th>
+					<th>Login Usuário</th>
+					<th width="2%"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -118,10 +161,15 @@
 					<td>{{t.RazaoSocial}}</td>
 					<td>{{t.RegimeTributacao}}</td>
 					<td>{{t.ISS * 100 | number:2}}%</td>
+					<td>{{t.CPRB * 100 | number:2}}%</td>
 					<td>{{t.NF}}</td>
+					<td>{{t.Intercompany}}</td>
 					<td>{{t.DataEmissao | date:'dd/MM/yy'}}</td>
 					<td>R$ {{t.Valor | number:2}}</td>
-					<td>{{t.Historico| ellipsis:5:5}}</td>
+					<td>{{t.LoginUsuario}}</td>
+					<td>
+						<button class="btn btn-danger btn-xs" ng-click="ct.deleteTransf(t.Codigo)" ng-if="!ct.mesBloqueado"><i class="fa fa-trash-o"></i></button>
+					</td>
 				</tr>
 			</tbody>
 		</table>

@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="RecuperacaoCustoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CategoriaCR">
+          <Key>
+            <PropertyRef Name="Categoria" />
+          </Key>
+          <Property Name="Categoria" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="Numero" Type="varchar" MaxLength="5" Nullable="false" />
+        </EntityType>
         <EntityType Name="Ciclo">
           <Key>
             <PropertyRef Name="Codigo" />
@@ -15,13 +22,6 @@
           <Property Name="DataFim" Type="date" Nullable="false" />
           <Property Name="Status" Type="varchar" MaxLength="30" Nullable="false" />
         </EntityType>
-        <EntityType Name="Conta">
-          <Key>
-            <PropertyRef Name="Descricao" />
-          </Key>
-          <Property Name="Descricao" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="NumConta" Type="varchar" MaxLength="10" Nullable="false" />
-        </EntityType>
         <EntityType Name="CR">
           <Key>
             <PropertyRef Name="Codigo" />
@@ -30,6 +30,12 @@
           <Property Name="Descricao" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="ResponsavelLogin" Type="varchar" MaxLength="20" />
           <Property Name="Categoria" Type="varchar" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MesBloqueadoTransfReceita">
+          <Key>
+            <PropertyRef Name="Mes" />
+          </Key>
+          <Property Name="Mes" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="MesCiclo">
           <Key>
@@ -98,6 +104,7 @@
           <Property Name="Historico" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="DataHora" Type="datetime" Nullable="false" />
           <Property Name="LoginUsuario" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="CPRB" Type="real" Nullable="false" />
         </EntityType>
         <EntityType Name="Usuario">
           <Key>
@@ -108,8 +115,60 @@
           <Property Name="Nome" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="100" />
           <Property Name="Perfil" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="SenhaEnviada" Type="bit" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'RecuperacaoCusto.dbo.RelatorioTransfReceita' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="RelatorioTransfReceita">
+          <Key>
+            <PropertyRef Name="UN" />
+            <PropertyRef Name="UR" />
+            <PropertyRef Name="Produto" />
+            <PropertyRef Name="Intercompany" />
+            <PropertyRef Name="UF" />
+            <PropertyRef Name="Cliente" />
+            <PropertyRef Name="Reserva1" />
+            <PropertyRef Name="Reserva2" />
+            <PropertyRef Name="Debito" />
+            <PropertyRef Name="Credito" />
+            <PropertyRef Name="ItemFaturamento" />
+            <PropertyRef Name="Documento" />
+            <PropertyRef Name="NF" />
+            <PropertyRef Name="DataEmissao" />
+            <PropertyRef Name="Historico" />
+            <PropertyRef Name="Tipo" />
+          </Key>
+          <Property Name="Empresa" Type="varchar" MaxLength="3" />
+          <Property Name="UN" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="UR" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="Conta_Contabil" Type="varchar" MaxLength="10" />
+          <Property Name="CR" Type="varchar" MaxLength="20" />
+          <Property Name="Produto" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Intercompany" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="UF" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="Cliente" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="Reserva1" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Reserva2" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Debito" Type="real" Nullable="false" />
+          <Property Name="Credito" Type="real" Nullable="false" />
+          <Property Name="ItemFaturamento" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="Documento" Type="varchar" MaxLength="9" Nullable="false" />
+          <Property Name="NF" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="DataEmissao" Type="date" Nullable="false" />
+          <Property Name="Historico" Type="varchar" MaxLength="194" Nullable="false" />
+          <Property Name="Tipo" Type="varchar" MaxLength="8" Nullable="false" />
+        </EntityType>
+        <Association Name="cr_categoriacr_fk">
+          <End Role="CategoriaCR" Type="Self.CategoriaCR" Multiplicity="1" />
+          <End Role="CR" Type="Self.CR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CategoriaCR">
+              <PropertyRef Name="Categoria" />
+            </Principal>
+            <Dependent Role="CR">
+              <PropertyRef Name="Categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="cr_responsavel_fk">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
           <End Role="CR" Type="Self.CR" Multiplicity="*" />
@@ -256,18 +315,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="transferencia_receita_fk">
-          <End Role="Conta" Type="Self.Conta" Multiplicity="1" />
-          <End Role="TransferenciaReceita" Type="Self.TransferenciaReceita" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Conta">
-              <PropertyRef Name="Descricao" />
-            </Principal>
-            <Dependent Role="TransferenciaReceita">
-              <PropertyRef Name="RegimeTributacao" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="transferenciareceita_usuario_fk">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="TransferenciaReceita" Type="Self.TransferenciaReceita" Multiplicity="*" />
@@ -281,9 +328,10 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="RecuperacaoCustoModelStoreContainer">
+          <EntitySet Name="CategoriaCR" EntityType="Self.CategoriaCR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ciclo" EntityType="Self.Ciclo" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Conta" EntityType="Self.Conta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CR" EntityType="Self.CR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MesBloqueadoTransfReceita" EntityType="Self.MesBloqueadoTransfReceita" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MesCiclo" EntityType="Self.MesCiclo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RecuperacaoCusto" EntityType="Self.RecuperacaoCusto" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RecuperacaoCustoMes" EntityType="Self.RecuperacaoCustoMes" Schema="dbo" store:Type="Tables" />
@@ -291,6 +339,33 @@
           <EntitySet Name="TipoRecuperacao" EntityType="Self.TipoRecuperacao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TransferenciaReceita" EntityType="Self.TransferenciaReceita" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelatorioTransfReceita" EntityType="Self.RelatorioTransfReceita" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [RelatorioTransfReceita].[Empresa] AS [Empresa], 
+    [RelatorioTransfReceita].[UN] AS [UN], 
+    [RelatorioTransfReceita].[UR] AS [UR], 
+    [RelatorioTransfReceita].[Conta_Contabil] AS [Conta_Contabil], 
+    [RelatorioTransfReceita].[CR] AS [CR], 
+    [RelatorioTransfReceita].[Produto] AS [Produto], 
+    [RelatorioTransfReceita].[Intercompany] AS [Intercompany], 
+    [RelatorioTransfReceita].[UF] AS [UF], 
+    [RelatorioTransfReceita].[Cliente] AS [Cliente], 
+    [RelatorioTransfReceita].[Reserva1] AS [Reserva1], 
+    [RelatorioTransfReceita].[Reserva2] AS [Reserva2], 
+    [RelatorioTransfReceita].[Debito] AS [Debito], 
+    [RelatorioTransfReceita].[Credito] AS [Credito], 
+    [RelatorioTransfReceita].[ItemFaturamento] AS [ItemFaturamento], 
+    [RelatorioTransfReceita].[Documento] AS [Documento], 
+    [RelatorioTransfReceita].[NF] AS [NF], 
+    [RelatorioTransfReceita].[DataEmissao] AS [DataEmissao], 
+    [RelatorioTransfReceita].[Historico] AS [Historico], 
+    [RelatorioTransfReceita].[Tipo] AS [Tipo]
+    FROM [dbo].[RelatorioTransfReceita] AS [RelatorioTransfReceita]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="cr_categoriacr_fk" Association="Self.cr_categoriacr_fk">
+            <End Role="CategoriaCR" EntitySet="CategoriaCR" />
+            <End Role="CR" EntitySet="CR" />
+          </AssociationSet>
           <AssociationSet Name="cr_responsavel_fk" Association="Self.cr_responsavel_fk">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="CR" EntitySet="CR" />
@@ -339,10 +414,6 @@
             <End Role="CR" EntitySet="CR" />
             <End Role="TransferenciaReceita" EntitySet="TransferenciaReceita" />
           </AssociationSet>
-          <AssociationSet Name="transferencia_receita_fk" Association="Self.transferencia_receita_fk">
-            <End Role="Conta" EntitySet="Conta" />
-            <End Role="TransferenciaReceita" EntitySet="TransferenciaReceita" />
-          </AssociationSet>
           <AssociationSet Name="transferenciareceita_usuario_fk" Association="Self.transferenciareceita_usuario_fk">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="TransferenciaReceita" EntitySet="TransferenciaReceita" />
@@ -365,6 +436,7 @@
           <NavigationProperty Name="Responsavel" Relationship="RecuperacaoCustoModel.cr_responsavel_fk" FromRole="CR" ToRole="Usuario" />
           <NavigationProperty Name="TransfReceitaOrigem" Relationship="RecuperacaoCustoModel.tranferenciareceita_cr_fk" FromRole="CR" ToRole="TransferenciaReceita" />
           <NavigationProperty Name="TransfReceitaDestino" Relationship="RecuperacaoCustoModel.tranferenciareceita_crdestino_fk" FromRole="CR" ToRole="TransferenciaReceita" />
+          <NavigationProperty Name="CategoriaCR" Relationship="RecuperacaoCustoModel.cr_categoriacr_fk" FromRole="CR" ToRole="CategoriaCR" />
         </EntityType>
         <EntityContainer Name="Contexto" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="CR" EntityType="Self.CR" />
@@ -415,12 +487,7 @@
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="RecuperacaoCusto" EntitySet="RecuperacaoCusto" />
           </AssociationSet>
-          <EntitySet Name="Conta" EntityType="RecuperacaoCustoModel.Conta" />
           <EntitySet Name="TransferenciaReceita" EntityType="RecuperacaoCustoModel.TransferenciaReceita" />
-          <AssociationSet Name="transferencia_receita_fk" Association="RecuperacaoCustoModel.transferencia_receita_fk">
-            <End Role="Conta" EntitySet="Conta" />
-            <End Role="TransferenciaReceita" EntitySet="TransferenciaReceita" />
-          </AssociationSet>
           <AssociationSet Name="tranferenciareceita_cr_fk" Association="RecuperacaoCustoModel.tranferenciareceita_cr_fk">
             <End Role="CR" EntitySet="CR" />
             <End Role="TransferenciaReceita" EntitySet="TransferenciaReceita" />
@@ -432,6 +499,13 @@
           <AssociationSet Name="transferenciareceita_usuario_fk" Association="RecuperacaoCustoModel.transferenciareceita_usuario_fk">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="TransferenciaReceita" EntitySet="TransferenciaReceita" />
+          </AssociationSet>
+          <EntitySet Name="RelatorioTransfReceita" EntityType="RecuperacaoCustoModel.RelatorioTransfReceita" />
+          <EntitySet Name="MesBloqueadoTransfReceita" EntityType="RecuperacaoCustoModel.MesBloqueadoTransfReceita" />
+          <EntitySet Name="CategoriaCR" EntityType="RecuperacaoCustoModel.CategoriaCR" />
+          <AssociationSet Name="cr_categoriacr_fk" Association="RecuperacaoCustoModel.cr_categoriacr_fk">
+            <End Role="CategoriaCR" EntitySet="CategoriaCR" />
+            <End Role="CR" EntitySet="CR" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Sessao">
@@ -603,7 +677,6 @@
           <Property Name="Perfil" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CRs" Relationship="RecuperacaoCustoModel.cr_responsavel_fk" FromRole="Usuario" ToRole="CR" />
           <NavigationProperty Name="Sessao" Relationship="RecuperacaoCustoModel.sessao_usuario_fk" FromRole="Usuario" ToRole="Sessao" />
-          <Property Name="SenhaEnviada" Type="Boolean" />
           <NavigationProperty Name="RecuperacoesEnviadas" Relationship="RecuperacaoCustoModel.recuperacaocusto_usuario_fk" FromRole="Usuario" ToRole="RecuperacaoCusto" />
           <NavigationProperty Name="TransferenciaReceita" Relationship="RecuperacaoCustoModel.transferenciareceita_usuario_fk" FromRole="Usuario" ToRole="TransferenciaReceita" />
         </EntityType>
@@ -645,14 +718,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Conta">
-          <Key>
-            <PropertyRef Name="Descricao" />
-          </Key>
-          <Property Name="Descricao" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="TransferenciaReceita" Relationship="RecuperacaoCustoModel.transferencia_receita_fk" FromRole="Conta" ToRole="TransferenciaReceita" />
-          <Property Name="NumConta" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="TransferenciaReceita">
           <Key>
             <PropertyRef Name="Codigo" />
@@ -669,24 +734,12 @@
           <Property Name="RazaoSocial" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Historico" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="DataHora" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Conta" Relationship="RecuperacaoCustoModel.transferencia_receita_fk" FromRole="TransferenciaReceita" ToRole="Conta" />
           <NavigationProperty Name="CROrigemObj" Relationship="RecuperacaoCustoModel.tranferenciareceita_cr_fk" FromRole="TransferenciaReceita" ToRole="CR" />
           <NavigationProperty Name="CRDestinoObj" Relationship="RecuperacaoCustoModel.tranferenciareceita_crdestino_fk" FromRole="TransferenciaReceita" ToRole="CR" />
           <Property Name="LoginUsuario" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Usuario" Relationship="RecuperacaoCustoModel.transferenciareceita_usuario_fk" FromRole="TransferenciaReceita" ToRole="Usuario" />
+          <Property Name="CPRB" Type="Single" Nullable="false" />
         </EntityType>
-        <Association Name="transferencia_receita_fk">
-          <End Type="RecuperacaoCustoModel.Conta" Role="Conta" Multiplicity="1" />
-          <End Type="RecuperacaoCustoModel.TransferenciaReceita" Role="TransferenciaReceita" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Conta">
-              <PropertyRef Name="Descricao" />
-            </Principal>
-            <Dependent Role="TransferenciaReceita">
-              <PropertyRef Name="RegimeTributacao" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="tranferenciareceita_cr_fk">
           <End Type="RecuperacaoCustoModel.CR" Role="CR" Multiplicity="0..1" />
           <End Type="RecuperacaoCustoModel.TransferenciaReceita" Role="TransferenciaReceita" Multiplicity="*" />
@@ -720,6 +773,71 @@
             </Principal>
             <Dependent Role="TransferenciaReceita">
               <PropertyRef Name="LoginUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RelatorioTransfReceita">
+          <Key>
+            <PropertyRef Name="UN" />
+            <PropertyRef Name="UR" />
+            <PropertyRef Name="Produto" />
+            <PropertyRef Name="Intercompany" />
+            <PropertyRef Name="UF" />
+            <PropertyRef Name="Cliente" />
+            <PropertyRef Name="Reserva1" />
+            <PropertyRef Name="Reserva2" />
+            <PropertyRef Name="Debito" />
+            <PropertyRef Name="Credito" />
+            <PropertyRef Name="ItemFaturamento" />
+            <PropertyRef Name="Documento" />
+            <PropertyRef Name="NF" />
+            <PropertyRef Name="DataEmissao" />
+            <PropertyRef Name="Historico" />
+            <PropertyRef Name="Tipo" />
+          </Key>
+          <Property Name="Empresa" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="UN" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="UR" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="Conta_Contabil" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Produto" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Intercompany" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="UF" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="Cliente" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="Reserva1" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Reserva2" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Debito" Type="Single" Nullable="false" />
+          <Property Name="Credito" Type="Single" Nullable="false" />
+          <Property Name="ItemFaturamento" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Documento" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="NF" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DataEmissao" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Historico" Type="String" Nullable="false" MaxLength="194" FixedLength="false" Unicode="false" />
+          <Property Name="Tipo" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="MesBloqueadoTransfReceita">
+          <Key>
+            <PropertyRef Name="Mes" />
+          </Key>
+          <Property Name="Mes" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="CategoriaCR">
+          <Key>
+            <PropertyRef Name="Categoria" />
+          </Key>
+          <Property Name="Categoria" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Numero" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CR" Relationship="RecuperacaoCustoModel.cr_categoriacr_fk" FromRole="CategoriaCR" ToRole="CR" />
+        </EntityType>
+        <Association Name="cr_categoriacr_fk">
+          <End Type="RecuperacaoCustoModel.CategoriaCR" Role="CategoriaCR" Multiplicity="1" />
+          <End Type="RecuperacaoCustoModel.CR" Role="CR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CategoriaCR">
+              <PropertyRef Name="Categoria" />
+            </Principal>
+            <Dependent Role="CR">
+              <PropertyRef Name="Categoria" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -807,7 +925,6 @@
           <EntitySetMapping Name="Usuario">
             <EntityTypeMapping TypeName="RecuperacaoCustoModel.Usuario">
               <MappingFragment StoreEntitySet="Usuario">
-                <ScalarProperty Name="SenhaEnviada" ColumnName="SenhaEnviada" />
                 <ScalarProperty Name="Perfil" ColumnName="Perfil" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Nome" ColumnName="Nome" />
@@ -816,17 +933,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Conta">
-            <EntityTypeMapping TypeName="RecuperacaoCustoModel.Conta">
-              <MappingFragment StoreEntitySet="Conta">
-                <ScalarProperty Name="NumConta" ColumnName="NumConta" />
-                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TransferenciaReceita">
             <EntityTypeMapping TypeName="RecuperacaoCustoModel.TransferenciaReceita">
               <MappingFragment StoreEntitySet="TransferenciaReceita">
+                <ScalarProperty Name="CPRB" ColumnName="CPRB" />
                 <ScalarProperty Name="LoginUsuario" ColumnName="LoginUsuario" />
                 <ScalarProperty Name="DataHora" ColumnName="DataHora" />
                 <ScalarProperty Name="Historico" ColumnName="Historico" />
@@ -840,6 +950,46 @@
                 <ScalarProperty Name="CRDestino" ColumnName="CRDestino" />
                 <ScalarProperty Name="CROrigem" ColumnName="CROrigem" />
                 <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelatorioTransfReceita">
+            <EntityTypeMapping TypeName="RecuperacaoCustoModel.RelatorioTransfReceita">
+              <MappingFragment StoreEntitySet="RelatorioTransfReceita">
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Historico" ColumnName="Historico" />
+                <ScalarProperty Name="DataEmissao" ColumnName="DataEmissao" />
+                <ScalarProperty Name="NF" ColumnName="NF" />
+                <ScalarProperty Name="Documento" ColumnName="Documento" />
+                <ScalarProperty Name="ItemFaturamento" ColumnName="ItemFaturamento" />
+                <ScalarProperty Name="Credito" ColumnName="Credito" />
+                <ScalarProperty Name="Debito" ColumnName="Debito" />
+                <ScalarProperty Name="Reserva2" ColumnName="Reserva2" />
+                <ScalarProperty Name="Reserva1" ColumnName="Reserva1" />
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+                <ScalarProperty Name="UF" ColumnName="UF" />
+                <ScalarProperty Name="Intercompany" ColumnName="Intercompany" />
+                <ScalarProperty Name="Produto" ColumnName="Produto" />
+                <ScalarProperty Name="CR" ColumnName="CR" />
+                <ScalarProperty Name="Conta_Contabil" ColumnName="Conta_Contabil" />
+                <ScalarProperty Name="UR" ColumnName="UR" />
+                <ScalarProperty Name="UN" ColumnName="UN" />
+                <ScalarProperty Name="Empresa" ColumnName="Empresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MesBloqueadoTransfReceita">
+            <EntityTypeMapping TypeName="RecuperacaoCustoModel.MesBloqueadoTransfReceita">
+              <MappingFragment StoreEntitySet="MesBloqueadoTransfReceita">
+                <ScalarProperty Name="Mes" ColumnName="Mes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CategoriaCR">
+            <EntityTypeMapping TypeName="RecuperacaoCustoModel.CategoriaCR">
+              <MappingFragment StoreEntitySet="CategoriaCR">
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Categoria" ColumnName="Categoria" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

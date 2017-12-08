@@ -24,6 +24,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -66,23 +67,69 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="components\aprovacoes\aprovacoes.html" />
+    <Content Include="components\aprovacoes\aprovacoesCtrl.js" />
+    <Content Include="components\autenticacao\autenticacao.html" />
+    <Content Include="components\autenticacao\autenticacaoCtrl.js" />
+    <Content Include="components\autenticacao\unauthenticated.html" />
     <Content Include="components\ciclos\ciclos.html" />
     <Content Include="components\ciclos\ciclosCtrl.js" />
+    <Content Include="components\containerCR\containerCR.html" />
+    <Content Include="components\containerCR\containerCRCtrl.js" />
+    <Content Include="components\containerRecCusto\containerRecCusto.html" />
+    <Content Include="components\containerRecCusto\containerRecCustoCtrl.js" />
+    <Content Include="components\containerTransfReceita\containerTransfReceita.html" />
+    <Content Include="components\containerTransfReceita\containerTransfReceitaCtrl.js" />
+    <Content Include="components\container\container.html" />
+    <Content Include="components\container\containerCtrl.js" />
     <Content Include="components\container\menu.html" />
+    <Content Include="components\crs\cadastro.html" />
+    <Content Include="components\crs\cadastroCRCtrl.js" />
+    <Content Include="components\envios\envios.html" />
+    <Content Include="components\envios\enviosCtrl.js" />
+    <Content Include="components\home\home.html" />
+    <Content Include="components\home\homeCtrl.js" />
+    <Content Include="components\menu\menu.html" />
+    <Content Include="components\menu\menuCtrl.js" />
     <Content Include="components\recebimentos\recebimentos.html" />
     <Content Include="components\recebimentos\recebimentosCtrl.js" />
     <Content Include="components\recuperacoes\recuperacoes.html" />
     <Content Include="components\recuperacoes\recuperacoesCtrl.js" />
+    <Content Include="components\transfReceita\gestao.html" />
+    <Content Include="components\transfReceita\transfReceita.html" />
+    <Content Include="components\transfReceita\transfReceitaCtrl.js" />
+    <Content Include="components\transfReceita\transfReceitaGestaoCtrl.js" />
+    <Content Include="components\usuario\cadastroUsuario.html" />
+    <Content Include="components\usuario\cadastroUsuarioCtrl.js" />
     <Content Include="components\usuario\usuario.html" />
     <Content Include="components\usuario\usuarioCtrl.js" />
+    <Content Include="css\styles.css" />
+    <Content Include="js\APIs\autenticacaoAPI.js" />
+    <Content Include="js\APIs\categoriasCRAPI.js" />
     <Content Include="js\APIs\ciclosAPI.js" />
     <Content Include="js\APIs\crsAPI.js" />
     <Content Include="js\APIs\importacoesAPI.js" />
+    <Content Include="js\APIs\mesesBloqueadosTransfReceitaAPI.js" />
     <Content Include="js\APIs\recuperacoesCustosAPI.js" />
     <Content Include="js\APIs\tiposRecuperacoesAPI.js" />
+    <Content Include="js\APIs\transferenciaReceitaAPI.js" />
     <Content Include="js\APIs\usuariosAPI.js" />
+    <Content Include="js\app.js" />
+    <Content Include="js\config\interceptorsConfig.js" />
+    <Content Include="js\config\routeConfig.js" />
     <Content Include="js\filters\ellipsisFilter.js" />
+    <Content Include="js\interceptors\anexaTokenInterceptor.js" />
+    <Content Include="js\interceptors\errorInterceptor.js" />
+    <Content Include="js\services\downloadService.js" />
+    <Content Include="js\services\messagesService.js" />
     <Content Include="js\services\sessionStorageService.js" />
+    <Content Include="js\services\sharedDataService.js" />
+    <Content Include="js\services\sharedDataWithoutInjectionService.js" />
+    <Content Include="js\services\uploadFileService.js" />
+    <Content Include="js\values\configValue.js" />
+    <Content Include="lib\loader.css\loaders.css" />
+    <Content Include="lib\loader.css\loaders.css.js" />
+    <Content Include="lib\loader.css\loaders.min.css" />
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -92,32 +139,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="components\aprovacoes\aprovacoes.html" />
-    <Content Include="components\aprovacoes\aprovacoesCtrl.js" />
-    <Content Include="components\autenticacao\autenticacao.html" />
-    <Content Include="components\autenticacao\autenticacaoCtrl.js" />
-    <Content Include="components\autenticacao\unauthenticated.html" />
-    <Content Include="components\container\container.html" />
-    <Content Include="components\container\containerCtrl.js" />
-    <Content Include="components\envios\envios.html" />
-    <Content Include="components\envios\enviosCtrl.js" />
-    <Content Include="components\home\home.html" />
-    <Content Include="css\styles.css" />
     <Content Include="index.html" />
-    <Content Include="js\APIs\autenticacaoAPI.js" />
-    <Content Include="js\app.js" />
-    <Content Include="js\config\interceptorsConfig.js" />
-    <Content Include="js\config\routeConfig.js" />
-    <Content Include="js\interceptors\anexaTokenInterceptor.js" />
-    <Content Include="js\interceptors\errorInterceptor.js" />
-    <Content Include="js\services\messagesService.js" />
-    <Content Include="js\services\sharedDataService.js" />
-    <Content Include="js\services\sharedDataWithoutInjectionService.js" />
-    <Content Include="js\services\uploadFileService.js" />
-    <Content Include="js\values\configValue.js" />
-    <Content Include="lib\loader.css\loaders.css" />
-    <Content Include="lib\loader.css\loaders.css.js" />
-    <Content Include="lib\loader.css\loaders.min.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

@@ -27,8 +27,8 @@ namespace RecuperacaoCustoAPI.Models
         public string Historico { get; set; }
         public System.DateTime DataHora { get; set; }
         public string LoginUsuario { get; set; }
+        public float CPRB { get; set; }
     
-        public virtual Conta Conta { get; set; }
         public virtual CR CROrigemObj { get; set; }
         public virtual CR CRDestinoObj { get; set; }
         public virtual Usuario Usuario { get; set; }

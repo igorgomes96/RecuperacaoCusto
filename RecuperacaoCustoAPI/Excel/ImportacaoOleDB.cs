@@ -9,6 +9,7 @@ using System.Data;
 using System.Data.OleDb;
 using System.Linq;
 using System.Security.Principal;
+using System.Threading;
 using System.Web;
 
 namespace RecuperacaoCustoAPI.Excel
@@ -110,18 +111,10 @@ namespace RecuperacaoCustoAPI.Excel
                 {
                     //Condição de parada
                     if (r[0] == null || r[0].ToString() == "")
-                    {
-                        foreach (string email in recuperacoes.Keys)
-                            SendEmail.Send(new EmailDTO(new[] { email }, "Recuperações de Custos", recuperacoes[email]));
-
-                        return;
-                    }
+                        break;
 
                     CR crOrigem = db.CR.Find(r[0].ToString());
                     if (crOrigem == null) throw new CROrigemNaoEncontradoException(r[0].ToString(), ds.DataSetName, l);
-
-                    //if (crOrigem.ResponsavelLogin != ((CustomIdentity)user.Identity).Usuario.Login)
-                    //    throw new CROrigemNaoAutorizadoException(r[0].ToString(), ds.DataSetName, l);
 
                     CR crDestino = db.CR.Find(r[1].ToString());
                     if (crDestino == null) throw new CRDestinoNaoEncontradoException(r[1].ToString(), ds.DataSetName, l);
@@ -158,7 +151,7 @@ namespace RecuperacaoCustoAPI.Excel
                     {
                         if (r[col] != null && r[col].ToString() != "")
                         {
-                            float valor = 0;
+                            float valor;
                             if (float.TryParse(r[col].ToString(), out valor))
                             {
                                 if (valor != 0)
@@ -193,7 +186,12 @@ namespace RecuperacaoCustoAPI.Excel
                     l++;
                 }
 
-               
+                foreach (string email in recuperacoes.Keys)
+                {
+                    Thread t = new Thread(SendEmail.Send);
+                    t.Start(new EmailDTO(new[] { email }, "Recuperações de Custos", recuperacoes[email]));
+                }
+
 
             }
             catch (CROrigemNaoEncontradoException e)

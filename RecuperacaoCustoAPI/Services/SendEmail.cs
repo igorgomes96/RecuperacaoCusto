@@ -11,8 +11,9 @@ namespace RecuperacaoCustoAPI.Service
     public static class SendEmail
     {
 
-        public static void Send(EmailDTO email)
+        public static void Send(object obj)
         {
+            EmailDTO email = (EmailDTO)obj;
             try
             {
                 MailMessage mail = new MailMessage();
@@ -22,23 +23,20 @@ namespace RecuperacaoCustoAPI.Service
                 foreach (string to in email.To)
                     mail.To.Add(to);
 
-                //mail.To.Add("igorago@algartech.com");
-
-                mail.Bcc.Add("igorago@algartech.com");
                 mail.Subject = email.Subject;
                 mail.IsBodyHtml = true;
                 mail.Body = email.Message;
 
                 SmtpServer.Port = 587;
-                // SmtpServer.Credentials = new System.Net.NetworkCredential("marissaar@algartech.com", "#Liberdade2");
-                SmtpServer.Credentials = new System.Net.NetworkCredential("rec.custos.algar@gmail.com", "rec.custos");
+                SmtpServer.Credentials = new System.Net.NetworkCredential("marissaar@algartech.com", "#Liberdade3");
+                //SmtpServer.Credentials = new System.Net.NetworkCredential("rec.custos.algar@gmail.com", "rec.custos");
                 SmtpServer.EnableSsl = true;
 
                 SmtpServer.Send(mail);
             }
             catch (Exception ex)
             {
-                throw ex;
+                Trace.WriteLine(ex.Message);
             }
         }
 
